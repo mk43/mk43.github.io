@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-07-08T03:16:06.000Z</updated>
+  <updated>2017-07-08T09:51:27.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,12 +20,14 @@
     <link href="http://fitzeng.org/2017/07/08/AndroidBlogCollection/"/>
     <id>http://fitzeng.org/2017/07/08/AndroidBlogCollection/</id>
     <published>2017-07-08T03:27:00.000Z</published>
-    <updated>2017-07-08T03:16:06.000Z</updated>
+    <updated>2017-07-08T09:51:27.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>this repo aims to collect some high quality basic knowledge Android Blog.  Just like source code analysis or something.</p>
 <p>这个仓库致力于收集我在学习 Android 开发过程所遇到的高质量的基础知识文章. 类似于源码分析之类的, 可以帮大家加深对基础原理的理解.</p>
-<p>永久更新这类基础知识解读.</p>
+<p>现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. </p>
+<p>首先可以肯定像我这种刚刚入门的在写文章的高度不如大牛.而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和也一样处在这个阶段, 欢迎关注这篇文章.</p>
+<p>这里永久更新这类基础知识解读. <a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a> 和 <a href="http://fitzeng.org">Blog</a> 永久更新项目练习项目. 如果对你有帮助欢迎 Star ^_^;</p>
 </blockquote>
 <h2 id="Chapter-UI"><a href="#Chapter-UI" class="headerlink" title="Chapter UI"></a>Chapter UI</h2><h3 id="View-的绘制源码解析"><a href="#View-的绘制源码解析" class="headerlink" title="View 的绘制源码解析"></a>View 的绘制源码解析</h3><blockquote>
 <p>这里推荐的是<a href="http://www.jianshu.com/nb/9976005" target="_blank" rel="external">Carson_Ho</a>的一系列源码分析教程, 主要是从 View 和 ViewGroup 的测量, 布局和绘制过程进行详细分析, 很多图示十分清晰易懂, 对于初学者和进阶者都是很不错的学习资料. 如果有找到其他的好的教程我还会继续加上.</p>
@@ -36,13 +38,32 @@
 <li><a href="http://www.jianshu.com/p/158736a2549d" target="_blank" rel="external">自定义View Layout过程 - 最易懂的自定义View原理系列(3)</a></li>
 <li><a href="http://www.jianshu.com/p/95afeb7c8335" target="_blank" rel="external">自定义View Draw过程- 最易懂的自定义View原理系列(4)</a></li>
 </ul>
+<h3 id="View-相关类解析"><a href="#View-相关类解析" class="headerlink" title="View 相关类解析"></a>View 相关类解析</h3><blockquote>
+<p>这个主要是介绍一些对自定义 View 过程中需要仔细了解的一些类的使用. </p>
+</blockquote>
+<ul>
+<li><a href="http://www.jianshu.com/p/2c19abde958c" target="_blank" rel="external">Path类的最全面详解 - 自定义View应用系列</a></li>
+<li><a href="http://www.jianshu.com/p/762b490403c3" target="_blank" rel="external">Canvas类的最全面详解 - 自定义View应用系列</a></li>
+</ul>
+<a id="more"></a>
+<h3 id="XML使用示例"><a href="#XML使用示例" class="headerlink" title="XML使用示例"></a>XML使用示例</h3><blockquote>
+<p>这里推荐<a href="http://keeganlee.me/" target="_blank" rel="external">Keegan小钢</a>的Android样式的开发相关教程, 通过十分简洁的小例子帮你快速实现对 XML 的了解和使用.</p>
+</blockquote>
+<ul>
+<li><a href="http://keeganlee.me/post/android/20150830" target="_blank" rel="external">Android样式的开发:shape篇</a></li>
+<li><a href="http://keeganlee.me/post/android/20150905" target="_blank" rel="external">Android样式的开发:selector篇</a></li>
+<li><a href="http://keeganlee.me/post/android/20150909" target="_blank" rel="external">Android样式的开发:layer-list篇</a></li>
+<li><a href="http://keeganlee.me/post/android/20150916" target="_blank" rel="external">Android样式的开发:drawable汇总篇</a></li>
+<li><a href="http://keeganlee.me/post/android/20151003" target="_blank" rel="external">Android样式的开发:View Animation篇</a></li>
+<li><a href="http://keeganlee.me/post/android/20151026" target="_blank" rel="external">Android样式的开发:Property Animation篇</a></li>
+<li><a href="http://keeganlee.me/post/android/20151031" target="_blank" rel="external">Android样式的开发:Style篇</a></li>
+</ul>
 <h3 id="事件分发"><a href="#事件分发" class="headerlink" title="事件分发"></a>事件分发</h3><blockquote>
 <p>事件分发是一个重要的知识点, 在面试中也有很大可能几率被问到.在开发中经常会遇到, 只有彻底理解好了在写代码时候才能思路清晰.希望以下文章能帮助你我弄清事件分发机制.</p>
 </blockquote>
 <ul>
 <li><a href="http://www.jianshu.com/p/38015afcdb58" target="_blank" rel="external">Android事件分发机制详解：史上最全面、最易懂</a></li>
 </ul>
-<a id="more"></a>
 ]]></content>
     
     <summary type="html">
@@ -50,7 +71,9 @@
       &lt;blockquote&gt;
 &lt;p&gt;this repo aims to collect some high quality basic knowledge Android Blog.  Just like source code analysis or something.&lt;/p&gt;
 &lt;p&gt;这个仓库致力于收集我在学习 Android 开发过程所遇到的高质量的基础知识文章. 类似于源码分析之类的, 可以帮大家加深对基础原理的理解.&lt;/p&gt;
-&lt;p&gt;永久更新这类基础知识解读.&lt;/p&gt;
+&lt;p&gt;现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. &lt;/p&gt;
+&lt;p&gt;首先可以肯定像我这种刚刚入门的在写文章的高度不如大牛.而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和也一样处在这个阶段, 欢迎关注这篇文章.&lt;/p&gt;
+&lt;p&gt;这里永久更新这类基础知识解读. &lt;a href=&quot;https://github.com/mk43&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt; 和 &lt;a href=&quot;http://fitzeng.org&quot;&gt;Blog&lt;/a&gt; 永久更新项目练习项目. 如果对你有帮助欢迎 Star ^_^;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;Chapter-UI&quot;&gt;&lt;a href=&quot;#Chapter-UI&quot; class=&quot;headerlink&quot; title=&quot;Chapter UI&quot;&gt;&lt;/a&gt;Chapter UI&lt;/h2&gt;&lt;h3 id=&quot;View-的绘制源码解析&quot;&gt;&lt;a href=&quot;#View-的绘制源码解析&quot; class=&quot;headerlink&quot; title=&quot;View 的绘制源码解析&quot;&gt;&lt;/a&gt;View 的绘制源码解析&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;这里推荐的是&lt;a href=&quot;http://www.jianshu.com/nb/9976005&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Carson_Ho&lt;/a&gt;的一系列源码分析教程, 主要是从 View 和 ViewGroup 的测量, 布局和绘制过程进行详细分析, 很多图示十分清晰易懂, 对于初学者和进阶者都是很不错的学习资料. 如果有找到其他的好的教程我还会继续加上.&lt;/p&gt;
@@ -61,11 +84,12 @@
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/158736a2549d&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;自定义View Layout过程 - 最易懂的自定义View原理系列(3)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/95afeb7c8335&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;自定义View Draw过程- 最易懂的自定义View原理系列(4)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&quot;事件分发&quot;&gt;&lt;a href=&quot;#事件分发&quot; class=&quot;headerlink&quot; title=&quot;事件分发&quot;&gt;&lt;/a&gt;事件分发&lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;事件分发是一个重要的知识点, 在面试中也有很大可能几率被问到.在开发中经常会遇到, 只有彻底理解好了在写代码时候才能思路清晰.希望以下文章能帮助你我弄清事件分发机制.&lt;/p&gt;
+&lt;h3 id=&quot;View-相关类解析&quot;&gt;&lt;a href=&quot;#View-相关类解析&quot; class=&quot;headerlink&quot; title=&quot;View 相关类解析&quot;&gt;&lt;/a&gt;View 相关类解析&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;这个主要是介绍一些对自定义 View 过程中需要仔细了解的一些类的使用. &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/38015afcdb58&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android事件分发机制详解：史上最全面、最易懂&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/2c19abde958c&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Path类的最全面详解 - 自定义View应用系列&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/762b490403c3&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Canvas类的最全面详解 - 自定义View应用系列&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
     
     </summary>
@@ -82,7 +106,7 @@
     <link href="http://fitzeng.org/2017/07/05/tips/"/>
     <id>http://fitzeng.org/2017/07/05/tips/</id>
     <published>2017-07-05T02:00:00.000Z</published>
-    <updated>2017-07-08T03:18:10.000Z</updated>
+    <updated>2017-07-08T09:51:56.000Z</updated>
     
     <content type="html"><![CDATA[<p>this aticle aims to collect some common sense when you meet during dev.<br>这篇文章主要是记录我在 Android 开发过程中遇到的一些概念问题, 在这里提供简单快速的使用规范.</p>
 <h4 id="开源项目许可证"><a href="#开源项目许可证" class="headerlink" title="开源项目许可证"></a>开源项目许可证</h4><p>MIT、GPLv2和Apache占据了前三位。choosealicense.com为许可证的选择给出了建议.</p>
@@ -92,8 +116,7 @@
 <li>如果你希望代码使用者同样能把他们的贡献分享出来，那就选择GPL.</li>
 </ul>
 <p><a href="http://www.infoq.com/cn/news/2015/03/github-open-source-licence" target="_blank" rel="external">参考</a></p>
-<a id="more"></a>
-]]></content>
+<a id="more"></a>]]></content>
     
     <summary type="html">
     
