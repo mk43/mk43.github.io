@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-07-08T09:51:27.000Z</updated>
+  <updated>2017-07-09T05:34:46.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,16 +20,19 @@
     <link href="http://fitzeng.org/2017/07/08/AndroidBlogCollection/"/>
     <id>http://fitzeng.org/2017/07/08/AndroidBlogCollection/</id>
     <published>2017-07-08T03:27:00.000Z</published>
-    <updated>2017-07-08T09:51:27.000Z</updated>
+    <updated>2017-07-09T05:34:46.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>this repo aims to collect some high quality basic knowledge Android Blog.  Just like source code analysis or something.</p>
 <p>这个仓库致力于收集我在学习 Android 开发过程所遇到的高质量的基础知识文章. 类似于源码分析之类的, 可以帮大家加深对基础原理的理解.</p>
-<p>现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. </p>
-<p>首先可以肯定像我这种刚刚入门的在写文章的高度不如大牛.而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和也一样处在这个阶段, 欢迎关注这篇文章.</p>
-<p>这里永久更新这类基础知识解读. <a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a> 和 <a href="http://fitzeng.org">Blog</a> 永久更新项目练习项目. 如果对你有帮助欢迎 Star ^_^;</p>
 </blockquote>
-<h2 id="Chapter-UI"><a href="#Chapter-UI" class="headerlink" title="Chapter UI"></a>Chapter UI</h2><h3 id="View-的绘制源码解析"><a href="#View-的绘制源码解析" class="headerlink" title="View 的绘制源码解析"></a>View 的绘制源码解析</h3><blockquote>
+<h2 id="0-Chapter-Start"><a href="#0-Chapter-Start" class="headerlink" title="0. Chapter Start"></a>0. Chapter Start</h2><h3 id="gt-前言"><a href="#gt-前言" class="headerlink" title="&gt; 前言"></a>&gt; 前言</h3><blockquote>
+<p>现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. </p>
+<p>所以可以看到我推荐的基本都是成一个小体系的系列文章, 可以帮助我们形成一个好的”学习思维树”. 而不是一大堆”散叶”. 而其他文章主要是作为自己加深理解, 对某个知识点深入学习的参考.</p>
+<p>首先可以肯定像我这种刚刚入门的在写文章的高度和视野都不如大牛. 而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和我也一样处在这个阶段, 欢迎关注这篇文章.</p>
+<p>这里永久更新这类基础知识解读. <a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a> 和 <a href="http://fitzeng.org">Blog</a> 永久更新练习项目. 如果对你有帮助欢迎 Star ^_^;</p>
+</blockquote>
+<h2 id="1-Chapter-UI"><a href="#1-Chapter-UI" class="headerlink" title="1. Chapter UI"></a>1. Chapter UI</h2><h3 id="gt-View-的绘制源码解析"><a href="#gt-View-的绘制源码解析" class="headerlink" title="&gt; View 的绘制源码解析"></a>&gt; View 的绘制源码解析</h3><blockquote>
 <p>这里推荐的是<a href="http://www.jianshu.com/nb/9976005" target="_blank" rel="external">Carson_Ho</a>的一系列源码分析教程, 主要是从 View 和 ViewGroup 的测量, 布局和绘制过程进行详细分析, 很多图示十分清晰易懂, 对于初学者和进阶者都是很不错的学习资料. 如果有找到其他的好的教程我还会继续加上.</p>
 </blockquote>
 <ul>
@@ -38,7 +41,16 @@
 <li><a href="http://www.jianshu.com/p/158736a2549d" target="_blank" rel="external">自定义View Layout过程 - 最易懂的自定义View原理系列(3)</a></li>
 <li><a href="http://www.jianshu.com/p/95afeb7c8335" target="_blank" rel="external">自定义View Draw过程- 最易懂的自定义View原理系列(4)</a></li>
 </ul>
-<h3 id="View-相关类解析"><a href="#View-相关类解析" class="headerlink" title="View 相关类解析"></a>View 相关类解析</h3><blockquote>
+<blockquote>
+<p>前面给了 View 的绘制最主要的三个过程进行了详细分析的 Blog, 在前面的阅读基础上,下面给出<a href="http://blog.csdn.net/guolin_blog" target="_blank" rel="external">郭霖大神</a>的 View 的工作原理系列文章. 相信在读完以下四篇文章之后你会对 View 有一个重新认识的.</p>
+</blockquote>
+<ul>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/12921889" target="_blank" rel="external">Android LayoutInflater原理分析，带你一步步深入了解View(一)</a></li>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/16330267" target="_blank" rel="external"> Android视图绘制流程完全解析，带你一步步深入了解View(二)</a></li>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/17045157" target="_blank" rel="external">Android视图状态及重绘流程分析，带你一步步深入了解View(三)</a></li>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/17357967" target="_blank" rel="external"> Android自定义View的实现方法，带你一步步深入了解View(四)</a></li>
+</ul>
+<h3 id="gt-View-相关类解析"><a href="#gt-View-相关类解析" class="headerlink" title="&gt; View 相关类解析"></a>&gt; View 相关类解析</h3><blockquote>
 <p>这个主要是介绍一些对自定义 View 过程中需要仔细了解的一些类的使用. </p>
 </blockquote>
 <ul>
@@ -46,7 +58,7 @@
 <li><a href="http://www.jianshu.com/p/762b490403c3" target="_blank" rel="external">Canvas类的最全面详解 - 自定义View应用系列</a></li>
 </ul>
 <a id="more"></a>
-<h3 id="XML使用示例"><a href="#XML使用示例" class="headerlink" title="XML使用示例"></a>XML使用示例</h3><blockquote>
+<h3 id="gt-XML使用示例"><a href="#gt-XML使用示例" class="headerlink" title="&gt; XML使用示例"></a>&gt; XML使用示例</h3><blockquote>
 <p>这里推荐<a href="http://keeganlee.me/" target="_blank" rel="external">Keegan小钢</a>的Android样式的开发相关教程, 通过十分简洁的小例子帮你快速实现对 XML 的了解和使用.</p>
 </blockquote>
 <ul>
@@ -58,11 +70,33 @@
 <li><a href="http://keeganlee.me/post/android/20151026" target="_blank" rel="external">Android样式的开发:Property Animation篇</a></li>
 <li><a href="http://keeganlee.me/post/android/20151031" target="_blank" rel="external">Android样式的开发:Style篇</a></li>
 </ul>
-<h3 id="事件分发"><a href="#事件分发" class="headerlink" title="事件分发"></a>事件分发</h3><blockquote>
-<p>事件分发是一个重要的知识点, 在面试中也有很大可能几率被问到.在开发中经常会遇到, 只有彻底理解好了在写代码时候才能思路清晰.希望以下文章能帮助你我弄清事件分发机制.</p>
+<h3 id="gt-动画"><a href="#gt-动画" class="headerlink" title="&gt; 动画"></a>&gt; 动画</h3><blockquote>
+<p>Android 动画介绍, 感谢<a href="http://www.jianshu.com/p/551f84402752" target="_blank" rel="external">阿祥JOKER</a> 分享.</p>
+</blockquote>
+<ul>
+<li><a href="http://www.jianshu.com/p/551f84402752" target="_blank" rel="external">Android动画解析</a></li>
+</ul>
+<blockquote>
+<p>重点!!!这里还是推荐郭霖大神的文章. 然后后面补充一篇偏知识点式的文章供复习.</p>
+</blockquote>
+<ul>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/43536355" target="_blank" rel="external">Android属性动画完全解析(上)，初识属性动画的基本用法</a></li>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/43816093" target="_blank" rel="external"> Android属性动画完全解析(中)，ValueAnimator和ObjectAnimator的高级用法</a></li>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/44171115" target="_blank" rel="external"> Android属性动画完全解析(下)，Interpolator和ViewPropertyAnimator的用法</a></li>
+<li>补充参考:<a href="http://www.jianshu.com/p/b7aa2a4a9787" target="_blank" rel="external">Android动画，一篇就够</a>, 感谢<a href="http://www.jianshu.com/u/b7e9763ffd86" target="_blank" rel="external">Shaun白一辰</a>的分享.</li>
+</ul>
+<h3 id="gt-事件分发"><a href="#gt-事件分发" class="headerlink" title="&gt; 事件分发"></a>&gt; 事件分发</h3><blockquote>
+<p>事件分发是一个重要的知识点, 在面试中也有很大几率被问到.在开发中经常会遇到, 只有彻底理解好了在写代码时候才能思路清晰.希望以下文章能帮助你我弄清事件分发机制.</p>
 </blockquote>
 <ul>
 <li><a href="http://www.jianshu.com/p/38015afcdb58" target="_blank" rel="external">Android事件分发机制详解：史上最全面、最易懂</a></li>
+</ul>
+<h2 id="2-Java-API"><a href="#2-Java-API" class="headerlink" title="2. Java API"></a>2. Java API</h2><blockquote>
+<p>这里主要是对 Java API 中的一些重要的源码解析进行收集. 同时也是面试重点, 希望能加深对 Java 的认识. 做到真的理解底层实现而不是只会使用.</p>
+<p>由于 Java 面太广, 所以在这里主要是以知识点的形式覆盖基本概念. 这里推荐 <a href="http://www.cnblogs.com/chenssy/category/525010.html" target="_blank" rel="external">树上月</a> 的教程. 从 Blog 介绍看接触 Java 有一段时间, 所以分析会比较深入且正确. 更主要的是, 他把 Java 类文章基本都串起来了, 共有 38 篇可供学习. 文章太多就不一一贴链接了…</p>
+</blockquote>
+<ul>
+<li><a href="http://www.cnblogs.com/chenssy/category/525010.html" target="_blank" rel="external">想学Java, 值得一阅</a></li>
 </ul>
 ]]></content>
     
@@ -71,11 +105,14 @@
       &lt;blockquote&gt;
 &lt;p&gt;this repo aims to collect some high quality basic knowledge Android Blog.  Just like source code analysis or something.&lt;/p&gt;
 &lt;p&gt;这个仓库致力于收集我在学习 Android 开发过程所遇到的高质量的基础知识文章. 类似于源码分析之类的, 可以帮大家加深对基础原理的理解.&lt;/p&gt;
-&lt;p&gt;现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. &lt;/p&gt;
-&lt;p&gt;首先可以肯定像我这种刚刚入门的在写文章的高度不如大牛.而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和也一样处在这个阶段, 欢迎关注这篇文章.&lt;/p&gt;
-&lt;p&gt;这里永久更新这类基础知识解读. &lt;a href=&quot;https://github.com/mk43&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt; 和 &lt;a href=&quot;http://fitzeng.org&quot;&gt;Blog&lt;/a&gt; 永久更新项目练习项目. 如果对你有帮助欢迎 Star ^_^;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&quot;Chapter-UI&quot;&gt;&lt;a href=&quot;#Chapter-UI&quot; class=&quot;headerlink&quot; title=&quot;Chapter UI&quot;&gt;&lt;/a&gt;Chapter UI&lt;/h2&gt;&lt;h3 id=&quot;View-的绘制源码解析&quot;&gt;&lt;a href=&quot;#View-的绘制源码解析&quot; class=&quot;headerlink&quot; title=&quot;View 的绘制源码解析&quot;&gt;&lt;/a&gt;View 的绘制源码解析&lt;/h3&gt;&lt;blockquote&gt;
+&lt;h2 id=&quot;0-Chapter-Start&quot;&gt;&lt;a href=&quot;#0-Chapter-Start&quot; class=&quot;headerlink&quot; title=&quot;0. Chapter Start&quot;&gt;&lt;/a&gt;0. Chapter Start&lt;/h2&gt;&lt;h3 id=&quot;gt-前言&quot;&gt;&lt;a href=&quot;#gt-前言&quot; class=&quot;headerlink&quot; title=&quot;&amp;gt; 前言&quot;&gt;&lt;/a&gt;&amp;gt; 前言&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. &lt;/p&gt;
+&lt;p&gt;所以可以看到我推荐的基本都是成一个小体系的系列文章, 可以帮助我们形成一个好的”学习思维树”. 而不是一大堆”散叶”. 而其他文章主要是作为自己加深理解, 对某个知识点深入学习的参考.&lt;/p&gt;
+&lt;p&gt;首先可以肯定像我这种刚刚入门的在写文章的高度和视野都不如大牛. 而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和我也一样处在这个阶段, 欢迎关注这篇文章.&lt;/p&gt;
+&lt;p&gt;这里永久更新这类基础知识解读. &lt;a href=&quot;https://github.com/mk43&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt; 和 &lt;a href=&quot;http://fitzeng.org&quot;&gt;Blog&lt;/a&gt; 永久更新练习项目. 如果对你有帮助欢迎 Star ^_^;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;1-Chapter-UI&quot;&gt;&lt;a href=&quot;#1-Chapter-UI&quot; class=&quot;headerlink&quot; title=&quot;1. Chapter UI&quot;&gt;&lt;/a&gt;1. Chapter UI&lt;/h2&gt;&lt;h3 id=&quot;gt-View-的绘制源码解析&quot;&gt;&lt;a href=&quot;#gt-View-的绘制源码解析&quot; class=&quot;headerlink&quot; title=&quot;&amp;gt; View 的绘制源码解析&quot;&gt;&lt;/a&gt;&amp;gt; View 的绘制源码解析&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;这里推荐的是&lt;a href=&quot;http://www.jianshu.com/nb/9976005&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Carson_Ho&lt;/a&gt;的一系列源码分析教程, 主要是从 View 和 ViewGroup 的测量, 布局和绘制过程进行详细分析, 很多图示十分清晰易懂, 对于初学者和进阶者都是很不错的学习资料. 如果有找到其他的好的教程我还会继续加上.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
@@ -84,7 +121,16 @@
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/158736a2549d&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;自定义View Layout过程 - 最易懂的自定义View原理系列(3)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/95afeb7c8335&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;自定义View Draw过程- 最易懂的自定义View原理系列(4)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&quot;View-相关类解析&quot;&gt;&lt;a href=&quot;#View-相关类解析&quot; class=&quot;headerlink&quot; title=&quot;View 相关类解析&quot;&gt;&lt;/a&gt;View 相关类解析&lt;/h3&gt;&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;前面给了 View 的绘制最主要的三个过程进行了详细分析的 Blog, 在前面的阅读基础上,下面给出&lt;a href=&quot;http://blog.csdn.net/guolin_blog&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;郭霖大神&lt;/a&gt;的 View 的工作原理系列文章. 相信在读完以下四篇文章之后你会对 View 有一个重新认识的.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/guolin_blog/article/details/12921889&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android LayoutInflater原理分析，带你一步步深入了解View(一)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/guolin_blog/article/details/16330267&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt; Android视图绘制流程完全解析，带你一步步深入了解View(二)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/guolin_blog/article/details/17045157&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android视图状态及重绘流程分析，带你一步步深入了解View(三)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/guolin_blog/article/details/17357967&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt; Android自定义View的实现方法，带你一步步深入了解View(四)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;gt-View-相关类解析&quot;&gt;&lt;a href=&quot;#gt-View-相关类解析&quot; class=&quot;headerlink&quot; title=&quot;&amp;gt; View 相关类解析&quot;&gt;&lt;/a&gt;&amp;gt; View 相关类解析&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;这个主要是介绍一些对自定义 View 过程中需要仔细了解的一些类的使用. &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
