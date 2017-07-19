@@ -142,6 +142,97 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-AlgoAndMath" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="leetcode-算法集锦"><a href="#leetcode-算法集锦" class="headerlink" title="leetcode 算法集锦"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦</a></h2><blockquote>
+<p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>考点</th>
+<th>题目</th>
+<th>C/C++</th>
+<th>Java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>  01</td>
+<td>树</td>
+<td>Minimum Depth of Binary Tree</td>
+<td>NULL</td>
+<td><a href="#jump 01">题解</a></td>
+<td></td>
+</tr>
+<tr>
+<td>  02</td>
+<td>栈</td>
+<td>evaluate-reverse-polish-notation</td>
+<td>NULL</td>
+<td><a href="#jump 02">题解</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="02-evaluate-reverse-polish-notation"><a href="#02-evaluate-reverse-polish-notation" class="headerlink" title="02 : evaluate-reverse-polish-notation"></a><span id="jump 02"><a href="https://www.nowcoder.com/practice/22f9d7dd89374b6c8289e44237c70447?tpId=46&amp;tqId=29031&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">02 : evaluate-reverse-polish-notation</a></span></h3><blockquote>
+<p>Evaluate the value of an arithmetic expression in Reverse Polish Notation.Valid operators are+,-,*,/. Each operand may be an integer or another expression.</p>
+<p>Some examples:</p>
+<p>[“2”, “1”, “+”, “3”, “<em>“] -&gt; ((2 + 1) </em> 3) -&gt; 9</p>
+<p>[“4”, “13”, “5”, “/“, “+”] -&gt; (4 + (13 / 5)) -&gt; 6</p>
+</blockquote>
+<ul>
+<li>我的解法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;String&gt; s = <span class="keyword">new</span> Stack&lt;&gt;();</div><div class="line">        <span class="keyword">int</span> op1 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> op2 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tokens.length; i++) &#123;</div><div class="line">            <span class="keyword">switch</span> (tokens[i]) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="string">"+"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 + op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"-"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 - op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"*"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 * op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"/"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 / op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">default</span>: &#123;</div><div class="line">                    s.push(tokens[i]);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> Integer.parseInt(s.pop());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>其他解法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;tokens.length;i++)&#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                <span class="keyword">int</span> num = Integer.parseInt(tokens[i]);</div><div class="line">                stack.add(num);</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                <span class="keyword">int</span> b = stack.pop();</div><div class="line">                <span class="keyword">int</span> a = stack.pop();</div><div class="line">                stack.add(get(a, b, tokens[i]));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> stack.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,String operator)</span></span>&#123;</div><div class="line">        <span class="keyword">switch</span> (operator) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">"+"</span>:</div><div class="line">            <span class="keyword">return</span> a+b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"-"</span>:</div><div class="line">            <span class="keyword">return</span> a-b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"*"</span>:</div><div class="line">            <span class="keyword">return</span> a*b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"/"</span>:</div><div class="line">            <span class="keyword">return</span> a/b;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="01-Minimum-Depth-of-Binary-Tree"><a href="#01-Minimum-Depth-of-Binary-Tree" class="headerlink" title="01 : Minimum Depth of Binary Tree"></a><span id="jump 01"><a href="https://www.nowcoder.com/practice/e08819cfdeb34985a8de9c4e6562e724?tpId=46&amp;tqId=29030&amp;tPage=1&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">01 : Minimum Depth of Binary Tree</a></span></h3><blockquote>
+<p>Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.</p>
+</blockquote>
+<ul>
+<li>我的解法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">深度优先遍历所有节点, 直至叶子节点后返回长度. </div><div class="line">每次取当前节点左右子节点的 [最小值+<span class="number">1</span>] 为该节点的最小深度. </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">run</span><span class="params">(TreeNode root)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> length1 = run(root.left);</div><div class="line">        <span class="keyword">int</span> length2 = run(root.right);</div><div class="line">        <span class="keyword">if</span> (length1 == <span class="number">0</span> || length2 == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> length1 + length2 + <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> Math.min(length1, length2) + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>其他思路</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">typedef</span> TreeNode* tree;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">run</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="comment">//采用广度优先搜索，或者层序遍历，找到的第一个叶节点的深度即是最浅。</span></div><div class="line">      <span class="keyword">if</span>(! root) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">      <span class="built_in">queue</span>&lt;tree&gt; qu;</div><div class="line">      tree last,now;</div><div class="line">      <span class="keyword">int</span> level,size;</div><div class="line">      last = now = root;</div><div class="line">      level = <span class="number">1</span>;qu.push(root);</div><div class="line">      <span class="keyword">while</span>(qu.size())&#123;</div><div class="line">        now = qu.front();</div><div class="line">        qu.pop();</div><div class="line">        size = qu.size();</div><div class="line">        <span class="keyword">if</span>(now-&gt;left)qu.push(now-&gt;left);</div><div class="line">        <span class="keyword">if</span>(now-&gt;right)qu.push(now-&gt;right);</div><div class="line">        <span class="keyword">if</span>(qu.size()-size == <span class="number">0</span>)<span class="keyword">break</span>;</div><div class="line">        <span class="keyword">if</span>(last == now)&#123;</div><div class="line">          level++;</div><div class="line">          <span class="keyword">if</span>(qu.size())last = qu.back();</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> level;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/19/AlgoAndMath/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-AndroidBlogCollection" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -809,83 +900,6 @@
 
 
   
-    <article id="post-EmojiKeyboard" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/07/EmojiKeyboard/">实现一个表情键盘控件</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/07/EmojiKeyboard/" class="archive-article-date">
-  	<time datetime="2017-04-07T05:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<p><a href="https://github.com/mk43/BaiduAcademy" target="_blank" rel="external">GitHub</a></p>
-<h3 id="任务目的"><a href="#任务目的" class="headerlink" title="任务目的"></a>任务目的</h3><hr>
-<ul>
-<li>学习android控件的封装，viewPager的使用，以及SpannableString对文字加图片的处理</li>
-</ul>
-<h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><hr>
-<ul>
-<li>能进行表情的输入，删除</li>
-<li>表情大于一页，且可以翻页</li>
-<li>表情键盘和输入法键盘的弹出逻辑要正确</li>
-</ul>
-<h3 id="结果演示"><a href="#结果演示" class="headerlink" title="结果演示"></a>结果演示</h3><hr>
-<p><img src="/2017/04/07/EmojiKeyboard/show.png" alt=""><img src="/2017/04/07/EmojiKeyboard/EmojiDemo.gif" alt=""></p>
-        
-          <a class="article-more-a" href="/2017/04/07/EmojiKeyboard/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/07/EmojiKeyboard/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1000,6 +1014,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
@@ -1009,10 +1027,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">

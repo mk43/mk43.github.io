@@ -6,22 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>复现ANR | Fitzeng</title>
+  <title>Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="GitHub 任务描述写出不少于3种常见ANR错误的Android代码   主线程复现ANR BroadcastReceiver复现ANR Service复现ANR  1.什么是ANR? ANR(Application Not Responding),应用程序无响应. 参考ANR完全解析">
-<meta name="keywords" content="Android">
+  <meta name="description" content="leetcode 算法集锦 主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.     序号 考点 题目 C/C++ Java       01 树 Minimum Depth of Binary Tree NULL 题解      02 栈 evaluate-reverse-polish-notation NULL 题解     02 : ev">
 <meta property="og:type" content="article">
-<meta property="og:title" content="复现ANR">
-<meta property="og:url" content="http://fitzeng.org/2017/04/07/RecurrentANR/index.html">
+<meta property="og:title" content="Fitzeng">
+<meta property="og:url" content="http://fitzeng.org/2017/07/19/AlgoAndMath/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="GitHub 任务描述写出不少于3种常见ANR错误的Android代码   主线程复现ANR BroadcastReceiver复现ANR Service复现ANR  1.什么是ANR? ANR(Application Not Responding),应用程序无响应. 参考ANR完全解析">
-<meta property="og:image" content="http://fitzeng.org/2017/04/07/RecurrentANR/ANR.png">
-<meta property="og:image" content="http://fitzeng.org/2017/04/07/RecurrentANR/ReANR.png">
-<meta property="og:updated_time" content="2017-07-01T10:11:53.000Z">
+<meta property="og:description" content="leetcode 算法集锦 主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.     序号 考点 题目 C/C++ Java       01 树 Minimum Depth of Binary Tree NULL 题解      02 栈 evaluate-reverse-polish-notation NULL 题解     02 : ev">
+<meta property="og:updated_time" content="2017-07-19T15:24:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="复现ANR">
-<meta name="twitter:description" content="GitHub 任务描述写出不少于3种常见ANR错误的Android代码   主线程复现ANR BroadcastReceiver复现ANR Service复现ANR  1.什么是ANR? ANR(Application Not Responding),应用程序无响应. 参考ANR完全解析">
-<meta name="twitter:image" content="http://fitzeng.org/2017/04/07/RecurrentANR/ANR.png">
+<meta name="twitter:title" content="Fitzeng">
+<meta name="twitter:description" content="leetcode 算法集锦 主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.     序号 考点 题目 C/C++ Java       01 树 Minimum Depth of Binary Tree NULL 题解      02 栈 evaluate-reverse-polish-notation NULL 题解     02 : ev">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -145,80 +141,68 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-RecurrentANR" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-AlgoAndMath" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      复现ANR
-    </h1>
-  
-
-        
-        <a href="/2017/04/07/RecurrentANR/" class="archive-article-date">
-  	<time datetime="2017-04-07T02:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-07</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/mk43/BaiduAcademy" target="_blank" rel="external">GitHub</a></p>
-<h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><p>写出不少于3种常见ANR错误的Android代码</p>
-<hr>
+        <h2 id="leetcode-算法集锦"><a href="#leetcode-算法集锦" class="headerlink" title="leetcode 算法集锦"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦</a></h2><blockquote>
+<p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>考点</th>
+<th>题目</th>
+<th>C/C++</th>
+<th>Java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>  01</td>
+<td>树</td>
+<td>Minimum Depth of Binary Tree</td>
+<td>NULL</td>
+<td><a href="#jump 01">题解</a></td>
+<td></td>
+</tr>
+<tr>
+<td>  02</td>
+<td>栈</td>
+<td>evaluate-reverse-polish-notation</td>
+<td>NULL</td>
+<td><a href="#jump 02">题解</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="02-evaluate-reverse-polish-notation"><a href="#02-evaluate-reverse-polish-notation" class="headerlink" title="02 : evaluate-reverse-polish-notation"></a><span id="jump 02"><a href="https://www.nowcoder.com/practice/22f9d7dd89374b6c8289e44237c70447?tpId=46&amp;tqId=29031&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">02 : evaluate-reverse-polish-notation</a></span></h3><blockquote>
+<p>Evaluate the value of an arithmetic expression in Reverse Polish Notation.Valid operators are+,-,*,/. Each operand may be an integer or another expression.</p>
+<p>Some examples:</p>
+<p>[“2”, “1”, “+”, “3”, “<em>“] -&gt; ((2 + 1) </em> 3) -&gt; 9</p>
+<p>[“4”, “13”, “5”, “/“, “+”] -&gt; (4 + (13 / 5)) -&gt; 6</p>
+</blockquote>
 <ul>
-<li>主线程复现ANR</li>
-<li>BroadcastReceiver复现ANR</li>
-<li>Service复现ANR</li>
+<li>我的解法</li>
 </ul>
-<h3 id="1-什么是ANR"><a href="#1-什么是ANR" class="headerlink" title="1.什么是ANR?"></a>1.什么是ANR?</h3><hr>
-<p>ANR(Application Not Responding),应用程序无响应. 参考<a href="https://blog.saymagic.tech/2014/03/25/anr-analyze.html" target="_blank" rel="external">ANR完全解析</a></p>
-<a id="more"></a>
-<h3 id="2-ANR的三种类型"><a href="#2-ANR的三种类型" class="headerlink" title="2.ANR的三种类型"></a>2.ANR的三种类型</h3><hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;String&gt; s = <span class="keyword">new</span> Stack&lt;&gt;();</div><div class="line">        <span class="keyword">int</span> op1 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> op2 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tokens.length; i++) &#123;</div><div class="line">            <span class="keyword">switch</span> (tokens[i]) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="string">"+"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 + op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"-"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 - op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"*"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 * op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"/"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 / op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">default</span>: &#123;</div><div class="line">                    s.push(tokens[i]);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> Integer.parseInt(s.pop());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>KeyDispatchTimeout(5 seconds) 主要类型按键或触摸事件在特定时间内无响应</li>
-<li>BroadcastTimeout(10 seconds) BroadcastReceiver在特定时间内无法处理完成</li>
-<li>ServiceTimeout(20 seconds) 小概率类型 Service在特定的时间内无法处理完成</li>
+<li>其他解法</li>
 </ul>
-<h3 id="3-复现ANR"><a href="#3-复现ANR" class="headerlink" title="3.复现ANR"></a>3.复现ANR</h3><h4 id="I-主线程复现ANR"><a href="#I-主线程复现ANR" class="headerlink" title="I 主线程复现ANR"></a>I 主线程复现ANR</h4><hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;tokens.length;i++)&#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                <span class="keyword">int</span> num = Integer.parseInt(tokens[i]);</div><div class="line">                stack.add(num);</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                <span class="keyword">int</span> b = stack.pop();</div><div class="line">                <span class="keyword">int</span> a = stack.pop();</div><div class="line">                stack.add(get(a, b, tokens[i]));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> stack.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,String operator)</span></span>&#123;</div><div class="line">        <span class="keyword">switch</span> (operator) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">"+"</span>:</div><div class="line">            <span class="keyword">return</span> a+b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"-"</span>:</div><div class="line">            <span class="keyword">return</span> a-b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"*"</span>:</div><div class="line">            <span class="keyword">return</span> a*b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"/"</span>:</div><div class="line">            <span class="keyword">return</span> a/b;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="01-Minimum-Depth-of-Binary-Tree"><a href="#01-Minimum-Depth-of-Binary-Tree" class="headerlink" title="01 : Minimum Depth of Binary Tree"></a><span id="jump 01"><a href="https://www.nowcoder.com/practice/e08819cfdeb34985a8de9c4e6562e724?tpId=46&amp;tqId=29030&amp;tPage=1&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">01 : Minimum Depth of Binary Tree</a></span></h3><blockquote>
+<p>Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.</p>
+</blockquote>
 <ul>
-<li>代码</li>
+<li>我的解法</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Recurrent ANR in main Thread</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mainThreadANR</span><span class="params">()</span> </span>&#123;</div><div class="line">    Looper myLooper = Looper.myLooper();</div><div class="line">    Looper mainLooper = Looper.getMainLooper();</div><div class="line">    Log.i(<span class="string">"MainThreadANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Thread.sleep(<span class="number">20</span> * <span class="number">1000</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    Log.i(<span class="string">"MainThreadANR"</span>, <span class="string">"mainThreadANR() Done"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">深度优先遍历所有节点, 直至叶子节点后返回长度. </div><div class="line">每次取当前节点左右子节点的 [最小值+<span class="number">1</span>] 为该节点的最小深度. </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">run</span><span class="params">(TreeNode root)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> length1 = run(root.left);</div><div class="line">        <span class="keyword">int</span> length2 = run(root.right);</div><div class="line">        <span class="keyword">if</span> (length1 == <span class="number">0</span> || length2 == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> length1 + length2 + <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> Math.min(length1, length2) + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>结果</li>
+<li>其他思路</li>
 </ul>
-<p><img src="/2017/04/07/RecurrentANR/ANR.png" alt=""></p>
-<h4 id="II-BroadcastReceiver复现ANR"><a href="#II-BroadcastReceiver复现ANR" class="headerlink" title="II BroadcastReceiver复现ANR"></a>II BroadcastReceiver复现ANR</h4><ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastANR</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">        Looper myLooper = Looper.myLooper();</div><div class="line">        Looper mainLooper = Looper.getMainLooper();</div><div class="line">        Log.i(<span class="string">"BroadcastANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Thread.sleep(<span class="number">80</span> * <span class="number">1000</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="III-Service复现ANR"><a href="#III-Service复现ANR" class="headerlink" title="III Service复现ANR"></a>III Service复现ANR</h4><ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceANR</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">        Looper myLooper = Looper.myLooper();</div><div class="line">        Looper mainLooper = Looper.getMainLooper();</div><div class="line">        Log.i(<span class="string">"ServiceANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Thread.sleep(<span class="number">60</span> * <span class="number">1000</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Nullable</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="4-避免ANR"><a href="#4-避免ANR" class="headerlink" title="4.避免ANR"></a>4.避免ANR</h3><p>要想避免ANR，首先要分析为什么会发生ANR，主要是在一些不能耗时操作的函数中处理代码的时间过长，所以把耗时长的程序写入其他子进程中就可以避免。<a href="https://duanqz.github.io/2015-10-12-ANR-Analysis#service" target="_blank" rel="external">ANR机制以及问题分析</a>写的很详细。</p>
-<p><img src="/2017/04/07/RecurrentANR/ReANR.png" alt=""></p>
-<p>首先我们看看Log</p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">MainThreadANR: </div><div class="line">I/MainThreadANR: myLooper=Looper (main, tid 1) &#123;13467e36&#125;;   mainLooper=Looper (main, tid 1) &#123;13467e36&#125;</div><div class="line"></div><div class="line">BroadcastANR:</div><div class="line">I/BroadcastANR: myLooper=Looper (main, tid 1) &#123;33c6137&#125;;   mainLooper=Looper (main, tid 1) &#123;33c6137&#125;</div><div class="line"></div><div class="line">ServiceANR:</div><div class="line">I/ServiceANR: myLooper=Looper (main, tid 1) &#123;303e756a&#125;;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div></pre></td></tr></table></figure>
-<p>前面的三个ANR都有一个特点，那就是当前的线程都是主线程，细心点会发现其实还有一句丢帧Log打印</p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Skipped 1204 frames!  The application may be doing too much work on its main thread.</div></pre></td></tr></table></figure>
-<p>我实现下通过在主线程中创建一个新线程的方法来避免ANR</p>
-<ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Deal ANR in main Thread</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mainThreadNotANR</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            Looper myLooper = Looper.myLooper();</div><div class="line">            Looper mainLooper = Looper.getMainLooper();</div><div class="line">            Log.i(<span class="string">"MainThreadNotANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Thread.sleep(<span class="number">20</span> * <span class="number">1000</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            Log.i(<span class="string">"MainThreadNotANR"</span>, <span class="string">"Thread Run() Done"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;).start();</div><div class="line">    Log.i(<span class="string">"MainThreadNotANR"</span>, <span class="string">"mainThreadNotANR() Done"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面我们来对比下和主线程中直接处理的Log有什么不同</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">MainThreadNotANR:</div><div class="line">点击按钮MainThreadNotANR</div><div class="line">I/MainThreadNotANR: mainThreadNotANR() Done</div><div class="line">I/MainThreadNotANR: myLooper=null;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div><div class="line">I/MainThreadNotANR: ThreadRun() Done</div><div class="line">W/art: Suspending all threads took: 6.032ms</div><div class="line"></div><div class="line">MainThreadANR:</div><div class="line">点击按钮MainThreadANR</div><div class="line">I/MainThreadANR: myLooper=Looper (main, tid 1) &#123;303e756a&#125;;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div><div class="line">I/MainThreadANR: mainThreadANR() Done</div><div class="line">再多次点击按钮MainThreadANR</div><div class="line">I/Choreographer: Skipped 1200 frames!  The application may be doing too much work on its main thread.</div><div class="line">I/MainThreadANR: myLooper=Looper (main, tid 1) &#123;303e756a&#125;;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div><div class="line">I/art: Thread[5,tid=2037,WaitingInMainSignalCatcherLoop,Thread*=0xef70d400,peer=0x12c00080,&quot;Signal Catcher&quot;]: reacting to signal 3</div><div class="line">I/art: Wrote stack traces to &apos;/data/anr/traces.txt&apos;</div></pre></td></tr></table></figure>
-<p>从Log中可以看出MainThreadNotANR中先打印mainThreadNotANR() Done后打印ThreadRun() Done说明代码没在MainThreadNotANR这个线程中运行，从myLooper=null;   mainLooper=Looper (main, tid 1) {303e756a}可以验证我们的猜想。<br>而MainThreadANR中就很明显，各种丢帧奔溃。不过I/art: Wrote stack traces to ‘/data/anr/traces.txt’告诉我们可以在/data/anr/traces.txt中追踪奔溃的缘由<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">traces.txt</div><div class="line"></div><div class="line">DALVIK THREADS (18):</div><div class="line">&quot;main&quot; prio=5 tid=1 Sleeping</div><div class="line">  | group=&quot;main&quot; sCount=1 dsCount=0 obj=0x73581970 self=0xf4306800</div><div class="line">  | sysTid=2030 nice=0 cgrp=apps sched=0/0 handle=0xf7761160</div><div class="line">  | state=S schedstat=( 545706267 72336573 314 ) utm=30 stm=23 core=3 HZ=100</div><div class="line">  | stack=0xff7c7000-0xff7c9000 stackSize=8MB</div><div class="line">  | held mutexes=</div><div class="line">  at java.lang.Thread.sleep!(Native method)</div><div class="line">  - sleeping on &lt;0x2ce90c0d&gt; (a java.lang.Object)</div><div class="line">  at java.lang.Thread.sleep(Thread.java:1031)</div><div class="line">  - locked &lt;0x2ce90c0d&gt; (a java.lang.Object)</div><div class="line">  at java.lang.Thread.sleep(Thread.java:985)</div><div class="line">  at org.fitzeng.recurrentanr.MainActivity.mainThreadANR(MainActivity.java:47)</div><div class="line">  at org.fitzeng.recurrentanr.MainActivity.onClick(MainActivity.java:81)</div><div class="line">  at android.view.View.performClick(View.java:4756)</div><div class="line">  at android.view.View$PerformClick.run(View.java:19749)</div><div class="line">  at android.os.Handler.handleCallback(Handler.java:739)</div><div class="line">  at android.os.Handler.dispatchMessage(Handler.java:95)</div><div class="line">  at android.os.Looper.loop(Looper.java:135)</div><div class="line">  at android.app.ActivityThread.main(ActivityThread.java:5221)</div><div class="line">  at java.lang.reflect.Method.invoke!(Native method)</div><div class="line">  at java.lang.reflect.Method.invoke(Method.java:372)</div><div class="line">  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:899)</div><div class="line">  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)</div></pre></td></tr></table></figure></p>
-<p>这是定位ANR的有效手段。</p>
-<p>Tips: 作为一个Android小白，自然有很多不知道不理解的地方。如果文中有错或者有哪些值得改进的地方，欢迎大家提意见，我很开心能和大家一起交流学习，共同进步。</p>
-<p>多谢阅读</p>
-
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">typedef</span> TreeNode* tree;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">run</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="comment">//采用广度优先搜索，或者层序遍历，找到的第一个叶节点的深度即是最浅。</span></div><div class="line">      <span class="keyword">if</span>(! root) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">      <span class="built_in">queue</span>&lt;tree&gt; qu;</div><div class="line">      tree last,now;</div><div class="line">      <span class="keyword">int</span> level,size;</div><div class="line">      last = now = root;</div><div class="line">      level = <span class="number">1</span>;qu.push(root);</div><div class="line">      <span class="keyword">while</span>(qu.size())&#123;</div><div class="line">        now = qu.front();</div><div class="line">        qu.pop();</div><div class="line">        size = qu.size();</div><div class="line">        <span class="keyword">if</span>(now-&gt;left)qu.push(now-&gt;left);</div><div class="line">        <span class="keyword">if</span>(now-&gt;right)qu.push(now-&gt;right);</div><div class="line">        <span class="keyword">if</span>(qu.size()-size == <span class="number">0</span>)<span class="keyword">break</span>;</div><div class="line">        <span class="keyword">if</span>(last == now)&#123;</div><div class="line">          level++;</div><div class="line">          <span class="keyword">if</span>(qu.size())last = qu.back();</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> level;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
       
 
       
@@ -226,17 +210,6 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
@@ -287,7 +260,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/04/07/RecurrentANR/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/07/19/AlgoAndMath/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -301,15 +274,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/04/07/TabLayout/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          实现一个TAB布局
-        
-      </div>
-    </a>
   
+    <a href="/2017/07/08/AndroidBlogCollection/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android Blog Collection</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
