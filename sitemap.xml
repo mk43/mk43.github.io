@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2017/06/13/BMP2JPEG/</loc>
+    
+    <lastmod>2017-07-19T15:35:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2017/07/17/AlgoAndMath/</loc>
     
-    <lastmod>2017-07-19T15:28:38.000Z</lastmod>
+    <lastmod>2017-07-19T15:34:35.000Z</lastmod>
     
   </url>
   
@@ -96,13 +103,6 @@
     <loc>http://fitzeng.org/2017/05/14/Android%20%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%92%8C%20Robolectric%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</loc>
     
     <lastmod>2017-07-01T10:06:30.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fitzeng.org/2017/06/13/BMP2JPEG/</loc>
-    
-    <lastmod>2017-07-01T10:06:05.000Z</lastmod>
     
   </url>
   
