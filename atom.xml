@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-07-19T15:24:15.000Z</updated>
+  <updated>2017-07-19T15:27:43.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
-    <link href="http://fitzeng.org/2017/07/19/AlgoAndMath/"/>
-    <id>http://fitzeng.org/2017/07/19/AlgoAndMath/</id>
-    <published>2017-07-19T15:04:59.000Z</published>
-    <updated>2017-07-19T15:24:15.000Z</updated>
+    <title>leetcode 算法集锦</title>
+    <link href="http://fitzeng.org/2017/07/17/AlgoAndMath/"/>
+    <id>http://fitzeng.org/2017/07/17/AlgoAndMath/</id>
+    <published>2017-07-17T03:27:00.000Z</published>
+    <updated>2017-07-19T15:27:43.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="leetcode-算法集锦"><a href="#leetcode-算法集锦" class="headerlink" title="leetcode 算法集锦"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦</a></h2><blockquote>
 <p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
@@ -86,6 +86,14 @@
     
     </summary>
     
+    
+      <category term="Algo" scheme="http://fitzeng.org/tags/Algo/"/>
+    
+      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
+    
+      <category term="Java" scheme="http://fitzeng.org/tags/Java/"/>
+    
+      <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
     
   </entry>
   
@@ -391,9 +399,9 @@
     </summary>
     
     
-      <category term="图像处理" scheme="http://fitzeng.org/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
-    
       <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
+    
+      <category term="图像处理" scheme="http://fitzeng.org/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
     
   </entry>
   
