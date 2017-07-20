@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-07-19T15:34:35.000Z</updated>
+  <updated>2017-07-20T08:54:46.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2017/07/17/AlgoAndMath/"/>
     <id>http://fitzeng.org/2017/07/17/AlgoAndMath/</id>
     <published>2017-07-17T03:27:00.000Z</published>
-    <updated>2017-07-19T15:34:35.000Z</updated>
+    <updated>2017-07-20T08:54:46.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="leetcode-算法集锦"><a href="#leetcode-算法集锦" class="headerlink" title="leetcode 算法集锦"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦</a></h2><blockquote>
 <p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
@@ -32,7 +32,7 @@
 <th style="text-align:center">考点</th>
 <th style="text-align:center">题目</th>
 <th style="text-align:center">C/C++</th>
-<th style="text-align:center">Java</th>
+<th style="text-align:center">Java     </th>
 </tr>
 </thead>
 <tbody>
@@ -41,21 +41,19 @@
 <td style="text-align:center">树</td>
 <td style="text-align:center">Minimum Depth of Binary Tree</td>
 <td style="text-align:center">NULL</td>
-<td style="text-align:center"><a href="#jump 01">题解</a></td>
-<td></td>
+<td style="text-align:center"><a href="#jump_01">题解</a>  </td>
 </tr>
 <tr>
 <td style="text-align:center">  02</td>
 <td style="text-align:center">栈</td>
 <td style="text-align:center">evaluate-reverse-polish-notation</td>
 <td style="text-align:center">NULL</td>
-<td style="text-align:center"><a href="#jump 02">题解</a></td>
-<td></td>
+<td style="text-align:center"><a href="#jump_02">题解</a> </td>
 </tr>
 </tbody>
 </table>
 <a id="more"></a>
-<h3 id="02-evaluate-reverse-polish-notation"><a href="#02-evaluate-reverse-polish-notation" class="headerlink" title="02 : evaluate-reverse-polish-notation"></a><span id="jump 02"><a href="https://www.nowcoder.com/practice/22f9d7dd89374b6c8289e44237c70447?tpId=46&amp;tqId=29031&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">02 : evaluate-reverse-polish-notation</a></span></h3><blockquote>
+<h3 id="02-evaluate-reverse-polish-notation"><a href="#02-evaluate-reverse-polish-notation" class="headerlink" title="02 : evaluate-reverse-polish-notation"></a><span id="jump_02"><a href="https://www.nowcoder.com/practice/22f9d7dd89374b6c8289e44237c70447?tpId=46&amp;tqId=29031&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">02 : evaluate-reverse-polish-notation</a></span></h3><blockquote>
 <p>Evaluate the value of an arithmetic expression in Reverse Polish Notation.Valid operators are+,-,*,/. Each operand may be an integer or another expression.</p>
 <p>Some examples:</p>
 <p>[“2”, “1”, “+”, “3”, “<em>“] -&gt; ((2 + 1) </em> 3) -&gt; 9</p>
@@ -69,7 +67,7 @@
 <li>其他解法</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;tokens.length;i++)&#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                <span class="keyword">int</span> num = Integer.parseInt(tokens[i]);</div><div class="line">                stack.add(num);</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                <span class="keyword">int</span> b = stack.pop();</div><div class="line">                <span class="keyword">int</span> a = stack.pop();</div><div class="line">                stack.add(get(a, b, tokens[i]));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> stack.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,String operator)</span></span>&#123;</div><div class="line">        <span class="keyword">switch</span> (operator) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">"+"</span>:</div><div class="line">            <span class="keyword">return</span> a+b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"-"</span>:</div><div class="line">            <span class="keyword">return</span> a-b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"*"</span>:</div><div class="line">            <span class="keyword">return</span> a*b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"/"</span>:</div><div class="line">            <span class="keyword">return</span> a/b;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="01-Minimum-Depth-of-Binary-Tree"><a href="#01-Minimum-Depth-of-Binary-Tree" class="headerlink" title="01 : Minimum Depth of Binary Tree"></a><span id="jump 01"><a href="https://www.nowcoder.com/practice/e08819cfdeb34985a8de9c4e6562e724?tpId=46&amp;tqId=29030&amp;tPage=1&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">01 : Minimum Depth of Binary Tree</a></span></h3><blockquote>
+<h3 id="01-Minimum-Depth-of-Binary-Tree"><a href="#01-Minimum-Depth-of-Binary-Tree" class="headerlink" title="01 : Minimum Depth of Binary Tree"></a><span id="jump_01"><a href="https://www.nowcoder.com/practice/e08819cfdeb34985a8de9c4e6562e724?tpId=46&amp;tqId=29030&amp;tPage=1&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">01 : Minimum Depth of Binary Tree</a></span></h3><blockquote>
 <p>Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.</p>
 </blockquote>
 <ul>
@@ -93,7 +91,7 @@
 &lt;th style=&quot;text-align:center&quot;&gt;考点&lt;/th&gt;
 &lt;th style=&quot;text-align:center&quot;&gt;题目&lt;/th&gt;
 &lt;th style=&quot;text-align:center&quot;&gt;C/C++&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;Java&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Java     &lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
@@ -102,16 +100,14 @@
 &lt;td style=&quot;text-align:center&quot;&gt;树&lt;/td&gt;
 &lt;td style=&quot;text-align:center&quot;&gt;Minimum Depth of Binary Tree&lt;/td&gt;
 &lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump 01&quot;&gt;题解&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_01&quot;&gt;题解&lt;/a&gt;  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td style=&quot;text-align:center&quot;&gt;  02&lt;/td&gt;
 &lt;td style=&quot;text-align:center&quot;&gt;栈&lt;/td&gt;
 &lt;td style=&quot;text-align:center&quot;&gt;evaluate-reverse-polish-notation&lt;/td&gt;
 &lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump 02&quot;&gt;题解&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_02&quot;&gt;题解&lt;/a&gt; &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
