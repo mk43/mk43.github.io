@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://fitzeng.org">
   <title>JavaTips | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String ArrayList    基本类型== 和 equals123456789101112TestCode:Integer a = 100;Int">
+  <meta name="description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String ArrayList">
 <meta name="keywords" content="Java,Tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaTips">
 <meta property="og:url" content="http://fitzeng.org/2017/07/25/JavaTips/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String ArrayList    基本类型== 和 equals123456789101112TestCode:Integer a = 100;Int">
-<meta property="og:updated_time" content="2017-07-25T07:41:18.000Z">
+<meta property="og:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String ArrayList">
+<meta property="og:updated_time" content="2017-07-25T07:47:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaTips">
-<meta name="twitter:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String ArrayList    基本类型== 和 equals123456789101112TestCode:Integer a = 100;Int">
+<meta name="twitter:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String ArrayList">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -174,6 +174,7 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="和-equals"><a href="#和-equals" class="headerlink" title="== 和 equals"></a>== 和 equals</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer a = <span class="number">100</span>;</div><div class="line">Integer b = <span class="number">100</span>;</div><div class="line">System.out.println(a == b);</div><div class="line"></div><div class="line">Integer c = <span class="number">1000</span>;</div><div class="line">Integer d = <span class="number">1000</span>;</div><div class="line">System.out.println(c == d);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
 <blockquote>
 <p>其中 == 结果不一致是因为 Integer 类对在 -128 到 127 之间的数值进行了缓存. </p>
@@ -470,11 +471,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -482,11 +483,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ZZChat</a>
+                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+                <a href="javascript:void(0)" class="js-tag color2">ZZChat</a>
               </li>
             
             <div class="clearfix"></div>

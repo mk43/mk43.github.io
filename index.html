@@ -174,57 +174,9 @@
 </ul>
 </li>
 </ul>
-<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="和-equals"><a href="#和-equals" class="headerlink" title="== 和 equals"></a>== 和 equals</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer a = <span class="number">100</span>;</div><div class="line">Integer b = <span class="number">100</span>;</div><div class="line">System.out.println(a == b);</div><div class="line"></div><div class="line">Integer c = <span class="number">1000</span>;</div><div class="line">Integer d = <span class="number">1000</span>;</div><div class="line">System.out.println(c == d);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>其中 == 结果不一致是因为 Integer 类对在 -128 到 127 之间的数值进行了缓存. </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer e = new Integer(100);</div><div class="line">Integer f = new Integer(100);</div><div class="line">System.out.println(e == f);</div><div class="line"></div><div class="line">Output:</div><div class="line">false</div></pre></td></tr></table></figure>
-<blockquote>
-<p><code>Integer a = 100;</code>涉及到自动装箱问题, 反编译之后就是 <code>Integer a = Integer.valueOf(100);</code>.<br>而<code>Integer e = new Integer(100);</code> 反编译不改变. 所以在 a 和 e 这两个对象引用的堆区域一个是通过<code>valueOf()</code>获得, 另一个是通过<code>new</code>获得. 毫无疑问 <code>new</code> 出来的肯定不会是同一块区域. 而 <code>valueOf()</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">&gt; 	<span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</div><div class="line">&gt; 		<span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</div><div class="line">&gt; 	<span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</div><div class="line">&gt; &#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>这里就解释了前面的<code>Integer 类对在 -128 到 127 之间的数值进行了缓存</code>. 详情见源码.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">String s1 = <span class="string">"1234"</span>;</div><div class="line">String s2 = <span class="string">"1234"</span>;</div><div class="line">System.out.println(s1 == s2);</div><div class="line"></div><div class="line">String s3 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">String s4 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">System.out.println(s3 == s4);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<p>这个比较简单, 就是在 JVM 中存在常量池. 还有要注意的是两种初始化方式的不同才造成了这个差异. </p>
-<p>下面分析 equals ,详情见参考.这里只提几点易混淆的地方.</p>
-<blockquote>
-<p>equals 是属于类方法, 而且是 Object 类的. 而 Object 类的实现就是判断引用是否相等.</p>
-<p>而对于某个类来说判断相等一般是判断里面的某些成员变量是否相等. 所以就要重写父类方法.这里要区分重写和重载.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; 重写:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;&#125;</div><div class="line">&gt; 重载:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(MyObject myObj)</span> </span>&#123;&#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>所以要想实现自己想要的 equals 方法应该是重写.</p>
-<p>其实这里面的主要内容就是了解了自动拆装箱和 JVM 内分配就不难了.</p>
-<ul>
-<li>第一类：整型 byte Byte | short Short | int Integer | long Long</li>
-<li>第二类：浮点型 float Float | double Double</li>
-<li>第三类：逻辑型 boolean Boolean</li>
-<li>第四类：字符型 char Character</li>
-</ul>
-<p>在支持 equals 特性的时候, 往往还要支持 hashCode </p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27562748" target="_blank" rel="external">让人疑惑的Java代码</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27570687" target="_blank" rel="external">Java字符串那些事儿</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27573287" target="_blank" rel="external">说说Java里的equals（上）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27657548" target="_blank" rel="external">Java自动装箱/拆箱</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27741179" target="_blank" rel="external">说说Java里的equals（中）</a></li>
-</ul>
-<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><h4 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h4><blockquote>
-<p>首先要知道的是这是一个 Array 所以在进行修改操作时十分不方便的. 特别是增加或者删除元素, 扩大存储等方式相比链表结构来说麻烦太多.知道这个为出发点, 对于源码实现的理解就理所当然了.<br>应该了解的几个点</p>
-<ul>
-<li>在 ArrayList 中从有元素开始就会分配 10 的对象大小容量. 接下来以 <code>currentSize * 1.5</code> 的大小扩容.</li>
-<li>对于修改空间是以 System.arraycopy() 形式修改的. 为了提高效率采用的是 native 方法.</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src, </span></span></div><div class="line">&gt; 		<span class="keyword">int</span>  srcPos, Object dest, <span class="keyword">int</span> destPos, <span class="keyword">int</span> length);</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>详情源码分析见参考.</p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27873515" target="_blank" rel="external">ArrayList初探</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27878015" target="_blank" rel="external">再探ArrayList（ArrayList的扩容）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27938717" target="_blank" rel="external">三顾ArrayList</a></li>
-</ul>
-
+        
+          <a class="article-more-a" href="/2017/07/25/JavaTips/#more">more >></a>
+        
       
 
       
@@ -1097,11 +1049,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1109,11 +1061,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ZZChat</a>
+                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+                <a href="javascript:void(0)" class="js-tag color2">ZZChat</a>
               </li>
             
             <div class="clearfix"></div>
