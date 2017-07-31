@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-07-31T04:38:06.000Z</updated>
+  <updated>2017-07-31T04:40:59.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,12 +20,13 @@
     <link href="http://fitzeng.org/2017/07/31/robolectric/"/>
     <id>http://fitzeng.org/2017/07/31/robolectric/</id>
     <published>2017-07-30T16:00:00.000Z</published>
-    <updated>2017-07-31T04:38:06.000Z</updated>
+    <updated>2017-07-31T04:40:59.000Z</updated>
     
     <content type="html"><![CDATA[<p><img src="/2017/07/31/robolectric/robolectric-cn.png" alt=""></p>
 <h3 id="为什么要翻译文档"><a href="#为什么要翻译文档" class="headerlink" title="为什么要翻译文档?"></a>为什么要翻译文档?</h3><blockquote>
-<p>由于在大三暑假时间算是比较充裕的, 然后加上自己英语比较渣, 又对 gitbook 有兴趣, 所以就想翻译一些文档. 平时也是一直看别人的干货, 所以也想自己做点贡献, 希望能帮助英语是短板的部分人. 对于英语有 4/6 级水平的人还是建议直接看官方的英文文档…</p>
+<p>由于在大三暑假时间算是比较充裕的, 然后加上自己英语比较渣, 又对 gitbook 有兴趣, 所以就想翻译一些文档. 平时也是一直看别人的干货, 所以也想自己做点贡献, 希望能帮助英语是短板的部分人. </p>
 </blockquote>
+<a id="more"></a>
 <h3 id="为什么是-Robolectric"><a href="#为什么是-Robolectric" class="headerlink" title="为什么是 Robolectric?"></a>为什么是 Robolectric?</h3><blockquote>
 <p>其实原因很简单, 就是我之前写过一篇 <a href="http://fitzeng.org/2017/05/14/Android%20%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%92%8C%20Robolectric%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Android 单元测试和 Robolectric 源码解析</a> 的文章, 直接看的二手资料, 感觉这种学习方式太被动了, 要自己尝试去啃第一手资料. 而正好网上没有对应的中文文档加上内容少, 一个人可以完成, 再加上前面的第一点就直接开始行动了.</p>
 </blockquote>
@@ -58,7 +59,9 @@
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;/2017/07/31/robolectric/robolectric-cn.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;为什么要翻译文档&quot;&gt;&lt;a href=&quot;#为什么要翻译文档&quot; class=&quot;headerlink&quot; title=&quot;为什么要翻译文
+&lt;h3 id=&quot;为什么要翻译文档&quot;&gt;&lt;a href=&quot;#为什么要翻译文档&quot; class=&quot;headerlink&quot; title=&quot;为什么要翻译文档?&quot;&gt;&lt;/a&gt;为什么要翻译文档?&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;由于在大三暑假时间算是比较充裕的, 然后加上自己英语比较渣, 又对 gitbook 有兴趣, 所以就想翻译一些文档. 平时也是一直看别人的干货, 所以也想自己做点贡献, 希望能帮助英语是短板的部分人. &lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
