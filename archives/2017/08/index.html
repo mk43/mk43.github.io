@@ -6,22 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>JavaTips | Fitzeng</title>
+  <title>Archives: 2017/8 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
-<meta name="keywords" content="Java,Tips">
-<meta property="og:type" content="article">
-<meta property="og:title" content="JavaTips">
-<meta property="og:url" content="http://fitzeng.org/2017/07/25/JavaTips/index.html">
+  <meta name="description" content="hey, everyone">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fitzeng">
+<meta property="og:url" content="http://fitzeng.org/archives/2017/08/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
-<meta property="og:image" content="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG">
-<meta property="og:image" content="http://images.cnitblog.com/i/532548/201404/262238192165666.jpg">
-<meta property="og:updated_time" content="2017-08-01T15:04:33.000Z">
+<meta property="og:description" content="hey, everyone">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaTips">
-<meta name="twitter:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
-<meta name="twitter:image" content="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG">
+<meta name="twitter:title" content="Fitzeng">
+<meta name="twitter:description" content="hey, everyone">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -145,274 +140,114 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JavaTips" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      JavaTips
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/08/03/WhyMarvel/" class="archive-article-date">
+  	<time datetime="2017-08-02T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-03</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/08/03/WhyMarvel/">Why Marvel ?</a>
     </h1>
   
 
-        
-        <a href="/2017/07/25/JavaTips/" class="archive-article-date">
-  	<time datetime="2017-07-25T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析. </p>
-<p>主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.</p>
-</blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>基本类型<ul>
-<li>== 和 equals</li>
-<li>String, StringBuffer 和 StringBuilder</li>
-<li>Array</li>
-<li>ArrayList</li>
-<li>LinkedList</li>
-<li>Exception</li>
-<li>Collction</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="和-equals"><a href="#和-equals" class="headerlink" title="== 和 equals"></a>== 和 equals</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer a = <span class="number">100</span>;</div><div class="line">Integer b = <span class="number">100</span>;</div><div class="line">System.out.println(a == b);</div><div class="line"></div><div class="line">Integer c = <span class="number">1000</span>;</div><div class="line">Integer d = <span class="number">1000</span>;</div><div class="line">System.out.println(c == d);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>其中 == 结果不一致是因为 Integer 类对在 -128 到 127 之间的数值进行了缓存. </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer e = new Integer(100);</div><div class="line">Integer f = new Integer(100);</div><div class="line">System.out.println(e == f);</div><div class="line"></div><div class="line">Output:</div><div class="line">false</div></pre></td></tr></table></figure>
-<blockquote>
-<p><code>Integer a = 100;</code>涉及到自动装箱问题, 反编译之后就是 <code>Integer a = Integer.valueOf(100);</code>.<br>而<code>Integer e = new Integer(100);</code> 反编译不改变. 所以在 a 和 e 这两个对象引用的堆区域一个是通过<code>valueOf()</code>获得, 另一个是通过<code>new</code>获得. 毫无疑问 <code>new</code> 出来的肯定不会是同一块区域. 而 <code>valueOf()</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">&gt; 	<span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</div><div class="line">&gt; 		<span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</div><div class="line">&gt; 	<span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</div><div class="line">&gt; &#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>这里就解释了前面的<code>Integer 类对在 -128 到 127 之间的数值进行了缓存</code>. 详情见源码.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">String s1 = <span class="string">"1234"</span>;</div><div class="line">String s2 = <span class="string">"1234"</span>;</div><div class="line">System.out.println(s1 == s2);</div><div class="line"></div><div class="line">String s3 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">String s4 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">System.out.println(s3 == s4);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<p>这个比较简单, 就是在 JVM 中存在常量池. 还有要注意的是两种初始化方式的不同才造成了这个差异. </p>
-<p>下面分析 equals ,详情见参考.这里只提几点易混淆的地方.</p>
-<blockquote>
-<p>equals 是属于类方法, 而且是 Object 类的. 而 Object 类的实现就是判断引用是否相等.</p>
-<p>而对于某个类来说判断相等一般是判断里面的某些成员变量是否相等. 所以就要重写父类方法.这里要区分重写和重载.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; 重写:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;&#125;</div><div class="line">&gt; 重载:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(MyObject myObj)</span> </span>&#123;&#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>所以要想实现自己想要的 equals 方法应该是重写.</p>
-<p>其实这里面的主要内容就是了解了自动拆装箱和 JVM 内分配就不难了.</p>
-<ul>
-<li>第一类：整型 byte Byte | short Short | int Integer | long Long</li>
-<li>第二类：浮点型 float Float | double Double</li>
-<li>第三类：逻辑型 boolean Boolean</li>
-<li>第四类：字符型 char Character</li>
-</ul>
-<p>在支持 equals 特性的时候, 往往还要支持 hashCode </p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27562748" target="_blank" rel="external">让人疑惑的Java代码</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27570687" target="_blank" rel="external">Java字符串那些事儿</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27573287" target="_blank" rel="external">说说Java里的equals（上）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27657548" target="_blank" rel="external">Java自动装箱/拆箱</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27741179" target="_blank" rel="external">说说Java里的equals（中）</a></li>
-</ul>
-<h4 id="String-StringBuffer-和-StringBuilder"><a href="#String-StringBuffer-和-StringBuilder" class="headerlink" title="String, StringBuffer 和 StringBuilder"></a>String, StringBuffer 和 StringBuilder</h4><ul>
-<li>String</li>
-</ul>
-<blockquote>
-<p>final 类.</p>
-<p>String s=”sss”;    会在静态常量池中查找</p>
-<p>String s = new String(“sss”);    直接在堆中开辟内存</p>
-<p>使用场合: 在字符串不经常变化的场景中可以使用 String 类, 如: 常量的声明, 少量的变量运算等</p>
-</blockquote>
-<ul>
-<li>StringBuffer</li>
-</ul>
-<blockquote>
-<p>线程安全, 可自身修改</p>
-<p>必须通过构造函数初始化</p>
-<p>使用场合: 在频繁进行字符串的运算(拼接, 替换, 删除等), 并且运行在多线程的环境中, 则可以考虑使用 StringBuffer, 例如 XML 解析, HTTP 参数解析和封装等</p>
-</blockquote>
-<ul>
-<li>StringBuilder</li>
-</ul>
-<blockquote>
-<p>线程不安全, 操作最快</p>
-<p>使用场合: 和 StringBuffer 类似的不要求线程安全场景, 效率比 StringBuffer 高</p>
-</blockquote>
-<h4 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h4><blockquote>
-<p>是一个在 JVM 中的特殊对象, 可以使用反射查看</p>
-<p>拷贝时注意深拷贝还是浅拷贝</p>
-</blockquote>
-<h4 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h4><blockquote>
-<p>首先要知道的是这是一个 Array 所以在进行修改操作时十分不方便的. 特别是增加或者删除元素, 扩大存储等方式相比链表结构来说麻烦太多.知道这个为出发点, 对于源码实现的理解就理所当然了.<br>应该了解的几个点</p>
-<ul>
-<li>在 ArrayList 中从有元素开始就会分配 10 的对象大小容量. 接下来以 <code>currentSize * 1.5</code> 的大小扩容.</li>
-<li>对于修改空间是以 System.arraycopy() 形式修改的. 为了提高效率采用的是 native 方法.</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src, </span></span></div><div class="line">&gt; 		<span class="keyword">int</span>  srcPos, Object dest, <span class="keyword">int</span> destPos, <span class="keyword">int</span> length);</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>详情源码分析见参考.</p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27873515" target="_blank" rel="external">ArrayList初探</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27878015" target="_blank" rel="external">再探ArrayList（ArrayList的扩容）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27938717" target="_blank" rel="external">三顾ArrayList</a></li>
-</ul>
-<h4 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h4><blockquote>
-<p>实现方式是双向链表</p>
-</blockquote>
-<h4 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h4><p><img src="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG" alt=""></p>
-<ul>
-<li>尽可能的减小try块</li>
-<li>保证所有资源都被正确释放, 充分运用finally关键词</li>
-<li>catch语句应当尽量指定具体的异常类型, 而不应该指定涵盖范围太广的 Exception 类. 不要一个Exception试图处理所有可能出现的异常</li>
-<li>既然捕获了异常, 就要对它进行适当的处理</li>
-<li>在异常处理模块中提供适量的错误原因信息, 组织错误信息使其易于理解和阅读</li>
-<li>不要在 finally 块中处理返回值</li>
-<li>不要在构造函数中抛出异常</li>
-</ul>
-<p>参考: </p>
-<ul>
-<li><a href="http://www.cnblogs.com/chenssy/category/525010.html" target="_blank" rel="external">树上月</a></li>
-</ul>
-<h4 id="Collction"><a href="#Collction" class="headerlink" title="Collction"></a>Collction</h4><ul>
-<li>List 列表(可重复)</li>
-<li>Map 映射(key-value)</li>
-<li>Set 集合(不能重复)</li>
-</ul>
-<p><img src="http://images.cnitblog.com/i/532548/201404/262238192165666.jpg" alt=""></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Life</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tips</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Marvel</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/07/25/JavaTips/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
   
-<nav id="article-nav">
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/08/02/reDS/" class="archive-article-date">
+  	<time datetime="2017-08-01T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-02</time>
+</a>
+        </div>
+    	 
   
-    <a href="/2017/07/31/robolectric/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Android 单元测试工具 Robolectric 中文文档
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/07/17/AlgoAndMath/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">leetcode 算法集锦</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-
-
-
-
-  
-    <div class="duoshuo"></div>
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/08/02/reDS/">重拾数据结构</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Algo</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Math</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">C/C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">DataStruct</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
+          
 
-<section id="comments">
-  <div id="disqus_thread"></div>
-    <script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'fitzeng-org'; // required: replace example with your forum shortname
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
+  
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</section>
+    
 
 
           </div>
@@ -435,8 +270,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
