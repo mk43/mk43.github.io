@@ -16,8 +16,8 @@
 <meta property="og:site_name" content="Fitzeng">
 <meta property="og:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
 <meta property="og:image" content="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG">
-<meta property="og:image" content="http://images.cnitblog.com/i/532548/201404/262238192165666.jpg">
-<meta property="og:updated_time" content="2017-08-01T15:04:33.000Z">
+<meta property="og:image" content="http://fitzeng.org/2017/07/25/JavaTips/collection.jpg">
+<meta property="og:updated_time" content="2017-08-06T05:54:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaTips">
 <meta name="twitter:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
@@ -277,12 +277,45 @@
 <ul>
 <li><a href="http://www.cnblogs.com/chenssy/category/525010.html" target="_blank" rel="external">树上月</a></li>
 </ul>
-<h4 id="Collction"><a href="#Collction" class="headerlink" title="Collction"></a>Collction</h4><ul>
-<li>List 列表(可重复)</li>
-<li>Map 映射(key-value)</li>
-<li>Set 集合(不能重复)</li>
+<h4 id="Collction"><a href="#Collction" class="headerlink" title="Collction"></a>Collction</h4><p><img src="/2017/07/25/JavaTips/collection.jpg" alt=""></p>
+<h5 id="List-列表-可重复"><a href="#List-列表-可重复" class="headerlink" title="List 列表(可重复)"></a>List 列表(可重复)</h5><ul>
+<li>ArrayList (数组)</li>
+<li>LinkedList (链表)</li>
 </ul>
-<p><img src="http://images.cnitblog.com/i/532548/201404/262238192165666.jpg" alt=""></p>
+<h5 id="Map-映射-key-value"><a href="#Map-映射-key-value" class="headerlink" title="Map 映射(key-value)"></a>Map 映射(key-value)</h5><ul>
+<li>HashMap</li>
+</ul>
+<blockquote>
+<p>extends AbstractMap<k,v> implements Map<k,v></k,v></k,v></p>
+<p>table 数组 + Enter 节点</p>
+<p>默认初始容量(16) 默认加载因子(0.75)</p>
+<p>查找采用 static int indexFor(int h, int length) { return h &amp; (length-1); } 提高效率, 而不是取模.</p>
+</blockquote>
+<ul>
+<li>TreeMap</li>
+</ul>
+<blockquote>
+<p>extends AbstractMap<k,v> implements NavigableMap<k,v> </k,v></k,v></p>
+<p>interface NavigableMap<k,v> extends SortedMap<k,v></k,v></k,v></p>
+<p>interface SortedMap<k,v> extends Map<k,v></k,v></k,v></p>
+<p>红黑树 + Enter 节点</p>
+</blockquote>
+<h5 id="Set-集合-不能重复"><a href="#Set-集合-不能重复" class="headerlink" title="Set 集合(不能重复)"></a>Set 集合(不能重复)</h5><ul>
+<li>HashSet</li>
+</ul>
+<blockquote>
+<p>extends AbstractSet<e> implements Set<e></e></e></p>
+<p>内部基于 HashMap 实现 </p>
+</blockquote>
+<ul>
+<li>TreeSet</li>
+</ul>
+<blockquote>
+<p>extends AbstractSet<e> implements NavigableSet<e> </e></e></p>
+<p>interface NavigableSet<e> extends SortedSet<e></e></e></p>
+<p>interface SortedSet<e> extends Set<e></e></e></p>
+<p>基于 TreeMap 实现</p>
+</blockquote>
 
       
 
