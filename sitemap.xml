@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://fitzeng.org/2017/07/25/JavaTips/</loc>
+    <loc>http://fitzeng.org/2017/08/02/reDS/</loc>
     
-    <lastmod>2017-08-06T05:54:03.000Z</lastmod>
+    <lastmod>2017-08-08T07:17:45.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://fitzeng.org/2017/08/02/reDS/</loc>
+    <loc>http://fitzeng.org/2017/08/07/reOS/</loc>
     
-    <lastmod>2017-08-04T10:56:47.000Z</lastmod>
+    <lastmod>2017-08-07T14:49:26.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fitzeng.org/2017/07/25/JavaTips/</loc>
+    
+    <lastmod>2017-08-06T05:54:03.000Z</lastmod>
     
   </url>
   

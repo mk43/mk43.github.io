@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-08-04T09:21:04.000Z</updated>
+  <updated>2017-08-07T14:49:26.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>重拾操作系统</title>
+    <link href="http://fitzeng.org/2017/08/07/reOS/"/>
+    <id>http://fitzeng.org/2017/08/07/reOS/</id>
+    <published>2017-08-06T16:00:00.000Z</published>
+    <updated>2017-08-07T14:49:26.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+</blockquote>
+<a id="more"></a>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
+    
+      <category term="OS" scheme="http://fitzeng.org/tags/OS/"/>
+    
+  </entry>
   
   <entry>
     <title>Why Marvel ?</title>
@@ -47,7 +72,7 @@
     <link href="http://fitzeng.org/2017/08/02/reDS/"/>
     <id>http://fitzeng.org/2017/08/02/reDS/</id>
     <published>2017-08-01T16:00:00.000Z</published>
-    <updated>2017-08-04T10:56:47.000Z</updated>
+    <updated>2017-08-08T07:17:45.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>在大三到大四过渡期中, 从四月到七月, 经历过几场面试, 找实习. (如果八月份拿到[真.offer]的话我也想把这段经历记录下来) 结果很悲剧, 觉得方向不是什么障碍, 基础比较重, 所以要重拾数据结构不涉及算法具体实现, 因为是重拾, 所以先前有一定基础, 只要有一点提示便能唤醒无限回忆. 这里主要是记录各种数据结构的结构体, 这是经过重重思维过程得出的精华, 十分有价值. 至于具体实现和讲解日后回会以链接形式提供, 这里只提供一个思维树, 建立一个数据机构的思维体系, 后续更新欢迎关注 <a href="https://github.com/mk43/Algo-Math" target="_blank" rel="external">GitHub</a>.</p>
@@ -314,14 +339,47 @@
 <blockquote>
 <p>以迷宫为例子(面试中被问到, 印象比较深刻). 深度优先就是一条路走到黑, 所以返回的第一条路径不保证是最优解. </p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">Boolean visited[MAX];    // 访问标志数组</div><div class="line">Status (* VisiteFunc) (int v);    // 韩阿叔变量</div><div class="line">	</div><div class="line">void DFSTraverse(Graph G, Status (* Visit)(int v)) &#123;    // 深度优先遍历</div><div class="line">	VisitFunc = Visit;    // 使用全局变量 VisitFunc, 使 DFS 不必设置函数指针参数</div><div class="line">	for (v = 0; v &lt; G.vexnum; ++v) &#123;</div><div class="line">		visited[v] = FALSE;    // 访问数组标志初始化</div><div class="line">	&#125;</div><div class="line">	for (v = 0; v &lt; G.vexnum; ++v) &#123;</div><div class="line">		if (!visited[v]) &#123;</div><div class="line">			DFS(G, v);    // 对未访问的顶点调用 DFS</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">	</div><div class="line">void DFS(Graph G, int v) &#123;    // 从第 v 个顶点出发递归的深度优先遍历图 G.</div><div class="line">	visited[v] = TRUE;</div><div class="line">	VisitFunc(v);    // 访问第 v 个顶点</div><div class="line">	for (w = FirstAdjVex(G, v); w &gt;= 0; w = NextAdjVex(G, v, w)) &#123;</div><div class="line">		if (!visited[w]) &#123;</div><div class="line">			DFS(G, w);    // 对 v 的尚未访问的邻接顶点 w 递归调用 DFS.</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">Boolean visited[MAX];    // 访问标志数组</div><div class="line">Status (* VisiteFunc) (int v);    // 函数变量</div><div class="line">	</div><div class="line">void DFSTraverse(Graph G, Status (* Visit)(int v)) &#123;    // 深度优先遍历</div><div class="line">	VisitFunc = Visit;    // 使用全局变量 VisitFunc, 使 DFS 不必设置函数指针参数</div><div class="line">	for (v = 0; v &lt; G.vexnum; ++v) &#123;</div><div class="line">		visited[v] = FALSE;    // 访问数组标志初始化</div><div class="line">	&#125;</div><div class="line">	for (v = 0; v &lt; G.vexnum; ++v) &#123;</div><div class="line">		if (!visited[v]) &#123;</div><div class="line">			DFS(G, v);    // 对未访问的顶点调用 DFS</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">	</div><div class="line">void DFS(Graph G, int v) &#123;    // 从第 v 个顶点出发递归的深度优先遍历图 G.</div><div class="line">	visited[v] = TRUE;</div><div class="line">	VisitFunc(v);    // 访问第 v 个顶点</div><div class="line">	for (w = FirstAdjVex(G, v); w &gt;= 0; w = NextAdjVex(G, v, w)) &#123;</div><div class="line">		if (!visited[w]) &#123;</div><div class="line">			DFS(G, w);    // 对 v 的尚未访问的邻接顶点 w 递归调用 DFS.</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>广度优先搜索</li>
+</ul>
+<blockquote>
+<p>有点层序遍历的意思, 在遍历完所有情况下(可以进行算法优化, 对有些情况进行舍弃)可以得出最优解. </p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">void BFSTraverse(Graph G, Status (* Visit) (int v)) &#123;</div><div class="line">	for (v= 0; v &lt; G.vexnum; ++v) &#123;</div><div class="line">		visited[v] = FALSE;</div><div class="line">	&#125;</div><div class="line">	InitQueue(Q);</div><div class="line">	for (v = 0; v &lt; G.vexnum; ++v) &#123;</div><div class="line">		if (!visited[v]) &#123;</div><div class="line">			visited[v] = TRUE;</div><div class="line">			Visit(v);</div><div class="line">			EnQueue(Q, v);</div><div class="line">			while (!QueueEmpty(Q)) &#123;</div><div class="line">				DeQueue(Q, u);</div><div class="line">				for (w = FirstAdjVex(G, u); w &gt;= 0; w = NextAdjVex(G, u, w)) &#123;</div><div class="line">					// w 为 u 尚未访问的邻接顶点</div><div class="line">					if (!visited[w]) &#123;</div><div class="line">						visited[w] = TRUE;</div><div class="line">						Visit(w);</div><div class="line">						EnQueue(Q, w);</div><div class="line">					&#125; // if</div><div class="line">				&#125; // for</div><div class="line">			&#125; // while</div><div class="line">		&#125; // if</div><div class="line">	&#125; // for</div><div class="line">&#125; // BFSTraverse</div></pre></td></tr></table></figure>
 <p>// 以下待填</p>
 <h5 id="7-3-图的连通性问题"><a href="#7-3-图的连通性问题" class="headerlink" title="7.3 图的连通性问题"></a>7.3 图的连通性问题</h5><ul>
 <li>无向图的连通分量和生成树</li>
 <li>有向图的强连通分量</li>
 </ul>
 <h5 id="7-4-最小生成树"><a href="#7-4-最小生成树" class="headerlink" title="7.4 最小生成树"></a>7.4 最小生成树</h5><ul>
-<li>各种算法</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm" target="_blank" rel="external">Prim 算法 O(n2)</a></p>
+<p><img src="/2017/08/02/reDS/PrimAlgDemo.gif" alt="没图戳 wikipedia 或 fitzeng.org"></p>
+<blockquote>
+<p>以点为主: 主要是分为两个集合, 一个是已加入的节点, 另一个是未加入节点. 在未加入的节点集合中找到一个离已加入集合最近的节点加入. 直至所有节点被加入. </p>
+</blockquote>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm" target="_blank" rel="external">Kruskal 算法 O(eloge)</a></p>
+<p><img src="/2017/08/02/reDS/MST_kruskal_en.gif" alt="没图戳 wikipedia 或 fitzeng.org"></p>
+<blockquote>
+<p>以边为主: 初始条件是把图的所有边去除变成 V 个连通图. 然后每次找一条代价最小的边加入, 确保每加入一条边连通图个数都减少一个(也就是确保无环路)。直至成一个连通图时就是最小生成树.  </p>
+</blockquote>
+</li>
+</ul>
+<h5 id="7-5-最短路径"><a href="#7-5-最短路径" class="headerlink" title="7.5 最短路径"></a>7.5 最短路径</h5><ul>
+<li><p><a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm" target="_blank" rel="external">Dijkstra 算法 O(n3)</a></p>
+<p><img src="/2017/08/02/reDS/Dijkstra_Animation.gif" alt="没图戳 wikipedia 或 fitzeng.org"></p>
+<blockquote>
+<p>主要是维护一个表和一个已加入路径集合, 表记录从原点到每一个点的当前最小权值. 如果已加入路径集合中的点通过某条路径对未加入集合中的点的最小权值有影响则更新该节点权值. 最后在每次更新完成后判断目前未加入集合中的最小权值节点加入集合, 再对该节点的边所达的节点做如上判断. 最终可以求出起点到每一个点的所有最短路径. </p>
+</blockquote>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm" target="_blank" rel="external">Floyd 算法 O(n3)</a></p>
+<blockquote>
+<p>主要是判断经过该点到达的临时目点的权值和该点目前权值(可以不考虑是否已经经过, 但是循环只会扫一遍所以没有什么影响)的大小来判断是否更新权值.</p>
+</blockquote>
+</li>
+<li><p>关键路径和拓扑排序 (KeyWord : 松弛)</p>
+</li>
 </ul>
 <h3 id="8-动态存储管理"><a href="#8-动态存储管理" class="headerlink" title="8 动态存储管理"></a>8 动态存储管理</h3><h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3>]]></content>
     
