@@ -762,7 +762,7 @@
     <link href="http://fitzeng.org/2017/07/08/AndroidBlogCollection/"/>
     <id>http://fitzeng.org/2017/07/08/AndroidBlogCollection/</id>
     <published>2017-07-08T03:27:00.000Z</published>
-    <updated>2017-07-12T13:12:27.000Z</updated>
+    <updated>2017-08-12T13:45:44.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>this repo aims to collect some high quality basic knowledge Android Blog.  Just like source code analysis or something.</p>
@@ -866,7 +866,12 @@
 <ul>
 <li><a href="https://juejin.im/entry/58faca0a1b69e600588cd952" target="_blank" rel="external">Java 的 23 种设计模式全解析</a></li>
 </ul>
-<h2 id="5-Android-常用框架分析"><a href="#5-Android-常用框架分析" class="headerlink" title="5. Android 常用框架分析"></a>5. Android 常用框架分析</h2><h2 id="6-计算机基础"><a href="#6-计算机基础" class="headerlink" title="6. 计算机基础"></a>6. 计算机基础</h2><h3 id="gt-数据库"><a href="#gt-数据库" class="headerlink" title="&gt; 数据库"></a>&gt; 数据库</h3><p><a href="http://blog.jobbole.com/100349/?from=timeline" target="_blank" rel="external">如果有人问你数据库的原理，叫他看这篇文章</a></p>
+<h2 id="5-Android-常用框架分析"><a href="#5-Android-常用框架分析" class="headerlink" title="5. Android 常用框架分析"></a>5. Android 常用框架分析</h2><h2 id="6-Android-从文件到项目的最后一米"><a href="#6-Android-从文件到项目的最后一米" class="headerlink" title="6. Android - 从文件到项目的最后一米"></a>6. Android - 从文件到项目的最后一米</h2><blockquote>
+<p>主要是提供开发过程中的非代码技术性问题的知识介绍和解决方案。</p>
+</blockquote>
+<p><a href="http://blog.csdn.net/ithomer/article/details/8940010" target="_blank" rel="external">Android 项目编译过程</a></p>
+<p><a href="http://blog.csdn.net/t12x3456/article/details/40837287?spm=5176.8246799.blogcont.3.SR0OqB" target="_blank" rel="external">Android 使用android-support-multidex解决Dex超出方法数的限制问题,让你的应用不再爆棚</a></p>
+<h2 id="7-计算机基础"><a href="#7-计算机基础" class="headerlink" title="7. 计算机基础"></a>7. 计算机基础</h2><h3 id="gt-数据库"><a href="#gt-数据库" class="headerlink" title="&gt; 数据库"></a>&gt; 数据库</h3><p><a href="http://blog.jobbole.com/100349/?from=timeline" target="_blank" rel="external">如果有人问你数据库的原理，叫他看这篇文章</a></p>
 <h3 id="gt-网络"><a href="#gt-网络" class="headerlink" title="&gt; 网络"></a>&gt; 网络</h3><h3 id="gt-操作系统"><a href="#gt-操作系统" class="headerlink" title="&gt; 操作系统"></a>&gt; 操作系统</h3>]]></content>
     
     <summary type="html">

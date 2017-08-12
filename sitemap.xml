@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2017/07/08/AndroidBlogCollection/</loc>
+    
+    <lastmod>2017-08-12T13:45:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2017/08/02/reDS/</loc>
     
     <lastmod>2017-08-08T07:17:45.000Z</lastmod>
@@ -54,13 +61,6 @@
     <loc>http://fitzeng.org/2017/06/13/BMP2JPEG/</loc>
     
     <lastmod>2017-07-19T15:35:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fitzeng.org/2017/07/08/AndroidBlogCollection/</loc>
-    
-    <lastmod>2017-07-12T13:12:27.000Z</lastmod>
     
   </url>
   
