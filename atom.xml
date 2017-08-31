@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-08-07T14:49:26.000Z</updated>
+  <updated>2017-08-31T07:15:02.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,15 +20,385 @@
     <link href="http://fitzeng.org/2017/08/07/reOS/"/>
     <id>http://fitzeng.org/2017/08/07/reOS/</id>
     <published>2017-08-06T16:00:00.000Z</published>
-    <updated>2017-08-07T14:49:26.000Z</updated>
+    <updated>2017-08-31T07:15:02.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
+<p>主要是把在重读 《现代操作系统》 中觉得有价值的东西，以 Tips 的形式记录下来。不可能面面俱到，但是如果有一定的基础应该是会回想起很多知识的。具体解释将会以链接形式补充。</p>
 </blockquote>
-<a id="more"></a>]]></content>
+<a id="more"></a>
+<h3 id="1-进程与线程"><a href="#1-进程与线程" class="headerlink" title="1. 进程与线程"></a>1. 进程与线程</h3><h4 id="1-1-进程"><a href="#1-1-进程" class="headerlink" title="1.1 进程"></a>1.1 进程</h4><blockquote>
+<p>主要是为了支持伪并发能力</p>
+</blockquote>
+<p><img src="/2017/08/07/reOS/threadstate.png" alt=""></p>
+<ul>
+<li>运行态 : 实际占用 CPU 资源</li>
+<li>就绪态 : 可运行，但是由于没有时间片而被暂停等待 CPU 重新调度</li>
+<li>阻塞态 : 外部某种事件导致（资源不足）不可运行</li>
+</ul>
+<p><code>CPU 利用率 = 1 - p ^ n</code> <br><br>p : IO 等待时间比 <br><br>n : 进程数</p>
+<h4 id="1-2-线程"><a href="#1-2-线程" class="headerlink" title="1.2 线程"></a>1.2 线程</h4><blockquote>
+<p>每一个进程有一个地址空间和一个控制线程，主要是使某个进程内的任务之间不被相互阻塞，实现一种进程内并行操作的假象。创建销毁更加轻量级。</p>
+<p>共享一组资源，协同完成任务。每个线程有自己的堆栈区（因为要区分同一进程内的线程，CPU 调度要进行状态的保存）</p>
+</blockquote>
+<p><img src="/2017/08/07/reOS/thread.png" alt=""></p>
+<h5 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h5><h6 id="用户空间中实现线程"><a href="#用户空间中实现线程" class="headerlink" title="用户空间中实现线程"></a>用户空间中实现线程</h6><h6 id="内核中实现线程"><a href="#内核中实现线程" class="headerlink" title="内核中实现线程"></a>内核中实现线程</h6><h6 id="混合实现"><a href="#混合实现" class="headerlink" title="混合实现"></a>混合实现</h6><h4 id="1-3-进程间通信（IPC）"><a href="#1-3-进程间通信（IPC）" class="headerlink" title="1.3 进程间通信（IPC）"></a>1.3 进程间通信（IPC）</h4><h5 id="1-竞争条件"><a href="#1-竞争条件" class="headerlink" title="1.竞争条件"></a>1.竞争条件</h5><blockquote>
+<p>两个或者多个进程读写某些共享数据</p>
+</blockquote>
+<h5 id="2-临界区"><a href="#2-临界区" class="headerlink" title="2.临界区"></a>2.临界区</h5><blockquote>
+<p>将共享内存的访问代码称为临界区，确保在每个时刻两个进程不可能同时处于临界区中，这样可以避免竞争条件。核心思想为互斥。</p>
+</blockquote>
+<p>并发程序准确高效要满足一下四个条件</p>
+<ul>
+<li>任何两个进程不能同时处于其临界区</li>
+<li>不应对 CPU 的速度和数量做任何假设</li>
+<li>临界区外运行的程序不得阻塞其他进程</li>
+<li>不得使进程无限期等待进入临界区</li>
+</ul>
+<h5 id="3-忙等待的互斥"><a href="#3-忙等待的互斥" class="headerlink" title="3.忙等待的互斥"></a>3.忙等待的互斥</h5><blockquote>
+<p>互斥实现方案</p>
+</blockquote>
+<h6 id="屏蔽中断"><a href="#屏蔽中断" class="headerlink" title="屏蔽中断"></a>屏蔽中断</h6><blockquote>
+<p>每个进程进入临界区后立即屏蔽所有中断，这样 CPU 无法进行进程切换，就要离开临界区是打开中断。</p>
+</blockquote>
+<h6 id="锁变量"><a href="#锁变量" class="headerlink" title="锁变量"></a>锁变量</h6><blockquote>
+<p>设置一个共享锁变量，初始值为 0。当一个进程想要进入临界区，必须检测锁的值是否为 0，是则置 1 进入临界区。不是则等待其他进程退出临界区时释放锁直到自己能获取到锁开始进入临界区。</p>
+<p>锁变量还是会产生竞争条件</p>
+</blockquote>
+<h6 id="严格轮换法"><a href="#严格轮换法" class="headerlink" title="严格轮换法"></a>严格轮换法</h6><blockquote>
+<p>一直循环等待直到出现允许该进程进入临界区的条件才开始运行，十分消耗 CPU 资源。</p>
+<p>避免了竞争条件，但是临界区外运行的程序会发生阻塞</p>
+<p>用于忙等待的锁称为自旋锁。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">A:</div><div class="line"><span class="keyword">while</span> (TRUE) &#123;</div><div class="line">	<span class="keyword">while</span> (turn != <span class="number">0</span>);</div><div class="line">	critical_region();</div><div class="line">	turn = <span class="number">1</span>;</div><div class="line">	noncritical_region();</div><div class="line">&#125;</div><div class="line"></div><div class="line">B:</div><div class="line"><span class="keyword">while</span> (TRUE) &#123;</div><div class="line">	<span class="keyword">while</span> (turn != <span class="number">1</span>); </div><div class="line">	critical_region();</div><div class="line">	turn = <span class="number">0</span>;</div><div class="line">	noncritical_region();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h6 id="Peterson-解法"><a href="#Peterson-解法" class="headerlink" title="Peterson 解法"></a>Peterson 解法</h6><blockquote>
+<p>一种互斥算法</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FALSE 0</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> TRUE 1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> turn;</div><div class="line"><span class="keyword">int</span> interested[N];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">enter_region</span><span class="params">(<span class="keyword">int</span> process)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> other;</div><div class="line">	other = <span class="number">1</span> - process;</div><div class="line">	interested[process] = TRUE;</div><div class="line">	turn = process;</div><div class="line">	<span class="comment">// 如果有另一个程序进入临界区的话则一直空循环</span></div><div class="line">	<span class="keyword">while</span> (turn == process &amp;&amp; interested[other] == TRUE);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">leave_region</span><span class="params">(<span class="keyword">int</span> process)</span> </span>&#123;</div><div class="line">	interested[process] = FALSE;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="4-睡眠与唤醒"><a href="#4-睡眠与唤醒" class="headerlink" title="4.睡眠与唤醒"></a>4.睡眠与唤醒</h5><blockquote>
+<p>前面的弊端是忙等待会消耗 CPU 资源。如果在等待进入临界区时可以挂起，等到某个信号到达再唤醒就可以避免这种情况了。</p>
+</blockquote>
+<h6 id="生产者-消费者问题"><a href="#生产者-消费者问题" class="headerlink" title="生产者-消费者问题"></a>生产者-消费者问题</h6><blockquote>
+<p>利用资源缓冲区实现进程间的协调</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100 </span></div><div class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">producer</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> item;</div><div class="line">	<span class="keyword">while</span> (TURE) &#123;</div><div class="line">		item = produce_item();</div><div class="line">		<span class="keyword">if</span> (count == N) &#123;</div><div class="line">			sleep();</div><div class="line">		&#125;</div><div class="line">		insert_item(item);</div><div class="line">		count = count + <span class="number">1</span>;</div><div class="line">		<span class="keyword">if</span> (count == <span class="number">1</span>) &#123;</div><div class="line">			wakeup(consumer);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">consumer</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> item;</div><div class="line">	<span class="keyword">while</span> (TURE) &#123;</div><div class="line">		<span class="keyword">if</span> (count == <span class="number">0</span>) &#123;</div><div class="line">			sleep();</div><div class="line">		&#125;</div><div class="line">		item = remove_item();</div><div class="line">		count = count - <span class="number">1</span>;</div><div class="line">		<span class="keyword">if</span> (count == N - <span class="number">1</span>) &#123;</div><div class="line">			wakeup(producer);</div><div class="line">		&#125;</div><div class="line">		consume_item(item);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="5-信号量"><a href="#5-信号量" class="headerlink" title="5.信号量"></a>5.信号量</h5><blockquote>
+<p>引入一个信号量来累计唤醒次数，可以为 0 或正数 <br><br>使用 down 和 up 操作代替 sleep 和 wakeup</p>
+</blockquote>
+<pre><code class="c"><span class="meta">#<span class="meta-keyword">define</span> N 100</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> semaphore
+semaphore mutex = <span class="number">1</span>;  <span class="comment">// 控制对临界区的访问</span>
+semaphore empty = N; <span class="comment">// 计数缓冲区的空槽数目</span>
+semaphore full = <span class="number">0</span>; <span class="comment">// 计数缓冲区的满槽数目</span>
+
+<span class="function"><span class="keyword">void</span> <span class="title">producer</span><span class="params">(<span class="keyword">void</span>)</span> </span>{
+    <span class="keyword">int</span> item;
+    <span class="keyword">while</span> (TRUE) {
+        utem = produce_item();
+        down(&amp;empty);
+        down(&amp;mutex);
+        insert_item(item);
+        up(&amp;mutex);
+        up(&amp;full);
+    }
+}
+
+<span class="function"><span class="keyword">void</span> <span class="title">consumer</span><span class="params">(<span class="keyword">void</span>)</span> </span>{
+    <span class="keyword">int</span> item;
+    <span class="keyword">while</span> (TRUE) {
+        down(&amp;full);
+        down(&amp;mutex);
+        item = remove_item();
+        up(&amp;mutex);
+        up(&amp;empty);
+        consume_item(item);
+    }
+}
+</code></pre>
+<ul>
+<li>mutex : 用于互斥，保证任一时刻只有一个进程读写缓冲区</li>
+<li>full &amp;&amp; empty : 实现同步，保证某种时间的顺序发生或者不发生</li>
+</ul>
+<h5 id="6-互斥量"><a href="#6-互斥量" class="headerlink" title="6.互斥量"></a>6.互斥量</h5><blockquote>
+<p>仅仅适用于管理共享资源或一小段代码</p>
+</blockquote>
+<h5 id="7-管程"><a href="#7-管程" class="headerlink" title="7.管程"></a>7.管程</h5><h5 id="8-消息传递"><a href="#8-消息传递" class="headerlink" title="8.消息传递"></a>8.消息传递</h5><h5 id="9-屏障"><a href="#9-屏障" class="headerlink" title="9.屏障"></a>9.屏障</h5><h5 id="1-4-调度"><a href="#1-4-调度" class="headerlink" title="1.4 调度"></a>1.4 调度</h5><blockquote>
+<p>当有多个进程处于就绪态时就面临调度的选择。<br><br>内核管理线程时调度可以认为是线程级别的。<br><br>进程行为有 <code>计算密集型</code> 和 <code>I/O 密集型</code>。而现在由于 CPU 改进速度加快，进程行为更倾向于后者，所以应该多运行该类进程保持 CPU 的利用率。<br></p>
+</blockquote>
+<h6 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h6><ol>
+<li><p>批处理</p>
+<ul>
+<li>先来先服务</li>
+<li>最短作业优先</li>
+<li>最短剩余时间优先</li>
+</ul>
+</li>
+<li><p>交互式</p>
+<ul>
+<li>轮转调度（每个进程一个时间片，用完就轮转）</li>
+<li>优先级调度</li>
+<li>多级队列</li>
+<li>最短进程优先 （<code>aT0 + (1 - a)T1</code>）</li>
+<li>保证优先</li>
+<li>彩票调度</li>
+<li>公平分享调度</li>
+</ul>
+</li>
+<li><p>实时</p>
+</li>
+</ol>
+<p>线程调度</p>
+<blockquote>
+<p>和系统支持的线程实现方式有关（理解 : 线程表存在哪的区别）<br></p>
+</blockquote>
+<p>用户级线程 : 内核并不知道，内核只是选中该进程，至于进程中跑哪个线程由用户态调度决定。<br><br>内核级线程 : 直接调度某个进程内的线程。<br><br>以上两种方式在性能上有主要差别 : 前面提及 I/O 操作其实是很耗时的，所以在进程间切换比在线程间切换更加耗时。因为线程轻量，而进程完成切换要完整的山下文切换，修改内存映像。而且同一进程内的线程 I/O 访问 cache 的局部性更高，不同进程间切换的清理缓存，这也会消耗时间。</p>
+<h3 id="2-存储管理"><a href="#2-存储管理" class="headerlink" title="2. 存储管理"></a>2. 存储管理</h3><blockquote>
+<p>主要思想就是内存抽象</p>
+</blockquote>
+<h4 id="2-1-空闲内存管理"><a href="#2-1-空闲内存管理" class="headerlink" title="2.1 空闲内存管理"></a>2.1 空闲内存管理</h4><h5 id="使用位图的存储管理"><a href="#使用位图的存储管理" class="headerlink" title="使用位图的存储管理"></a>使用位图的存储管理</h5><h5 id="使用链表的存储管理"><a href="#使用链表的存储管理" class="headerlink" title="使用链表的存储管理"></a>使用链表的存储管理</h5><h4 id="2-2-虚拟内存"><a href="#2-2-虚拟内存" class="headerlink" title="2.2 虚拟内存"></a>2.2 虚拟内存</h4><blockquote>
+<p>程序产生的地址为虚拟地址，在没有虚拟内存的操作系统上，直接将地址输送到内存总线上。而有虚拟内存的操作系统上，把虚拟地址输送到 MMU（Memory Management Unit），由 MMU 将虚拟地址映射为为物理地址。</p>
+</blockquote>
+<h5 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h5><p>虚拟地址空间 : 页面 物理内存地址 : 叶框 4k大小 <br><br>虚拟地址 = 虚拟页号(高位) + 偏移量(低位) <br><br>页表 : 把虚拟地址的页面映射为页框，每个进程都有自己的页表<br></p>
+<p>加速分页方法 : 转换检测缓冲区（TLB）主要是优先在 TLB 中查找页面号。<br></p>
+<p>大内存页表<br></p>
+<ol>
+<li>多级页表</li>
+<li>倒排页表 : 每个页框一个表项 + TLB 快表</li>
+</ol>
+<h4 id="2-3-页面置换算法"><a href="#2-3-页面置换算法" class="headerlink" title="2.3 页面置换算法"></a>2.3 页面置换算法</h4><blockquote>
+<p>最优页面置换算法不可实现，因为无法确定未来。</p>
+</blockquote>
+<h5 id="1-最近未使用页面置换算法-NRU"><a href="#1-最近未使用页面置换算法-NRU" class="headerlink" title="1.最近未使用页面置换算法(NRU)"></a>1.最近未使用页面置换算法(NRU)</h5><blockquote>
+<p>设置访问（读、写）位 R，页面修改位 M。<br></p>
+</blockquote>
+<h5 id="2-先进先出页面置换算法-FIFO"><a href="#2-先进先出页面置换算法-FIFO" class="headerlink" title="2.先进先出页面置换算法(FIFO)"></a>2.先进先出页面置换算法(FIFO)</h5><h5 id="3-第二次机会页面置换算法"><a href="#3-第二次机会页面置换算法" class="headerlink" title="3.第二次机会页面置换算法"></a>3.第二次机会页面置换算法</h5><blockquote>
+<p>设置一个检测最老页面位 R</p>
+</blockquote>
+<h5 id="4-时钟页面置换算法"><a href="#4-时钟页面置换算法" class="headerlink" title="4.时钟页面置换算法"></a>4.时钟页面置换算法</h5><blockquote>
+<p>链表实现页面选择</p>
+</blockquote>
+<h5 id="5-最近最少使用页面置换算法-LRU"><a href="#5-最近最少使用页面置换算法-LRU" class="headerlink" title="5.最近最少使用页面置换算法(LRU)"></a>5.最近最少使用页面置换算法(LRU)</h5><blockquote>
+<p>利用矩阵模拟 : 增加自身权重减少其他权重，行置 1，列置 0。</p>
+</blockquote>
+<h5 id="6-用软件模拟-LRU"><a href="#6-用软件模拟-LRU" class="headerlink" title="6.用软件模拟 LRU"></a>6.用软件模拟 LRU</h5><blockquote>
+<p>老化算法</p>
+</blockquote>
+<h5 id="7-工作集页面置换算法"><a href="#7-工作集页面置换算法" class="headerlink" title="7.工作集页面置换算法"></a>7.工作集页面置换算法</h5><h5 id="8-工作集时钟页面置换算法"><a href="#8-工作集时钟页面置换算法" class="headerlink" title="8.工作集时钟页面置换算法"></a>8.工作集时钟页面置换算法</h5><table>
+<thead>
+<tr>
+<th style="text-align:center">算法</th>
+<th style="text-align:center">注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">最优算法</td>
+<td style="text-align:center">不可实现，但可作为基准</td>
+</tr>
+<tr>
+<td style="text-align:center">NRU(最近未使用)算法</td>
+<td style="text-align:center">LRU 的很粗糙近似</td>
+</tr>
+<tr>
+<td style="text-align:center">FIFO(先进先出)算法</td>
+<td style="text-align:center">可能抛弃重要页面</td>
+</tr>
+<tr>
+<td style="text-align:center">第二次机会算法</td>
+<td style="text-align:center">比 FIFO 有大的改善</td>
+</tr>
+<tr>
+<td style="text-align:center">时钟算法</td>
+<td style="text-align:center">现实的</td>
+</tr>
+<tr>
+<td style="text-align:center">LRU(最近最少使用)算法</td>
+<td style="text-align:center">很优秀，但很难实现</td>
+</tr>
+<tr>
+<td style="text-align:center">NFU(最不经常使用)算法</td>
+<td style="text-align:center">LRU 的相对粗略的近似</td>
+</tr>
+<tr>
+<td style="text-align:center">老化算法</td>
+<td style="text-align:center">非常近似 LRU 的有效算法</td>
+</tr>
+<tr>
+<td style="text-align:center">工作集算法</td>
+<td style="text-align:center">实现起来开销很大</td>
+</tr>
+<tr>
+<td style="text-align:center">工作集时钟算法</td>
+<td style="text-align:center">好的有效算法</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-4-内存映射文件"><a href="#2-4-内存映射文件" class="headerlink" title="2.4 内存映射文件"></a>2.4 内存映射文件</h4><blockquote>
+<p>进程发起系统调用，把文件映射到其虚拟地址空间的一部分。一般实现是开始不加载，在程序访问时在按页加载。</p>
+</blockquote>
+<p>// Linux 待填</p>
+<h4 id="2-5-实现"><a href="#2-5-实现" class="headerlink" title="2.5 实现"></a>2.5 实现</h4><h5 id="分页工作"><a href="#分页工作" class="headerlink" title="分页工作"></a>分页工作</h5><ul>
+<li>进程创建时 : 操作系统要确定程序和数据在初始时有多大，并为它们创建一个页表，操作系统还要在内存中为页表分配空间并对其进行初始化。<br></li>
+<li>进程运行时 : 页表必须在内存中(反之不需要)，并且在磁盘交换区中分配空间。<br></li>
+<li>调度一个进程执行时 : 为新进程充值 MMU，刷新 TLB，更换页表。<br></li>
+<li>缺页中断发生时 : 操作系统必须通过读硬件寄存器确定是哪个虚拟地址造成了缺页中断通过该信息计算需要哪个页面，定位磁盘位置并找到合适的页框来存放新页面，必要的话要置换老页面，然后把所需页面读入页框。最后，备份程序计数器，是程序计数器指向引起缺页中断的指令，并重新执行该指令。<br></li>
+<li>进程退出时 : 释放页表，页面和页面在硬盘上占的空间。</li>
+</ul>
+<h5 id="缺页中断处理"><a href="#缺页中断处理" class="headerlink" title="缺页中断处理"></a>缺页中断处理</h5><ol>
+<li>硬件陷入内核，在堆栈中保存程序计数器。大多数机器将当前的指令的各种状态信息保存在特殊的 CPU 寄存器中。</li>
+<li>启动一个汇编代码例程保存通用寄存器和其他易失信息，以免被操作系统破坏。这个例程将操作系统做为一个函数来调用。</li>
+<li>当操作系统发现一个缺页中断时，尝试发现需要哪个虚拟页面。通常一个硬件寄存器包含了这一信息，如果没有的话，操作系统必须检索程序计数器，取出这条指令，用软件分析这条指令，看看他在缺页中断时正在做什么。</li>
+<li>一旦知道了发生缺页中断的虚拟地址，操作系统检查这个地址是否有效，并检查存取与保护是否一致，如果不一致，向进程发出一个信号或杀掉该进程。如果地址有效且没有保护错误发生，系统则检查是否有空闲页框。如果没有空闲页框，执行页面置换算法寻找一个页面来淘汰。</li>
+<li>如果选择的页框“脏”了，安排该页面写回磁盘，并发生一次上下文切换，挂起产生缺页中断的进程，让其他进程运行直至磁盘传输结束。无论如何，该页框被标记为忙，以免因为其他原因而被其他进程占用。</li>
+<li>一旦页框“干净”后（无论是立刻还是在写回磁盘后），操作系统查找所需页面在磁盘上的地址，通过磁盘操作将其装入。该页面被装入后，产生缺页中断的进程仍然被挂起，并且如果有其他可运行用户进程，则选择另一个用户进程运行。</li>
+<li>当磁盘中断发生时，表明该页已被装入，页表已经更新可以反映他的位置，页框也被标记为正常状态。</li>
+<li>恢复发生缺页中断指令以前的状态，程序计数器重新定向这条指令。</li>
+<li>调度引发缺页中断的进程，操作系统返回调用他的汇编语言例程。</li>
+<li>该例程恢复寄存器和其他状态信息，放回到用户空间继续执行，就好像缺页中断没有发生过一样。</li>
+</ol>
+<h4 id="2-6-分段"><a href="#2-6-分段" class="headerlink" title="2.6 分段"></a>2.6 分段</h4><blockquote>
+<p>段是逻辑实体，大小不固定。</p>
+</blockquote>
+<h4 id="2-7-分段和分页结合-MULTICS"><a href="#2-7-分段和分页结合-MULTICS" class="headerlink" title="2.7 分段和分页结合 : MULTICS"></a>2.7 分段和分页结合 : MULTICS</h4><blockquote>
+<p>还有 Intel Pentuium 未介绍</p>
+</blockquote>
+<p>34 位的 MULTICS 虚拟地址</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">段号</th>
+<th style="text-align:center">页号</th>
+<th style="text-align:center">页内偏移</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">18</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">10</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>根据段号找到段描述符</li>
+<li>检查该段的页表是否存在内存中。如果在，则找到他；如果不再，则产生一个段错误。如果访问违反了段的保护要求就要求发出一个越界错误(陷阱)。</li>
+<li>检查所请求虚拟页面的页表项，如果该页面不再内存中则产生一个缺页中断，如果在内存就从页表中取出这个页面在内存中的起始地址。</li>
+<li>把偏移量加到页面的起始地址上，得到要访问的字在内存中的地址。</li>
+<li>最后进行读或写操作。</li>
+</ol>
+<h3 id="3-文件系统"><a href="#3-文件系统" class="headerlink" title="3. 文件系统"></a>3. 文件系统</h3><blockquote>
+<p>文件系统存放在磁盘上。多数磁盘划分为一个或多个分区，每个分区中有一个独立的文件系统。磁盘的 0 号盘扇区称为主引导记录(Master Boot Record, MBR)，用来引导计算机。在 MBR 的结尾是分区表，该表给出了每个分区的其实和结束地址。表中的一个分区被标记为活动分区。在计算机被引导时，BIOS 读入并执行 MBR。MBR 做的第一件事是确定活动分区，读入它的第一个块，称为引导块，并执行。</p>
+</blockquote>
+<p>整个分区: </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">MBR</th>
+<th style="text-align:center">分区表</th>
+<th style="text-align:center">磁盘分区</th>
+<th style="text-align:center">磁盘分区</th>
+<th style="text-align:center">磁盘分区…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>磁盘分区: </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">引导块</th>
+<th style="text-align:center">超级块</th>
+<th style="text-align:center">空闲空间管理</th>
+<th style="text-align:center">i 节点</th>
+<th style="text-align:center">根目录</th>
+<th style="text-align:center">文件和目录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-1-文件实现"><a href="#3-1-文件实现" class="headerlink" title="3.1 文件实现"></a>3.1 文件实现</h4><h5 id="连续分配"><a href="#连续分配" class="headerlink" title="连续分配"></a>连续分配</h5><blockquote>
+<p>把每个文件作为一连串连续数据块存储在磁盘上。</p>
+</blockquote>
+<h5 id="链表分配"><a href="#链表分配" class="headerlink" title="链表分配"></a>链表分配</h5><blockquote>
+<p>一个文件由几个磁盘块组成。</p>
+</blockquote>
+<h5 id="在内存中采用表的链表分配"><a href="#在内存中采用表的链表分配" class="headerlink" title="在内存中采用表的链表分配"></a>在内存中采用表的链表分配</h5><blockquote>
+<p>把每个磁盘块的指针字放在内存的一个表中</p>
+</blockquote>
+<h5 id="i-节点"><a href="#i-节点" class="headerlink" title="i 节点"></a>i 节点</h5><blockquote>
+<p>每个文件赋予一个称为 i 节点(index-node)的数据结构，列出文件属性和文件快的磁盘地址。</p>
+</blockquote>
+<h3 id="4-输入-输出"><a href="#4-输入-输出" class="headerlink" title="4. 输入/输出"></a>4. 输入/输出</h3><h5 id="4-1-I-O-硬件原理"><a href="#4-1-I-O-硬件原理" class="headerlink" title="4.1 I/O 硬件原理"></a>4.1 I/O 硬件原理</h5><h6 id="I-O-设备"><a href="#I-O-设备" class="headerlink" title="I/O 设备"></a>I/O 设备</h6><p>块设备 : 以块为单位传输，可寻址<br><br>字符设备 : 以字符为单位收发字符流，不可寻址<br></p>
+<h6 id="设备控制器"><a href="#设备控制器" class="headerlink" title="设备控制器"></a>设备控制器</h6><h6 id="内存映射-I-O"><a href="#内存映射-I-O" class="headerlink" title="内存映射 I/O"></a>内存映射 I/O</h6><h6 id="直接存储器存取"><a href="#直接存储器存取" class="headerlink" title="直接存储器存取"></a>直接存储器存取</h6><p>DMA 工作原理:</p>
+<ol>
+<li>CPU 对 DMA 控制器进行编程</li>
+<li>DMA 请求磁盘传送数据到内存</li>
+<li>磁盘传送数据到内存</li>
+<li>磁盘给 DMA 控制器应答</li>
+<li>完成中断</li>
+</ol>
+<h3 id="5-死锁"><a href="#5-死锁" class="headerlink" title="5. 死锁"></a>5. 死锁</h3><h4 id="5-1-资源"><a href="#5-1-资源" class="headerlink" title="5.1 资源"></a>5.1 资源</h4><blockquote>
+<p>在进程对设备，文件等取得了排他性访问权限的时候，有可能会出现死锁。这类需要排他性使用的对象称为资源。</p>
+</blockquote>
+<h5 id="可抢占资源"><a href="#可抢占资源" class="headerlink" title="可抢占资源"></a>可抢占资源</h5><blockquote>
+<p>可以从拥有它的进程中抢占而不会产生任何副作用。（存储器）</p>
+</blockquote>
+<h5 id="不可抢占资源"><a href="#不可抢占资源" class="headerlink" title="不可抢占资源"></a>不可抢占资源</h5><blockquote>
+<p>指在不引起相关的计算失败的情况下，无法把他从占有它的进程处抢占过来。（ CD 刻录）</p>
+</blockquote>
+<p>资源使用步骤:</p>
+<ol>
+<li>请求资源</li>
+<li>使用资源</li>
+<li>释放资源</li>
+</ol>
+<h4 id="5-2-死锁概述"><a href="#5-2-死锁概述" class="headerlink" title="5.2 死锁概述"></a>5.2 死锁概述</h4><blockquote>
+<p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么，该进程集合就是死锁的。</p>
+</blockquote>
+<h5 id="资源死锁条件"><a href="#资源死锁条件" class="headerlink" title="资源死锁条件"></a>资源死锁条件</h5><p>发生资源死锁的四个必要条件:</p>
+<ol>
+<li>互斥条件 : 每个资源要么已经分配了一个进程，要么就是可用的。</li>
+<li>占有和等待条件 : 已经得到了某个资源的进程可以再请求新的资源。</li>
+<li>不可抢占条件 : 已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显示地释放。</li>
+<li>环路等待条件 : 死锁发生时，系统中一定有两个或两个以上的进程组成的一条环路，该环路中的每个进程都在等待着下一个进程所占有的资源。</li>
+</ol>
+<h4 id="5-3-死锁检测与死锁恢复"><a href="#5-3-死锁检测与死锁恢复" class="headerlink" title="5.3 死锁检测与死锁恢复"></a>5.3 死锁检测与死锁恢复</h4><blockquote>
+<p>死锁检测主要是判断当前空闲资源在某种合理分配下是否能使所有进程都运行完并且最终资源都能够释放。</p>
+</blockquote>
+<p>恢复方法 : </p>
+<ol>
+<li>利用抢占式恢复</li>
+<li>利用回滚恢复</li>
+<li>利用杀死进程恢复</li>
+</ol>
+<h4 id="5-4-死锁避免"><a href="#5-4-死锁避免" class="headerlink" title="5.4 死锁避免"></a>5.4 死锁避免</h4><h5 id="资源轨迹图"><a href="#资源轨迹图" class="headerlink" title="资源轨迹图"></a>资源轨迹图</h5><h5 id="安全状态和不安全状态"><a href="#安全状态和不安全状态" class="headerlink" title="安全状态和不安全状态"></a>安全状态和不安全状态</h5><h5 id="单个资源的银行家算法"><a href="#单个资源的银行家算法" class="headerlink" title="单个资源的银行家算法"></a>单个资源的银行家算法</h5><h5 id="多个资源的银行家算法"><a href="#多个资源的银行家算法" class="headerlink" title="多个资源的银行家算法"></a>多个资源的银行家算法</h5><h4 id="5-5-死锁预防"><a href="#5-5-死锁预防" class="headerlink" title="5.5 死锁预防"></a>5.5 死锁预防</h4><blockquote>
+<p>死锁避免从本质上来说是不可能的，因为他要获取未来的信息。</p>
+</blockquote>
+<h5 id="破坏互斥条件"><a href="#破坏互斥条件" class="headerlink" title="破坏互斥条件"></a>破坏互斥条件</h5><blockquote>
+<p>如果资源不被一个进程独占死锁不会发生。（假脱机打印机）</p>
+</blockquote>
+<h5 id="破坏占有和等待条件"><a href="#破坏占有和等待条件" class="headerlink" title="破坏占有和等待条件"></a>破坏占有和等待条件</h5><blockquote>
+<p>开始执行前请求所有资源就不会造成等待。另一种是请求资源时先释放自己所持有的资源，再尝试一次请求资源。</p>
+</blockquote>
+<h5 id="破坏不可抢占条件"><a href="#破坏不可抢占条件" class="headerlink" title="破坏不可抢占条件"></a>破坏不可抢占条件</h5><blockquote>
+<p>针对某些资源进行虚拟化，实现可抢占。</p>
+</blockquote>
+<h5 id="破坏环路等待条件"><a href="#破坏环路等待条件" class="headerlink" title="破坏环路等待条件"></a>破坏环路等待条件</h5><blockquote>
+<p>保证每个进程在任何时刻只能占用一个资源如果要请求另外一个资源它必须先释放第一个资源。另一种是将所有资源统一编号，进程可以在任何时刻提出资源请求，但是请求必须按照资源编号顺序(升序)提出。</p>
+</blockquote>
+<h4 id="5-6-其他问题"><a href="#5-6-其他问题" class="headerlink" title="5.6 其他问题"></a>5.6 其他问题</h4><h5 id="两阶段加锁"><a href="#两阶段加锁" class="headerlink" title="两阶段加锁"></a>两阶段加锁</h5><h5 id="通讯死锁"><a href="#通讯死锁" class="headerlink" title="通讯死锁"></a>通讯死锁</h5><h5 id="活锁"><a href="#活锁" class="headerlink" title="活锁"></a>活锁</h5><h5 id="饥饿"><a href="#饥饿" class="headerlink" title="饥饿"></a>饥饿</h5>]]></content>
     
     <summary type="html">
     
       &lt;blockquote&gt;
+&lt;p&gt;主要是把在重读 《现代操作系统》 中觉得有价值的东西，以 Tips 的形式记录下来。不可能面面俱到，但是如果有一定的基础应该是会回想起很多知识的。具体解释将会以链接形式补充。&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
