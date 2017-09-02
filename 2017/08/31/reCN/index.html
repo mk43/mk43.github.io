@@ -6,22 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>JavaTips | Fitzeng</title>
+  <title>重拾计算机网络 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
-<meta name="keywords" content="Java,Tips">
+  <meta name="description" content="主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。">
+<meta name="keywords" content="计算机网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaTips">
-<meta property="og:url" content="http://fitzeng.org/2017/07/25/JavaTips/index.html">
+<meta property="og:title" content="重拾计算机网络">
+<meta property="og:url" content="http://fitzeng.org/2017/08/31/reCN/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
-<meta property="og:image" content="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG">
-<meta property="og:image" content="http://fitzeng.org/2017/07/25/JavaTips/collection.jpg">
-<meta property="og:updated_time" content="2017-08-06T05:54:03.000Z">
+<meta property="og:description" content="主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。">
+<meta property="og:image" content="http://fitzeng.org/2017/08/31/reCN/osi7.png">
+<meta property="og:updated_time" content="2017-09-02T01:48:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaTips">
-<meta name="twitter:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
-<meta name="twitter:image" content="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG">
+<meta name="twitter:title" content="重拾计算机网络">
+<meta name="twitter:description" content="主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。">
+<meta name="twitter:image" content="http://fitzeng.org/2017/08/31/reCN/osi7.png">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -145,20 +144,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JavaTips" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-reCN" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      JavaTips
+      重拾计算机网络
     </h1>
   
 
         
-        <a href="/2017/07/25/JavaTips/" class="archive-article-date">
-  	<time datetime="2017-07-25T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-25</time>
+        <a href="/2017/08/31/reCN/" class="archive-article-date">
+  	<time datetime="2017-08-30T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-31</time>
 </a>
         
       </header>
@@ -166,157 +165,73 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析. </p>
-<p>主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.</p>
+<p>主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。</p>
 </blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>基本类型<ul>
-<li>== 和 equals</li>
-<li>String, StringBuffer 和 StringBuilder</li>
-<li>Array</li>
-<li>ArrayList</li>
-<li>LinkedList</li>
-<li>Exception</li>
-<li>Collction</li>
-</ul>
-</li>
-</ul>
 <a id="more"></a>
-<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="和-equals"><a href="#和-equals" class="headerlink" title="== 和 equals"></a>== 和 equals</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer a = <span class="number">100</span>;</div><div class="line">Integer b = <span class="number">100</span>;</div><div class="line">System.out.println(a == b);</div><div class="line"></div><div class="line">Integer c = <span class="number">1000</span>;</div><div class="line">Integer d = <span class="number">1000</span>;</div><div class="line">System.out.println(c == d);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
+<h2 id="1-计算机网络基础概念"><a href="#1-计算机网络基础概念" class="headerlink" title="1. 计算机网络基础概念"></a>1. 计算机网络基础概念</h2><blockquote>
+<p>一些互相连接的、自治的计算机的集合。</p>
+</blockquote>
+<h3 id="1-1-网络分类"><a href="#1-1-网络分类" class="headerlink" title="1.1 网络分类"></a>1.1 网络分类</h3><h4 id="不同作用范围的网络"><a href="#不同作用范围的网络" class="headerlink" title="不同作用范围的网络"></a>不同作用范围的网络</h4><ol>
+<li>广域网 WAN (Wide Area Network)</li>
+<li>城域网 MAN (Metropolitan Area Network)</li>
+<li>局域网 LAN (Local Area Network)</li>
+<li>个人区域网 PAN (Personal Area Network)</li>
+</ol>
+<h4 id="不同使用者的网络"><a href="#不同使用者的网络" class="headerlink" title="不同使用者的网络"></a>不同使用者的网络</h4><ol>
+<li>公用网 (public network)</li>
+<li>专用网 (private network)</li>
+</ol>
+<h4 id="用来把用户接入到因特网的网络"><a href="#用来把用户接入到因特网的网络" class="headerlink" title="用来把用户接入到因特网的网络"></a>用来把用户接入到因特网的网络</h4><ol>
+<li>接入网 AN (Access Network)</li>
+</ol>
+<h3 id="1-2-计算机网络的性能指标"><a href="#1-2-计算机网络的性能指标" class="headerlink" title="1.2 计算机网络的性能指标"></a>1.2 计算机网络的性能指标</h3><h4 id="速率-bit-s"><a href="#速率-bit-s" class="headerlink" title="速率 (bit/s)"></a>速率 (bit/s)</h4><h4 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h4><ol>
+<li>信号具有的频带宽度 (xxxHZ)</li>
+<li>在计算机网络中，从来表示通讯线路所能传送数据的能力。因此网络中的带宽表示在单位时间内ongoing 网络中的某一点到另一点所能通过的<code>最高数据率</code>。单位是比特每秒(b/s)</li>
+</ol>
+<h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><blockquote>
+<p>单位时间通过某个网络(或信道、接口)的数据量</p>
+</blockquote>
+<h4 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h4><blockquote>
+<p>数据从网络的一端发送到另一端所需的时间</p>
+</blockquote>
+<p><code>总延时 = 发送时延 + 传播时延 + 处理时延 + 排队时延</code></p>
+<p>发送时延(传输时延)</p>
 <blockquote>
-<p>其中 == 结果不一致是因为 Integer 类对在 -128 到 127 之间的数值进行了缓存. </p>
+<p>发送数据帧的时间</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer e = new Integer(100);</div><div class="line">Integer f = new Integer(100);</div><div class="line">System.out.println(e == f);</div><div class="line"></div><div class="line">Output:</div><div class="line">false</div></pre></td></tr></table></figure>
+<p><code>发送时延 = 数据帧长度(b) / 信道带宽(b/s)</code></p>
+<p>传播时延</p>
 <blockquote>
-<p><code>Integer a = 100;</code>涉及到自动装箱问题, 反编译之后就是 <code>Integer a = Integer.valueOf(100);</code>.<br>而<code>Integer e = new Integer(100);</code> 反编译不改变. 所以在 a 和 e 这两个对象引用的堆区域一个是通过<code>valueOf()</code>获得, 另一个是通过<code>new</code>获得. 毫无疑问 <code>new</code> 出来的肯定不会是同一块区域. 而 <code>valueOf()</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">&gt; 	<span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</div><div class="line">&gt; 		<span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</div><div class="line">&gt; 	<span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</div><div class="line">&gt; &#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>这里就解释了前面的<code>Integer 类对在 -128 到 127 之间的数值进行了缓存</code>. 详情见源码.</p>
+<p>电磁波在信道中传播一定距离花费的时间</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">String s1 = <span class="string">"1234"</span>;</div><div class="line">String s2 = <span class="string">"1234"</span>;</div><div class="line">System.out.println(s1 == s2);</div><div class="line"></div><div class="line">String s3 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">String s4 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">System.out.println(s3 == s4);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<p>这个比较简单, 就是在 JVM 中存在常量池. 还有要注意的是两种初始化方式的不同才造成了这个差异. </p>
-<p>下面分析 equals ,详情见参考.这里只提几点易混淆的地方.</p>
+<p><code>传播时延 = 信道长度(m) / 电磁波在信道上的传播速率(m/s)</code></p>
+<p>处理时延</p>
 <blockquote>
-<p>equals 是属于类方法, 而且是 Object 类的. 而 Object 类的实现就是判断引用是否相等.</p>
-<p>而对于某个类来说判断相等一般是判断里面的某些成员变量是否相等. 所以就要重写父类方法.这里要区分重写和重载.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; 重写:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;&#125;</div><div class="line">&gt; 重载:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(MyObject myObj)</span> </span>&#123;&#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>所以要想实现自己想要的 equals 方法应该是重写.</p>
-<p>其实这里面的主要内容就是了解了自动拆装箱和 JVM 内分配就不难了.</p>
-<ul>
-<li>第一类：整型 byte Byte | short Short | int Integer | long Long</li>
-<li>第二类：浮点型 float Float | double Double</li>
-<li>第三类：逻辑型 boolean Boolean</li>
-<li>第四类：字符型 char Character</li>
-</ul>
-<p>在支持 equals 特性的时候, 往往还要支持 hashCode </p>
+<p>主机或路由器在收到分组时要花费一定时间处理。</p>
 </blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27562748" target="_blank" rel="external">让人疑惑的Java代码</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27570687" target="_blank" rel="external">Java字符串那些事儿</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27573287" target="_blank" rel="external">说说Java里的equals（上）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27657548" target="_blank" rel="external">Java自动装箱/拆箱</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27741179" target="_blank" rel="external">说说Java里的equals（中）</a></li>
-</ul>
-<h4 id="String-StringBuffer-和-StringBuilder"><a href="#String-StringBuffer-和-StringBuilder" class="headerlink" title="String, StringBuffer 和 StringBuilder"></a>String, StringBuffer 和 StringBuilder</h4><ul>
-<li>String</li>
-</ul>
+<p>排队时延</p>
 <blockquote>
-<p>final 类.</p>
-<p>String s=”sss”;    会在静态常量池中查找</p>
-<p>String s = new String(“sss”);    直接在堆中开辟内存</p>
-<p>使用场合: 在字符串不经常变化的场景中可以使用 String 类, 如: 常量的声明, 少量的变量运算等</p>
+<p>在路由器中输入队列中排队等待的时间<br>sw</p>
+<h4 id="时延带宽积"><a href="#时延带宽积" class="headerlink" title="时延带宽积"></a>时延带宽积</h4><p>以比特为单位的链路长度(可以理解为 <code>体积 = 截面 * 长度</code>)</p>
 </blockquote>
-<ul>
-<li>StringBuffer</li>
-</ul>
+<p><code>时延带宽积 = 传播时延 * 带宽</code></p>
+<h4 id="往返时间-RTT-Round-Trip-Time"><a href="#往返时间-RTT-Round-Trip-Time" class="headerlink" title="往返时间 RTT (Round-Trip Time)"></a>往返时间 RTT (Round-Trip Time)</h4><blockquote>
+<p>从发送方发送数据开始到发送方接收到来自接收方的确认总共经历的时间。</p>
+</blockquote>
+<h4 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h4><p>信道利用率</p>
 <blockquote>
-<p>线程安全, 可自身修改</p>
-<p>必须通过构造函数初始化</p>
-<p>使用场合: 在频繁进行字符串的运算(拼接, 替换, 删除等), 并且运行在多线程的环境中, 则可以考虑使用 StringBuffer, 例如 XML 解析, HTTP 参数解析和封装等</p>
+<p>某信道有百分之几的时间是被利用的</p>
 </blockquote>
-<ul>
-<li>StringBuilder</li>
-</ul>
+<p>网络利用率</p>
 <blockquote>
-<p>线程不安全, 操作最快</p>
-<p>使用场合: 和 StringBuffer 类似的不要求线程安全场景, 效率比 StringBuffer 高</p>
+<p>D0 : 网络空闲时的时延 D : 当前网络的时延 U : 利用率</p>
 </blockquote>
-<h4 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h4><blockquote>
-<p>是一个在 JVM 中的特殊对象, 可以使用反射查看</p>
-<p>拷贝时注意深拷贝还是浅拷贝</p>
+<p><code>D = D0 / (1 - U)</code></p>
+<h3 id="1-3-计算机网络的体系结构"><a href="#1-3-计算机网络的体系结构" class="headerlink" title="1.3 计算机网络的体系结构"></a>1.3 计算机网络的体系结构</h3><blockquote>
+<p>每层的具体介绍后面章节给出</p>
 </blockquote>
-<h4 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h4><blockquote>
-<p>首先要知道的是这是一个 Array 所以在进行修改操作时十分不方便的. 特别是增加或者删除元素, 扩大存储等方式相比链表结构来说麻烦太多.知道这个为出发点, 对于源码实现的理解就理所当然了.<br>应该了解的几个点</p>
-<ul>
-<li>在 ArrayList 中从有元素开始就会分配 10 的对象大小容量. 接下来以 <code>currentSize * 1.5</code> 的大小扩容.</li>
-<li>对于修改空间是以 System.arraycopy() 形式修改的. 为了提高效率采用的是 native 方法.</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src, </span></span></div><div class="line">&gt; 		<span class="keyword">int</span>  srcPos, Object dest, <span class="keyword">int</span> destPos, <span class="keyword">int</span> length);</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>详情源码分析见参考.</p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27873515" target="_blank" rel="external">ArrayList初探</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27878015" target="_blank" rel="external">再探ArrayList（ArrayList的扩容）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27938717" target="_blank" rel="external">三顾ArrayList</a></li>
-</ul>
-<h4 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h4><blockquote>
-<p>实现方式是双向链表</p>
-</blockquote>
-<h4 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h4><p><img src="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG" alt=""></p>
-<ul>
-<li>尽可能的减小try块</li>
-<li>保证所有资源都被正确释放, 充分运用finally关键词</li>
-<li>catch语句应当尽量指定具体的异常类型, 而不应该指定涵盖范围太广的 Exception 类. 不要一个Exception试图处理所有可能出现的异常</li>
-<li>既然捕获了异常, 就要对它进行适当的处理</li>
-<li>在异常处理模块中提供适量的错误原因信息, 组织错误信息使其易于理解和阅读</li>
-<li>不要在 finally 块中处理返回值</li>
-<li>不要在构造函数中抛出异常</li>
-</ul>
-<p>参考: </p>
-<ul>
-<li><a href="http://www.cnblogs.com/chenssy/category/525010.html" target="_blank" rel="external">树上月</a></li>
-</ul>
-<h4 id="Collction"><a href="#Collction" class="headerlink" title="Collction"></a>Collction</h4><p><img src="/2017/07/25/JavaTips/collection.jpg" alt=""></p>
-<h5 id="List-列表-可重复"><a href="#List-列表-可重复" class="headerlink" title="List 列表(可重复)"></a>List 列表(可重复)</h5><ul>
-<li>ArrayList (数组)</li>
-<li>LinkedList (链表)</li>
-</ul>
-<h5 id="Map-映射-key-value"><a href="#Map-映射-key-value" class="headerlink" title="Map 映射(key-value)"></a>Map 映射(key-value)</h5><ul>
-<li>HashMap</li>
-</ul>
-<blockquote>
-<p>extends AbstractMap<k,v> implements Map<k,v></k,v></k,v></p>
-<p>table 数组 + Enter 节点</p>
-<p>默认初始容量(16) 默认加载因子(0.75)</p>
-<p>查找采用 static int indexFor(int h, int length) { return h &amp; (length-1); } 提高效率, 而不是取模.</p>
-</blockquote>
-<ul>
-<li>TreeMap</li>
-</ul>
-<blockquote>
-<p>extends AbstractMap<k,v> implements NavigableMap<k,v> </k,v></k,v></p>
-<p>interface NavigableMap<k,v> extends SortedMap<k,v></k,v></k,v></p>
-<p>interface SortedMap<k,v> extends Map<k,v></k,v></k,v></p>
-<p>红黑树 + Enter 节点</p>
-</blockquote>
-<h5 id="Set-集合-不能重复"><a href="#Set-集合-不能重复" class="headerlink" title="Set 集合(不能重复)"></a>Set 集合(不能重复)</h5><ul>
-<li>HashSet</li>
-</ul>
-<blockquote>
-<p>extends AbstractSet<e> implements Set<e></e></e></p>
-<p>内部基于 HashMap 实现 </p>
-</blockquote>
-<ul>
-<li>TreeSet</li>
-</ul>
-<blockquote>
-<p>extends AbstractSet<e> implements NavigableSet<e> </e></e></p>
-<p>interface NavigableSet<e> extends SortedSet<e></e></e></p>
-<p>interface SortedSet<e> extends Set<e></e></e></p>
-<p>基于 TreeMap 实现</p>
-</blockquote>
-
+<p><img src="/2017/08/31/reCN/osi7.png" alt=""></p>
+<h2 id="2-物理层"><a href="#2-物理层" class="headerlink" title="2. 物理层"></a>2. 物理层</h2>
       
 
       
@@ -329,11 +244,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tips</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">计算机网络</a>
         		</li>
       		
 		</ul>
@@ -389,7 +300,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/07/25/JavaTips/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/08/31/reCN/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -403,18 +314,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/07/31/robolectric/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Android 单元测试工具 Robolectric 中文文档
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/07/17/AlgoAndMath/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">leetcode 算法集锦</div>
+    <a href="/2017/08/07/reOS/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">重拾操作系统</div>
       <i class="icon-circle-right"></i>
     </a>
   

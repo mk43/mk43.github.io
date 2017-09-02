@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-08-31T07:15:02.000Z</updated>
+  <updated>2017-09-02T01:48:24.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,95 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>重拾计算机网络</title>
+    <link href="http://fitzeng.org/2017/08/31/reCN/"/>
+    <id>http://fitzeng.org/2017/08/31/reCN/</id>
+    <published>2017-08-30T16:00:00.000Z</published>
+    <updated>2017-09-02T01:48:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-计算机网络基础概念"><a href="#1-计算机网络基础概念" class="headerlink" title="1. 计算机网络基础概念"></a>1. 计算机网络基础概念</h2><blockquote>
+<p>一些互相连接的、自治的计算机的集合。</p>
+</blockquote>
+<h3 id="1-1-网络分类"><a href="#1-1-网络分类" class="headerlink" title="1.1 网络分类"></a>1.1 网络分类</h3><h4 id="不同作用范围的网络"><a href="#不同作用范围的网络" class="headerlink" title="不同作用范围的网络"></a>不同作用范围的网络</h4><ol>
+<li>广域网 WAN (Wide Area Network)</li>
+<li>城域网 MAN (Metropolitan Area Network)</li>
+<li>局域网 LAN (Local Area Network)</li>
+<li>个人区域网 PAN (Personal Area Network)</li>
+</ol>
+<h4 id="不同使用者的网络"><a href="#不同使用者的网络" class="headerlink" title="不同使用者的网络"></a>不同使用者的网络</h4><ol>
+<li>公用网 (public network)</li>
+<li>专用网 (private network)</li>
+</ol>
+<h4 id="用来把用户接入到因特网的网络"><a href="#用来把用户接入到因特网的网络" class="headerlink" title="用来把用户接入到因特网的网络"></a>用来把用户接入到因特网的网络</h4><ol>
+<li>接入网 AN (Access Network)</li>
+</ol>
+<h3 id="1-2-计算机网络的性能指标"><a href="#1-2-计算机网络的性能指标" class="headerlink" title="1.2 计算机网络的性能指标"></a>1.2 计算机网络的性能指标</h3><h4 id="速率-bit-s"><a href="#速率-bit-s" class="headerlink" title="速率 (bit/s)"></a>速率 (bit/s)</h4><h4 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h4><ol>
+<li>信号具有的频带宽度 (xxxHZ)</li>
+<li>在计算机网络中，从来表示通讯线路所能传送数据的能力。因此网络中的带宽表示在单位时间内ongoing 网络中的某一点到另一点所能通过的<code>最高数据率</code>。单位是比特每秒(b/s)</li>
+</ol>
+<h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><blockquote>
+<p>单位时间通过某个网络(或信道、接口)的数据量</p>
+</blockquote>
+<h4 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h4><blockquote>
+<p>数据从网络的一端发送到另一端所需的时间</p>
+</blockquote>
+<p><code>总延时 = 发送时延 + 传播时延 + 处理时延 + 排队时延</code></p>
+<p>发送时延(传输时延)</p>
+<blockquote>
+<p>发送数据帧的时间</p>
+</blockquote>
+<p><code>发送时延 = 数据帧长度(b) / 信道带宽(b/s)</code></p>
+<p>传播时延</p>
+<blockquote>
+<p>电磁波在信道中传播一定距离花费的时间</p>
+</blockquote>
+<p><code>传播时延 = 信道长度(m) / 电磁波在信道上的传播速率(m/s)</code></p>
+<p>处理时延</p>
+<blockquote>
+<p>主机或路由器在收到分组时要花费一定时间处理。</p>
+</blockquote>
+<p>排队时延</p>
+<blockquote>
+<p>在路由器中输入队列中排队等待的时间<br>sw</p>
+<h4 id="时延带宽积"><a href="#时延带宽积" class="headerlink" title="时延带宽积"></a>时延带宽积</h4><p>以比特为单位的链路长度(可以理解为 <code>体积 = 截面 * 长度</code>)</p>
+</blockquote>
+<p><code>时延带宽积 = 传播时延 * 带宽</code></p>
+<h4 id="往返时间-RTT-Round-Trip-Time"><a href="#往返时间-RTT-Round-Trip-Time" class="headerlink" title="往返时间 RTT (Round-Trip Time)"></a>往返时间 RTT (Round-Trip Time)</h4><blockquote>
+<p>从发送方发送数据开始到发送方接收到来自接收方的确认总共经历的时间。</p>
+</blockquote>
+<h4 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h4><p>信道利用率</p>
+<blockquote>
+<p>某信道有百分之几的时间是被利用的</p>
+</blockquote>
+<p>网络利用率</p>
+<blockquote>
+<p>D0 : 网络空闲时的时延 D : 当前网络的时延 U : 利用率</p>
+</blockquote>
+<p><code>D = D0 / (1 - U)</code></p>
+<h3 id="1-3-计算机网络的体系结构"><a href="#1-3-计算机网络的体系结构" class="headerlink" title="1.3 计算机网络的体系结构"></a>1.3 计算机网络的体系结构</h3><blockquote>
+<p>每层的具体介绍后面章节给出</p>
+</blockquote>
+<p><img src="/2017/08/31/reCN/osi7.png" alt=""></p>
+<h2 id="2-物理层"><a href="#2-物理层" class="headerlink" title="2. 物理层"></a>2. 物理层</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="计算机网络" scheme="http://fitzeng.org/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
   
   <entry>
     <title>重拾操作系统</title>
@@ -2351,88 +2440,6 @@ semaphore full = <span class="number">0</span>; <span class="comment">// 计数�
 &lt;h3 id=&quot;实现效果&quot;&gt;&lt;a href=&quot;#实现效果&quot; class=&quot;headerlink&quot; title=&quot;实现效果&quot;&gt;&lt;/a&gt;实现效果&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;TabLayout + ViewPager（GIF）&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/2017/04/07/TabLayout/TabLayoutAndViewPager.gif&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://fitzeng.org/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>复现ANR</title>
-    <link href="http://fitzeng.org/2017/04/07/RecurrentANR/"/>
-    <id>http://fitzeng.org/2017/04/07/RecurrentANR/</id>
-    <published>2017-04-07T02:00:00.000Z</published>
-    <updated>2017-07-01T10:11:53.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="https://github.com/mk43/BaiduAcademy" target="_blank" rel="external">GitHub</a></p>
-<h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><p>写出不少于3种常见ANR错误的Android代码</p>
-<hr>
-<ul>
-<li>主线程复现ANR</li>
-<li>BroadcastReceiver复现ANR</li>
-<li>Service复现ANR</li>
-</ul>
-<h3 id="1-什么是ANR"><a href="#1-什么是ANR" class="headerlink" title="1.什么是ANR?"></a>1.什么是ANR?</h3><hr>
-<p>ANR(Application Not Responding),应用程序无响应. 参考<a href="https://blog.saymagic.tech/2014/03/25/anr-analyze.html" target="_blank" rel="external">ANR完全解析</a></p>
-<a id="more"></a>
-<h3 id="2-ANR的三种类型"><a href="#2-ANR的三种类型" class="headerlink" title="2.ANR的三种类型"></a>2.ANR的三种类型</h3><hr>
-<ul>
-<li>KeyDispatchTimeout(5 seconds) 主要类型按键或触摸事件在特定时间内无响应</li>
-<li>BroadcastTimeout(10 seconds) BroadcastReceiver在特定时间内无法处理完成</li>
-<li>ServiceTimeout(20 seconds) 小概率类型 Service在特定的时间内无法处理完成</li>
-</ul>
-<h3 id="3-复现ANR"><a href="#3-复现ANR" class="headerlink" title="3.复现ANR"></a>3.复现ANR</h3><h4 id="I-主线程复现ANR"><a href="#I-主线程复现ANR" class="headerlink" title="I 主线程复现ANR"></a>I 主线程复现ANR</h4><hr>
-<ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Recurrent ANR in main Thread</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mainThreadANR</span><span class="params">()</span> </span>&#123;</div><div class="line">    Looper myLooper = Looper.myLooper();</div><div class="line">    Looper mainLooper = Looper.getMainLooper();</div><div class="line">    Log.i(<span class="string">"MainThreadANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Thread.sleep(<span class="number">20</span> * <span class="number">1000</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    Log.i(<span class="string">"MainThreadANR"</span>, <span class="string">"mainThreadANR() Done"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>结果</li>
-</ul>
-<p><img src="/2017/04/07/RecurrentANR/ANR.png" alt=""></p>
-<h4 id="II-BroadcastReceiver复现ANR"><a href="#II-BroadcastReceiver复现ANR" class="headerlink" title="II BroadcastReceiver复现ANR"></a>II BroadcastReceiver复现ANR</h4><ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastANR</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">        Looper myLooper = Looper.myLooper();</div><div class="line">        Looper mainLooper = Looper.getMainLooper();</div><div class="line">        Log.i(<span class="string">"BroadcastANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Thread.sleep(<span class="number">80</span> * <span class="number">1000</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="III-Service复现ANR"><a href="#III-Service复现ANR" class="headerlink" title="III Service复现ANR"></a>III Service复现ANR</h4><ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceANR</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">        Looper myLooper = Looper.myLooper();</div><div class="line">        Looper mainLooper = Looper.getMainLooper();</div><div class="line">        Log.i(<span class="string">"ServiceANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Thread.sleep(<span class="number">60</span> * <span class="number">1000</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Nullable</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="4-避免ANR"><a href="#4-避免ANR" class="headerlink" title="4.避免ANR"></a>4.避免ANR</h3><p>要想避免ANR，首先要分析为什么会发生ANR，主要是在一些不能耗时操作的函数中处理代码的时间过长，所以把耗时长的程序写入其他子进程中就可以避免。<a href="https://duanqz.github.io/2015-10-12-ANR-Analysis#service" target="_blank" rel="external">ANR机制以及问题分析</a>写的很详细。</p>
-<p><img src="/2017/04/07/RecurrentANR/ReANR.png" alt=""></p>
-<p>首先我们看看Log</p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">MainThreadANR: </div><div class="line">I/MainThreadANR: myLooper=Looper (main, tid 1) &#123;13467e36&#125;;   mainLooper=Looper (main, tid 1) &#123;13467e36&#125;</div><div class="line"></div><div class="line">BroadcastANR:</div><div class="line">I/BroadcastANR: myLooper=Looper (main, tid 1) &#123;33c6137&#125;;   mainLooper=Looper (main, tid 1) &#123;33c6137&#125;</div><div class="line"></div><div class="line">ServiceANR:</div><div class="line">I/ServiceANR: myLooper=Looper (main, tid 1) &#123;303e756a&#125;;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div></pre></td></tr></table></figure>
-<p>前面的三个ANR都有一个特点，那就是当前的线程都是主线程，细心点会发现其实还有一句丢帧Log打印</p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Skipped 1204 frames!  The application may be doing too much work on its main thread.</div></pre></td></tr></table></figure>
-<p>我实现下通过在主线程中创建一个新线程的方法来避免ANR</p>
-<ul>
-<li>代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Deal ANR in main Thread</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mainThreadNotANR</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            Looper myLooper = Looper.myLooper();</div><div class="line">            Looper mainLooper = Looper.getMainLooper();</div><div class="line">            Log.i(<span class="string">"MainThreadNotANR"</span>, <span class="string">"myLooper="</span> + myLooper + <span class="string">";   mainLooper="</span> + mainLooper);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Thread.sleep(<span class="number">20</span> * <span class="number">1000</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            Log.i(<span class="string">"MainThreadNotANR"</span>, <span class="string">"Thread Run() Done"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;).start();</div><div class="line">    Log.i(<span class="string">"MainThreadNotANR"</span>, <span class="string">"mainThreadNotANR() Done"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面我们来对比下和主线程中直接处理的Log有什么不同</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">MainThreadNotANR:</div><div class="line">点击按钮MainThreadNotANR</div><div class="line">I/MainThreadNotANR: mainThreadNotANR() Done</div><div class="line">I/MainThreadNotANR: myLooper=null;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div><div class="line">I/MainThreadNotANR: ThreadRun() Done</div><div class="line">W/art: Suspending all threads took: 6.032ms</div><div class="line"></div><div class="line">MainThreadANR:</div><div class="line">点击按钮MainThreadANR</div><div class="line">I/MainThreadANR: myLooper=Looper (main, tid 1) &#123;303e756a&#125;;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div><div class="line">I/MainThreadANR: mainThreadANR() Done</div><div class="line">再多次点击按钮MainThreadANR</div><div class="line">I/Choreographer: Skipped 1200 frames!  The application may be doing too much work on its main thread.</div><div class="line">I/MainThreadANR: myLooper=Looper (main, tid 1) &#123;303e756a&#125;;   mainLooper=Looper (main, tid 1) &#123;303e756a&#125;</div><div class="line">I/art: Thread[5,tid=2037,WaitingInMainSignalCatcherLoop,Thread*=0xef70d400,peer=0x12c00080,&quot;Signal Catcher&quot;]: reacting to signal 3</div><div class="line">I/art: Wrote stack traces to &apos;/data/anr/traces.txt&apos;</div></pre></td></tr></table></figure>
-<p>从Log中可以看出MainThreadNotANR中先打印mainThreadNotANR() Done后打印ThreadRun() Done说明代码没在MainThreadNotANR这个线程中运行，从myLooper=null;   mainLooper=Looper (main, tid 1) {303e756a}可以验证我们的猜想。<br>而MainThreadANR中就很明显，各种丢帧奔溃。不过I/art: Wrote stack traces to ‘/data/anr/traces.txt’告诉我们可以在/data/anr/traces.txt中追踪奔溃的缘由<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">traces.txt</div><div class="line"></div><div class="line">DALVIK THREADS (18):</div><div class="line">&quot;main&quot; prio=5 tid=1 Sleeping</div><div class="line">  | group=&quot;main&quot; sCount=1 dsCount=0 obj=0x73581970 self=0xf4306800</div><div class="line">  | sysTid=2030 nice=0 cgrp=apps sched=0/0 handle=0xf7761160</div><div class="line">  | state=S schedstat=( 545706267 72336573 314 ) utm=30 stm=23 core=3 HZ=100</div><div class="line">  | stack=0xff7c7000-0xff7c9000 stackSize=8MB</div><div class="line">  | held mutexes=</div><div class="line">  at java.lang.Thread.sleep!(Native method)</div><div class="line">  - sleeping on &lt;0x2ce90c0d&gt; (a java.lang.Object)</div><div class="line">  at java.lang.Thread.sleep(Thread.java:1031)</div><div class="line">  - locked &lt;0x2ce90c0d&gt; (a java.lang.Object)</div><div class="line">  at java.lang.Thread.sleep(Thread.java:985)</div><div class="line">  at org.fitzeng.recurrentanr.MainActivity.mainThreadANR(MainActivity.java:47)</div><div class="line">  at org.fitzeng.recurrentanr.MainActivity.onClick(MainActivity.java:81)</div><div class="line">  at android.view.View.performClick(View.java:4756)</div><div class="line">  at android.view.View$PerformClick.run(View.java:19749)</div><div class="line">  at android.os.Handler.handleCallback(Handler.java:739)</div><div class="line">  at android.os.Handler.dispatchMessage(Handler.java:95)</div><div class="line">  at android.os.Looper.loop(Looper.java:135)</div><div class="line">  at android.app.ActivityThread.main(ActivityThread.java:5221)</div><div class="line">  at java.lang.reflect.Method.invoke!(Native method)</div><div class="line">  at java.lang.reflect.Method.invoke(Method.java:372)</div><div class="line">  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:899)</div><div class="line">  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)</div></pre></td></tr></table></figure></p>
-<p>这是定位ANR的有效手段。</p>
-<p>Tips: 作为一个Android小白，自然有很多不知道不理解的地方。如果文中有错或者有哪些值得改进的地方，欢迎大家提意见，我很开心能和大家一起交流学习，共同进步。</p>
-<p>多谢阅读</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;a href=&quot;https://github.com/mk43/BaiduAcademy&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;任务描述&quot;&gt;&lt;a href=&quot;#任务描述&quot; class=&quot;headerlink&quot; title=&quot;任务描述&quot;&gt;&lt;/a&gt;任务描述&lt;/h3&gt;&lt;p&gt;写出不少于3种常见ANR错误的Android代码&lt;/p&gt;
-&lt;hr&gt;
-&lt;ul&gt;
-&lt;li&gt;主线程复现ANR&lt;/li&gt;
-&lt;li&gt;BroadcastReceiver复现ANR&lt;/li&gt;
-&lt;li&gt;Service复现ANR&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;1-什么是ANR&quot;&gt;&lt;a href=&quot;#1-什么是ANR&quot; class=&quot;headerlink&quot; title=&quot;1.什么是ANR?&quot;&gt;&lt;/a&gt;1.什么是ANR?&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;ANR(Application Not Responding),应用程序无响应. 参考&lt;a href=&quot;https://blog.saymagic.tech/2014/03/25/anr-analyze.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ANR完全解析&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
