@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-09-06T05:33:42.000Z</updated>
+  <updated>2017-09-06T05:36:37.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://fitzeng.org/2017/09/06/pptAndDev/"/>
     <id>http://fitzeng.org/2017/09/06/pptAndDev/</id>
     <published>2017-09-06T03:27:00.000Z</published>
-    <updated>2017-09-06T05:33:42.000Z</updated>
+    <updated>2017-09-06T05:36:37.000Z</updated>
     
-    <content type="html"><![CDATA[<a id="more"></a>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前段时间，我写了一篇<a href="https://juejin.im/post/59ad4cd56fb9a02477075780" target="_blank" rel="external">《重读 JVM》</a>，<br>在文章下有人评论里面的图是怎么做的，下面是我给的回复：<br><img src="/2017/09/06/pptAndDev/comment.png" alt=""><br>然后想到自己在阅读其他大神些的 Blog 时，下面也有一批人在问作图工具什么的。然后我就想把自己的小技巧分享出来，如有雷同，纯属巧合。</p>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前段时间，我写了一篇<a href="https://juejin.im/post/59ad4cd56fb9a02477075780" target="_blank" rel="external">《重读 JVM》</a>，<br>在文章下有人评论里面的图是怎么做的，下面是我给的回复：<br><img src="/2017/09/06/pptAndDev/comment.png" alt=""><br>然后想到自己在阅读其他大神些的 Blog 时，下面也有一批人在问作图工具什么的。然后我就想把自己的小技巧分享出来，如有雷同，纯属巧合。</p>
+<a id="more"></a>
 <h2 id="WHY-IS-PPT"><a href="#WHY-IS-PPT" class="headerlink" title="WHY IS PPT"></a>WHY IS PPT</h2><p>作为一个有点轻微洁癖的程序员，装的软件相同功能的基本不会超过两个。所以不想为写 Blog 画图而再装一个软件，再说并不是每篇 Blog 都要画图，但是要画图的 Blog 一画就是十几张，整理起来很不方便。所以我想到了 PPT，分页存储。其实在这之前我用 PPT 的很大一原因是写简历，之前简历是用 Word 做的，苦不堪言，而且版本保存很恶心。。。文件乱的很，所以想到用 PPT，没想到特别好用。下面开始介绍一下我的实操。</p>
 <h2 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h2><h3 id="简历篇"><a href="#简历篇" class="headerlink" title="简历篇"></a>简历篇</h3><ul>
 <li>第一步：创建 A4 大小的幻灯片</li>
@@ -52,8 +52,7 @@
     
     <summary type="html">
     
-      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;前段时间，我写了一篇&lt;a href=&quot;https://juejin.im/post/59ad4cd56f
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;前段时间，我写了一篇&lt;a href=&quot;https://juejin.im/post/59ad4cd56fb9a02477075780&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《重读 JVM》&lt;/a&gt;，&lt;br&gt;在文章下有人评论里面的图是怎么做的，下面是我给的回复：&lt;br&gt;&lt;img src=&quot;/2017/09/06/pptAndDev/comment.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;然后想到自己在阅读其他大神些的 Blog 时，下面也有一批人在问作图工具什么的。然后我就想把自己的小技巧分享出来，如有雷同，纯属巧合。&lt;/p&gt;
     
     </summary>
     
