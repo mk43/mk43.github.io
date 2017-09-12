@@ -17,7 +17,7 @@
 <meta property="og:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
 <meta property="og:image" content="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG">
 <meta property="og:image" content="http://fitzeng.org/2017/07/25/JavaTips/collection.jpg">
-<meta property="og:updated_time" content="2017-08-06T05:54:03.000Z">
+<meta property="og:updated_time" content="2017-09-10T01:08:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaTips">
 <meta name="twitter:description" content="这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析.  主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.  目录 基本类型 == 和 equals String, StringBuffer 和 StringBuilder Array ArrayList LinkedList Exception Coll">
@@ -180,6 +180,10 @@
 <li>Collction</li>
 </ul>
 </li>
+<li>基本概念<ul>
+<li>类变量和局部变量</li>
+</ul>
+</li>
 </ul>
 <a id="more"></a>
 <h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="和-equals"><a href="#和-equals" class="headerlink" title="== 和 equals"></a>== 和 equals</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer a = <span class="number">100</span>;</div><div class="line">Integer b = <span class="number">100</span>;</div><div class="line">System.out.println(a == b);</div><div class="line"></div><div class="line">Integer c = <span class="number">1000</span>;</div><div class="line">Integer d = <span class="number">1000</span>;</div><div class="line">System.out.println(c == d);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
@@ -316,6 +320,8 @@
 <p>interface SortedSet<e> extends Set<e></e></e></p>
 <p>基于 TreeMap 实现</p>
 </blockquote>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h4 id="类变量和局部变量"><a href="#类变量和局部变量" class="headerlink" title="类变量和局部变量"></a>类变量和局部变量</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> a;</div><div class="line">	System.out.println(a);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>类变量：准备阶段、初始化阶段都可赋值。<br>局部变量：准备阶段不能检测，初始化阶段未初始化不能使用。</p>
 
       
 
@@ -611,11 +617,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
             
             <div class="clearfix"></div>
