@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-09-19T11:34:54.000Z</updated>
+  <updated>2017-09-19T11:39:25.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,10 +20,13 @@
     <link href="http://fitzeng.org/2017/09/19/reAndroid/"/>
     <id>http://fitzeng.org/2017/09/19/reAndroid/</id>
     <published>2017-09-19T03:27:00.000Z</published>
-    <updated>2017-09-19T11:34:54.000Z</updated>
+    <updated>2017-09-19T11:39:25.000Z</updated>
     
-    <content type="html"><![CDATA[<a id="more"></a>
-<h4 id="1-1-Activity-生命周期"><a href="#1-1-Activity-生命周期" class="headerlink" title="1.1 Activity 生命周期"></a>1.1 Activity 生命周期</h4><p>状态：<code>running</code> <code>paused</code> <code>stopped</code> <code>killed</code></p>
+    <content type="html"><![CDATA[<h2 id="Android-基础"><a href="#Android-基础" class="headerlink" title="Android 基础"></a>Android 基础</h2><blockquote>
+<p>Android 基础知识整理。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="1-Activity"><a href="#1-Activity" class="headerlink" title="1. Activity"></a>1. Activity</h3><h4 id="1-1-Activity-生命周期"><a href="#1-1-Activity-生命周期" class="headerlink" title="1.1 Activity 生命周期"></a>1.1 Activity 生命周期</h4><p>状态：<code>running</code> <code>paused</code> <code>stopped</code> <code>killed</code></p>
 <p>启动：onCreate() -&gt; onStart() -&gt; onResume()</p>
 <p>点击 Home ：-&gt; onPause() -&gt; onStop()</p>
 <p>重现：-&gt; onRestart() -&gt; onStart() -&gt; onResume()</p>
@@ -33,7 +36,7 @@
 <p>singleTop：栈顶复用模式(栈顶检测)</p>
 <p>singleTask：栈内复用模式(栈内检测)</p>
 <p>singleInstance：单实例模式(独立的任务栈)</p>
-<h4 id="1-3-Activity-启动模式"><a href="#1-3-Activity-启动模式" class="headerlink" title="1.3 Activity 启动模式"></a>1.3 Activity 启动模式</h4><h4 id="1-4-Scheme-跳转协议"><a href="#1-4-Scheme-跳转协议" class="headerlink" title="1.4 Scheme 跳转协议"></a>1.4 Scheme 跳转协议</h4><h4 id="1-5-参考"><a href="#1-5-参考" class="headerlink" title="1.5 参考"></a>1.5 参考</h4><h2 id="2-Fragment"><a href="#2-Fragment" class="headerlink" title="2. Fragment"></a>2. Fragment</h2><h4 id="2-1-生命周期"><a href="#2-1-生命周期" class="headerlink" title="2.1 生命周期"></a>2.1 生命周期</h4><p>Create: 准备视图</p>
+<h4 id="1-3-Activity-启动模式"><a href="#1-3-Activity-启动模式" class="headerlink" title="1.3 Activity 启动模式"></a>1.3 Activity 启动模式</h4><h4 id="1-4-Scheme-跳转协议"><a href="#1-4-Scheme-跳转协议" class="headerlink" title="1.4 Scheme 跳转协议"></a>1.4 Scheme 跳转协议</h4><h4 id="1-5-参考"><a href="#1-5-参考" class="headerlink" title="1.5 参考"></a>1.5 参考</h4><h3 id="2-Fragment"><a href="#2-Fragment" class="headerlink" title="2. Fragment"></a>2. Fragment</h3><h4 id="2-1-生命周期"><a href="#2-1-生命周期" class="headerlink" title="2.1 生命周期"></a>2.1 生命周期</h4><p>Create: 准备视图</p>
 <p><code>onAttach</code>: Fragment 与 Activity 关联</p>
 <p><code>onCreate</code>: 创建 Fragment 对象</p>
 <p><code>onCreateView</code>: 创建视图</p>
@@ -78,13 +81,14 @@
 <h4 id="2-5参考"><a href="#2-5参考" class="headerlink" title="2.5参考"></a>2.5参考</h4><ol>
 <li><a href="http://blog.csdn.net/android_tutor/article/details/5772285" target="_blank" rel="external">Android_Tutor : 两分钟彻底让你明白Android Activity生命周期(图文)!</a></li>
 </ol>
-<h2 id="3-Service"><a href="#3-Service" class="headerlink" title="3. Service"></a>3. Service</h2><h4 id="3-1-Service-和-Thread"><a href="#3-1-Service-和-Thread" class="headerlink" title="3.1 Service 和 Thread"></a>3.1 Service 和 Thread</h4><p>Service: 依托于所在的线程并且在后台运行，不可做耗时操作，否则会 ANR。<br>Thread: 主要是出处理耗时操作。</p>
-<h2 id="4-BroadCast-Receiver"><a href="#4-BroadCast-Receiver" class="headerlink" title="4. BroadCast Receiver"></a>4. BroadCast Receiver</h2>]]></content>
+<h3 id="3-Service"><a href="#3-Service" class="headerlink" title="3. Service"></a>3. Service</h3><h4 id="3-1-Service-和-Thread"><a href="#3-1-Service-和-Thread" class="headerlink" title="3.1 Service 和 Thread"></a>3.1 Service 和 Thread</h4><p>Service: 依托于所在的线程并且在后台运行，不可做耗时操作，否则会 ANR。<br>Thread: 主要是出处理耗时操作。</p>
+<h3 id="4-BroadCast-Receiver"><a href="#4-BroadCast-Receiver" class="headerlink" title="4. BroadCast Receiver"></a>4. BroadCast Receiver</h3>]]></content>
     
     <summary type="html">
     
-      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h4 id=&quot;1-1-Activity-生命周期&quot;&gt;&lt;a href=&quot;#1-1-Activity-生命周期&quot; class=&quot;headerlink&quot; title=&quot;1.1 Activity 生命周期&quot;&gt;&lt;/a&gt;1.1 Activity 生命周期
+      &lt;h2 id=&quot;Android-基础&quot;&gt;&lt;a href=&quot;#Android-基础&quot; class=&quot;headerlink&quot; title=&quot;Android 基础&quot;&gt;&lt;/a&gt;Android 基础&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Android 基础知识整理。&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
