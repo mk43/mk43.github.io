@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2017-11-04T04:55:09.000Z</updated>
+  <updated>2017-11-04T04:57:37.000Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
     <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
     <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T04:55:09.000Z</updated>
+    <updated>2017-11-04T04:57:37.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
 <p>作为一个想要入门云计算的人来说，大多数人的第一步就是学习 openstack，而学习 openstack 的人面临的第一步就是第一个‘难题’，使用自动化部署工具 devstack 部署 openstack 环境。第一次接触这个东西，花了两天多时间在 Ubuntu Server 和 Ubuntu Desktop 的 16.04 版本上成功部署。有很多人说 Desktop 版有很多坑，亲测问题确实比 Server 版多，但都是可解决的。其中最对初学者不友好的就是网络问题，下面会介绍为什么。所以如果你自己买了国外的 VPS 那就好办了，因为有个骚操作要用到，如果你网速好可能你遇不到这些问题就可以忽略。</p>
@@ -62,7 +62,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo scp -P 10800 -r root@xx.xx.xx.xx:/fitzeng/horizon /etc/stack/</div></pre></td></tr></table></figure>
 <p>-r 是 cp 文件夹，然后端口，IP 填你自己的后面跟目录。这里可能也有点慢，但是比之前的好而且稳定。</p>
 <p><img src="/2017/11/04/deployOpenstackByDevstack/nova.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/cirros.png" alt=""><br>这一切操作都源于友好的 log 机制，看上面的图片我们可以知道下载地址和存放目录，所以，知道这些手段就多了起来。<br>网速够快也可以直接在本地 clone。<br><img src="/2017/11/04/deployOpenstackByDevstack/nova2.png" alt=""></p>
-<p>有了这些操作基本就意味着你解决了网络问题，借助 google 基本可以解决其他库和环境的问题。<br>成功图上传一波：<br><img src="/2017/11/04/deployOpenstackByDevstack/finish1.png" alt=""></p>
+<p>有了这些操作基本就意味着你解决了网络问题，借助 google 基本可以解决其他库和环境的问题。<br>成功图上传一波：<br><img src="/2017/11/04/deployOpenstackByDevstack/finish.png" alt=""></p>
 <h2 id="2-Ubuntu-Desktop-版"><a href="#2-Ubuntu-Desktop-版" class="headerlink" title="2.Ubuntu Desktop 版"></a>2.Ubuntu Desktop 版</h2><p>基本步骤是和前面一致的，出的问题可能就是你之前在 Ubuntu 上装过各种软件(我装的 Sogou 输入法，里面的 fcitx 源影响了速度，甚至有时候直接卡这不动)，更改了软件源或者做过其它的工具更改，按照前面的配置亲测可行。如果你之前在 Ubuntu Server 版上装过，直接把文件 SCP 过来，如果虚拟机之间不能通讯，可以先 SCP 到宿主机，再从宿主机通过文件共享的方式共享到 Ubuntu Desktop。<br>然后运行就可以了，有了前面的基础就很简单了。</p>
 <p>那就看直接看结果吧：<br><img src="/2017/11/04/deployOpenstackByDevstack/d1.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/d2.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/d3.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/d4.png" alt=""></p>
 <h2 id="3-后记"><a href="#3-后记" class="headerlink" title="3.后记"></a>3.后记</h2><p>说实话，这不太算技术文章，纯属个人记录。本来不太想写，但是感觉国内环境对开发者有点不友好，如果这篇文章能对初学者有部分帮助我就满意了，能够使初学者继续学习下去。然后这是部署完之后写的，部署的过程远不如写的这么轻松，但是我现在有信心去解决部署过程中碰到的问题，这才是重点。希望你也是。每个人的环境都不一样，出现的问题也不可能一样，所以如果你照上面做了还没有解决可以留言大家一起讨论。</p>
