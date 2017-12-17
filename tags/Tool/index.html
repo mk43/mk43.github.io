@@ -6,21 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>自定义滑动删除列表 | Fitzeng</title>
+  <title>Tag: Tool | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="GitHub 任务描述 实现一个可以滑动删除的ListView列表，列表中的每一行可以通过从左向右滑动显示出删除按钮，点击该按钮之后删除该行 实现效果">
-<meta name="keywords" content="Android">
-<meta property="og:type" content="article">
-<meta property="og:title" content="自定义滑动删除列表">
-<meta property="og:url" content="http://fitzeng.org/2017/04/07/SlideDeleteList/index.html">
+  <meta name="description" content="hey, everyone">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fitzeng">
+<meta property="og:url" content="http://fitzeng.org/tags/Tool/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="GitHub 任务描述 实现一个可以滑动删除的ListView列表，列表中的每一行可以通过从左向右滑动显示出删除按钮，点击该按钮之后删除该行 实现效果">
-<meta property="og:image" content="http://fitzeng.org/2017/04/07/SlideDeleteList/slideDeleteListDemo.gif">
-<meta property="og:updated_time" content="2017-07-01T10:12:02.000Z">
+<meta property="og:description" content="hey, everyone">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自定义滑动删除列表">
-<meta name="twitter:description" content="GitHub 任务描述 实现一个可以滑动删除的ListView列表，列表中的每一行可以通过从左向右滑动显示出删除按钮，点击该按钮之后删除该行 实现效果">
-<meta name="twitter:image" content="http://fitzeng.org/2017/04/07/SlideDeleteList/slideDeleteListDemo.gif">
+<meta name="twitter:title" content="Fitzeng">
+<meta name="twitter:description" content="hey, everyone">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -144,202 +140,68 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-SlideDeleteList" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      自定义滑动删除列表
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/12/16/GitNote/" class="archive-article-date">
+  	<time datetime="2017-12-16T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-16</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/12/16/GitNote/">GitNote</a>
     </h1>
   
 
-        
-        <a href="/2017/04/07/SlideDeleteList/" class="archive-article-date">
-  	<time datetime="2017-04-07T03:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/mk43/BaiduAcademy" target="_blank" rel="external">GitHub</a></p>
-<h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><hr>
-<p>实现一个可以滑动删除的ListView列表，列表中的每一行可以通过从左向右滑动显示出删除按钮，点击该按钮之后删除该行</p>
-<h3 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h3><hr>
-<p><img src="/2017/04/07/SlideDeleteList/slideDeleteListDemo.gif" alt=""></p>
-<a id="more"></a>
-<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><hr>
-<p>最开始还是要设计layout，这决定着你的代码写法。</p>
-<ul>
-<li>layout<ul>
-<li>activity_listview</li>
-<li>listitem</li>
-<li>content_view</li>
-<li>menu_view</li>
-</ul>
-</li>
-</ul>
-<p>我们可以把每一个Item设为一个布局控件，也就是listitem</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">merge</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"60dp"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/content"</span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> &gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/menu"</span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> &gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">merge</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>接着分别连个布局设置content和menu</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">content_view</div><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textView"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"@string/init_text"</span></div><div class="line">        <span class="attr">android:textAppearance</span>=<span class="string">"?android:attr/textAppearanceLarge"</span></div><div class="line">        <span class="attr">android:gravity</span>=<span class="string">"center_vertical"</span></div><div class="line">        <span class="attr">android:layout_marginLeft</span>=<span class="string">"20dp"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div><div class="line"></div><div class="line">menu_view</div><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/delete"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"@string/delete"</span></div><div class="line">        <span class="attr">android:textAllCaps</span>=<span class="string">"false"</span></div><div class="line">        <span class="attr">android:textAppearance</span>=<span class="string">"?android:attr/textAppearanceLarge"</span></div><div class="line">        <span class="attr">android:background</span>=<span class="string">"@color/colorAccent"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> /&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>接下来就很清楚了。利用listview添加控件listitem作为适配器的布局。</p>
-<ul>
-<li>ViewHolder缓存加载</li>
-</ul>
-<p>避免重复加载控件，采用缓存机制是比较合理的<br>下面我们看看adapter的getView()</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</div><div class="line"></div><div class="line">    ViewHolder holder;</div><div class="line">    SlideItemView slideItemView = (SlideItemView) convertView;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (convertView == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// get content and menu view</span></div><div class="line">        View contentView = inflater.inflate(R.layout.content_view, <span class="keyword">null</span>);</div><div class="line">        View menuView = inflater.inflate(R.layout.menu_view, <span class="keyword">null</span>);</div><div class="line">        <span class="comment">// add content and menu to slideItemView</span></div><div class="line">        slideItemView = <span class="keyword">new</span> SlideItemView(context);</div><div class="line">        slideItemView.setContentView(contentView);</div><div class="line">        slideItemView.setMenuView(menuView);</div><div class="line">        <span class="comment">// setting widgets</span></div><div class="line">        holder = <span class="keyword">new</span> ViewHolder(contentView, menuView);</div><div class="line">        <span class="comment">// setting slide listener</span></div><div class="line">        slideItemView.setOnSlideListener((SlideItemView.OnSlideListener) context);</div><div class="line">        slideItemView.setTag(holder);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        holder = (ViewHolder) convertView.getTag();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// init widgets</span></div><div class="line">    ItemMsg itemMsg = itemMsgList.get(position);</div><div class="line">    itemMsg.setSlideItemView(slideItemView);</div><div class="line">    itemMsg.getSlideItemView().shrink();</div><div class="line"></div><div class="line">    holder.text.setText(itemMsg.getContent());</div><div class="line">    holder.btnDel.setText(R.string.delete);</div><div class="line">    holder.btnDel.setOnClickListener((View.OnClickListener) context);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> slideItemView;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> </span>&#123;</div><div class="line">    TextView text;</div><div class="line">    Button btnDel;</div><div class="line">    ViewHolder(View content, View menu) &#123;</div><div class="line">        text = (TextView) content.findViewById(R.id.textView);</div><div class="line">        btnDel = (Button) menu.findViewById(R.id.delete);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>代码基本都有注释，逻辑比较清晰，主要是对适配器的控件初始化。注意返回的是slideItemView，同时也设置了监听，所以此处是加载两个布局（content,menu）合成一个slideItemView，这样便于以后的布局更改。也方便视图的添加和控件的监测。</p>
-<ul>
-<li>构造slideItemView</li>
-</ul>
-<p>部分函数</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">()</span> </span>&#123;</div><div class="line">    Context context = getContext();</div><div class="line">    scroller = <span class="keyword">new</span> Scroller(context);</div><div class="line">    <span class="comment">// inflate layout</span></div><div class="line">    View.inflate(context, R.layout.listitem, <span class="keyword">this</span>);</div><div class="line">    contentView = (LinearLayout) findViewById(R.id.content);</div><div class="line">    menuView = (LinearLayout) findViewById(R.id.menu);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(View content)</span> </span>&#123;</div><div class="line">    contentView.addView(content);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMenuView</span><span class="params">(View menu)</span> </span>&#123;</div><div class="line">    menuView.addView(menu);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>滑动监听</li>
-</ul>
-<p>这个才是重点难点<br>代码如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">    <span class="comment">// Get event start coordinate</span></div><div class="line">    <span class="keyword">int</span> x = (<span class="keyword">int</span>) event.getX();</div><div class="line">    <span class="keyword">int</span> y = (<span class="keyword">int</span>) event.getY();</div><div class="line">    <span class="keyword">int</span> scrollX = getScrollX();</div><div class="line"></div><div class="line">    <span class="keyword">switch</span> (event.getAction()) &#123;</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_DOWN: &#123;</div><div class="line">            <span class="comment">// if another event unfinished, then finished</span></div><div class="line">            <span class="keyword">if</span> (!scroller.isFinished()) &#123;</div><div class="line">                scroller.abortAnimation();</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// get menu width</span></div><div class="line">            btnWidth = menuView.getMeasuredWidth();</div><div class="line">            <span class="keyword">if</span> (onSlideListener != <span class="keyword">null</span>) &#123;</div><div class="line">                onSlideListener.onSlide(<span class="keyword">this</span>, OnSlideListener.STATUS_SLIDE_SCROLL);</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// represent the event was handled or consumed, see the resource code</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_MOVE: &#123;</div><div class="line">            <span class="comment">// get offset</span></div><div class="line">            <span class="keyword">int</span> offsetX = x - lastX;</div><div class="line">            <span class="keyword">int</span> offsetY = y - lastY;</div><div class="line">            <span class="comment">// if offsetX miner than offsetY or offsetY more than 20, then cancel this event</span></div><div class="line">            <span class="keyword">if</span> (offsetY &gt; <span class="number">20</span>) &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">int</span> newScrollX = scrollX - offsetX;</div><div class="line">            <span class="keyword">if</span> (offsetX != <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (newScrollX &lt; <span class="number">0</span>) &#123;</div><div class="line">                    newScrollX = <span class="number">0</span>;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (newScrollX &gt; btnWidth)&#123;</div><div class="line">                    newScrollX = btnWidth;</div><div class="line">                &#125;</div><div class="line">                scrollTo(newScrollX, <span class="number">0</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_CANCEL: &#123;</div><div class="line">            <span class="keyword">int</span> newScroll = <span class="number">0</span>;</div><div class="line">            <span class="comment">// more than half of button width, scroll out. otherwise scroll in.</span></div><div class="line">            <span class="keyword">if</span> (scrollX - btnWidth * <span class="number">0.7</span> &gt; <span class="number">0</span>) &#123;</div><div class="line">                newScroll = btnWidth;</div><div class="line">            &#125;</div><div class="line">            smoothScrollTo(newScroll);</div><div class="line">            <span class="comment">// set item slide status</span></div><div class="line">            <span class="keyword">if</span> (onSlideListener != <span class="keyword">null</span>) &#123;</div><div class="line">                onSlideListener.onSlide(<span class="keyword">this</span>, newScroll == <span class="number">0</span> ? OnSlideListener.STATUS_SLIDE_OFF</div><div class="line">                        : OnSlideListener.STATUS_SLIDE_ON);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    lastX = x;</div><div class="line">    lastY = y;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onTouchEvent(event);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothScrollTo</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> scrollX = getScrollX();</div><div class="line">    <span class="keyword">int</span> offsetX = x - scrollX;</div><div class="line">    scroller.startScroll(scrollX, <span class="number">0</span>, offsetX, <span class="number">0</span>, Math.abs(offsetX));</div><div class="line">    invalidate();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">computeScroll</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (scroller.computeScrollOffset()) &#123;</div><div class="line">        scrollTo(scroller.getCurrX(), scroller.getCurrY());</div><div class="line">        postInvalidate();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shrink</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (getScaleX() != <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">this</span>.smoothScrollTo(<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>参考</p>
-<ul>
-<li><a href="http://blog.csdn.net/singwhatiwanna/article/details/17515543" target="_blank" rel="external">列表滑动删除效果</a></li>
-<li><a href="http://blog.csdn.net/yanbober/article/details/45887547" target="_blank" rel="external">Android触摸屏事件派发机制详解与源码分析一(View篇)</a></li>
-<li><a href="http://www.jianshu.com/p/35a8309b9597#" target="_blank" rel="external">android中的dispatchTouchEvent、onInterceptTouchEvent和onTouchEvent</a></li>
-</ul>
-<p>后两篇主要是讲Android中的事件分发，也就是为什么在MotionEvent.ACTION_DOWN中return true才能实现滑动效果。看了源码我们知道true代表这个控件的函数消耗这个事件，不会再分发，所以我们后面的处理事件的代码才能够执行。</p>
-<ul>
-<li>设置接口</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">OnSlideListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> STATUS_SLIDE_OFF = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> STATUS_SLIDE_ON = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> STATUS_SLIDE_SCROLL = <span class="number">2</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onSlide</span><span class="params">(View view, <span class="keyword">int</span> status)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnSlideListener</span><span class="params">(OnSlideListener onSlideListener)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.onSlideListener = onSlideListener;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSlide</span><span class="params">(View view, <span class="keyword">int</span> status)</span> </span>&#123;</div><div class="line">    <span class="comment">// if last slide item is on, close it</span></div><div class="line">    <span class="keyword">if</span> (mLastSlideViewWithStatusOn != <span class="keyword">null</span> &amp;&amp; mLastSlideViewWithStatusOn != view) &#123;</div><div class="line">        mLastSlideViewWithStatusOn.shrink();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// if a new item slide out, mark it</span></div><div class="line">    <span class="keyword">if</span> (status == STATUS_SLIDE_ON) &#123;</div><div class="line">        mLastSlideViewWithStatusOn = (SlideItemView) view;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这个接口的主要目的是对这个ListView中Item的管理，保证当前只有一个侧滑出来。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">GitHub</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tool</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/04/07/SlideDeleteList/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2017/04/07/SlideShow/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          实现一个自动无线循环轮播图
-        
-      </div>
-    </a>
   
   
-    <a href="/2017/04/07/TabLayout/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">实现一个TAB布局</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-
-
-
-
-  
-    <div class="duoshuo"></div>
+    </div></section>
   
 
-
-
-<section id="comments">
-  <div id="disqus_thread"></div>
-    <script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'fitzeng-org'; // required: replace example with your forum shortname
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</section>
+    
 
 
           </div>
@@ -362,9 +224,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",
