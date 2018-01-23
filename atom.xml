@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-01-23T11:47:41.676Z</updated>
+  <updated>2018-01-23T14:47:46.407Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/01/23/LaTexFormula/"/>
     <id>http://fitzeng.org/2018/01/23/LaTexFormula/</id>
     <published>2018-01-23T03:27:00.000Z</published>
-    <updated>2018-01-23T11:47:41.676Z</updated>
+    <updated>2018-01-23T14:47:46.407Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -72,6 +72,7 @@
 <h4 id="1-2-5-空格"><a href="#1-2-5-空格" class="headerlink" title="1.2.5 空格"></a>1.2.5 空格</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">紧贴 $a\\!b$</div><div class="line">没有空格 $ab$</div><div class="line">小空格 a\,b</div><div class="line">中等空格 a\;b</div><div class="line">大空格 a\ b</div><div class="line">quad空格 $a\quad b$</div><div class="line">两个quad空格 $a\qquad b$</div></pre></td></tr></table></figure>
 <p>$$a\!b$$<br>$$ab$$<br>$$a\,b$$<br>$$a\;b$$<br>$$a\ b$$<br>$$a\quad b$$<br>$$a\qquad b$$</p>
 <p>这个直接看上面的文字，介绍很清楚，主要指微调距离，使得公式更加漂亮。请比较下面的积分公式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$$\int_a^b f(x)\mathrm&#123;d&#125;x$$</div><div class="line"></div><div class="line">$$\int_a^b f(x)\,\mathrm&#123;d&#125;x$$</div></pre></td></tr></table></figure>
 <p>$$\int_a^b f(x)\mathrm{d}x$$</p>
 <p>$$\int_a^b f(x)\,\mathrm{d}x$$</p>
 <h4 id="1-2-6-公式界定符"><a href="#1-2-6-公式界定符" class="headerlink" title="1.2.6 公式界定符"></a>1.2.6 公式界定符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">\\( ( \\)</div><div class="line">\\( ) \\)</div><div class="line">\\( [ \\)</div><div class="line">\\( ] \\)</div><div class="line">\\( \\&#123; \\)</div><div class="line">\\( \\&#125; \\)</div><div class="line">\\( | \\)</div><div class="line">\\( \\| \\)</div></pre></td></tr></table></figure>
