@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-01-23T11:46:00.988Z</updated>
+  <updated>2018-01-23T11:47:41.676Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/01/23/LaTexFormula/"/>
     <id>http://fitzeng.org/2018/01/23/LaTexFormula/</id>
     <published>2018-01-23T03:27:00.000Z</published>
-    <updated>2018-01-23T11:46:00.988Z</updated>
+    <updated>2018-01-23T11:47:41.676Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -154,7 +154,7 @@
     
       <category term="Formula" scheme="http://fitzeng.org/tags/Formula/"/>
     
-      <category term="LaTex" scheme="http://fitzeng.org/tags/LaTex/"/>
+      <category term="LaTeX" scheme="http://fitzeng.org/tags/LaTeX/"/>
     
   </entry>
   
