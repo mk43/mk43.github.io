@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://fitzeng.org/2018/01/23/LaTexFormula/</loc>
+    <loc>http://fitzeng.org/2018/01/26/reProbabilityTheory/</loc>
     
-    <lastmod>2018-01-23T14:47:46.407Z</lastmod>
+    <lastmod>2018-01-26T08:08:43.629Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://fitzeng.org/2018/01/03/TensorFlowIntroduction/</loc>
     
-    <lastmod>2018-01-23T11:46:45.192Z</lastmod>
+    <lastmod>2018-01-26T07:36:41.879Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fitzeng.org/2018/01/23/LaTexFormula/</loc>
+    
+    <lastmod>2018-01-23T14:47:46.407Z</lastmod>
     
   </url>
   
