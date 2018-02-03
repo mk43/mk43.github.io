@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/02/04/NumPyOfficialQuickstartTutorial/</loc>
+    
+    <lastmod>2018-02-03T06:32:58.592Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/02/03/TensorFlowIntroduction/</loc>
     
     <lastmod>2018-02-03T02:16:06.149Z</lastmod>
