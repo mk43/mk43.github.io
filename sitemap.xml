@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/02/08/MatplotlibGenerateGif/</loc>
+    
+    <lastmod>2018-02-08T12:55:13.776Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/02/07/MatplotlibDraw/</loc>
     
     <lastmod>2018-02-08T06:32:17.337Z</lastmod>

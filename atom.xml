@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-08T06:32:17.337Z</updated>
+  <updated>2018-02-08T12:55:13.776Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,137 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Matplotlib 保存 GIF 动图</title>
+    <link href="http://fitzeng.org/2018/02/08/MatplotlibGenerateGif/"/>
+    <id>http://fitzeng.org/2018/02/08/MatplotlibGenerateGif/</id>
+    <published>2018-02-08T03:27:00.000Z</published>
+    <updated>2018-02-08T12:55:13.776Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：为了可视化机器学习过程，并且保存下来，所以想直接利用 \( Matplotlib.animation \) 保存动图，期间参考了好多资料，过程比较艰辛，所以想记录下来。当然，此文还参考了好多网上的其它文章，再此一并感谢那些热爱分享的 \( coder \)，并且参考资料中给出链接。所有代码整理到<a href="https://github.com/mk43/python-practice/tree/master/matplotlib" target="_blank" rel="external">GitHub</a>。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="0-前期准备"><a href="#0-前期准备" class="headerlink" title="0. 前期准备"></a>0. 前期准备</h2><p>安装 \( NumPy \) 和 \( Matplotlib \)。具体安装直接上官网便可，遇到什么问题在网上基本可以搜到答案的，这里就不介绍了。这里要简单的使用 \( NumPy \) 生成一些测试数据，如果对 \( NumPy \) 不熟悉，参考 <a href="http://fitzeng.org/2018/02/04/NumPyOfficialQuickstartTutorial/">NumPy 官方快速入门教程(译)</a>，如果对 \( Matplotlib \) 不熟悉，参考<a href="http://fitzeng.org/2018/02/07/MatplotlibDraw/">Matplotlib 基本操作</a>。当然如果要能够保存 \( GIF \) 还需要一个工具 <a href="http://www.imagemagick.org/script/download.php#macosx" target="_blank" rel="external">ImageMagick</a>，按照官方指导安装就好，确保在命令中输入 <code>magick</code> 有响应。如果使用 \( PyCharm \) 之类的 \( IDE \) 请将环境变量配置到全局，避免在 \( IDE \) 中找不到命令。</p>
+<h2 id="1-绘制基本动图"><a href="#1-绘制基本动图" class="headerlink" title="1. 绘制基本动图"></a>1. 绘制基本动图</h2><p>请确保已经安装了 <a href="http://www.imagemagick.org/script/download.php#macosx" target="_blank" rel="external">ImageMagick</a> 并且可用的情况下再继续，不然代码跑步起来。</p>
+<p>这里采用两种方式绘制动图</p>
+<h3 id="1-1-重置重绘"><a href="#1-1-重置重绘" class="headerlink" title="1.1 重置重绘"></a>1.1 重置重绘</h3><p>重置重绘主要是每次更新原来图形的值来达到绘制动图的效果。</p>
+<ul>
+<li>导入基本库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">from matplotlib import pyplot as plt</div><div class="line">from matplotlib import animation</div></pre></td></tr></table></figure>
+<ul>
+<li>生成数据，画出原始图</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">fig, ax = plt.subplots()</div><div class="line"></div><div class="line">x = np.arange(0, 2 * np.pi, 0.01)</div><div class="line">line0 = ax.plot(x, np.cos(x))</div><div class="line">line, = ax.plot(x, np.sin(x))</div></pre></td></tr></table></figure>
+<p>注意，这里申明的 \( line, \) 中 <code>,</code> 不能少，好像是为了更新值时类型匹配。没深究，希望知道的可以指点一下。</p>
+<ul>
+<li>定义初始函数和跟新函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def init():</div><div class="line">    line.set_ydata(np.sin(x))</div><div class="line">    return line,</div><div class="line"></div><div class="line">def animate(i):</div><div class="line">    line.set_ydata(np.sin(x + i / 10.0))</div><div class="line">    return line,</div></pre></td></tr></table></figure>
+<p>其实就是更新一下 \( Y \) 坐标的值。</p>
+<ul>
+<li>执行动画</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">animation = animation.FuncAnimation(fig=fig, func=animate, frames=100, init_func=init, interval=20, blit=False)</div></pre></td></tr></table></figure>
+<p>这个函数的参数可以看源码，以及官网的介绍，这里就是每个 \( 20\ ms \) 绘制一帧，总共有 \( 100 \) 帧。</p>
+<ul>
+<li>保存 \( GIF \)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">animation.save(&apos;resetvalue.gif&apos;, writer=&apos;imagemagick&apos;)</div></pre></td></tr></table></figure>
+<p>这里就是直接保存成 \( GIF \) 格式就好了。</p>
+<ul>
+<li>显示动图</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>生成图片的效果如图所示：</p>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/resetvalue.gif" alt=""></p>
+<h3 id="1-2-擦除重绘"><a href="#1-2-擦除重绘" class="headerlink" title="1.2 擦除重绘"></a>1.2 擦除重绘</h3><p>与上一种方法比较，这种就是不利用上一次的任何坐标，直接擦除，然后再 \( plot \) 图形上去。</p>
+<ul>
+<li>导入基本库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">from matplotlib import pyplot as plt</div><div class="line">from matplotlib import animation</div></pre></td></tr></table></figure>
+<ul>
+<li>生成数据，画出原始图</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fig, ax = plt.subplots()</div><div class="line"></div><div class="line">x = np.arange(0, 2 * np.pi, 0.01)</div><div class="line">ax.plot(x, np.cos(x))</div></pre></td></tr></table></figure>
+<p>这里就没有那个要求了，因为这种方式不依赖于前面的图形。</p>
+<ul>
+<li>定义初始函数和跟新函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def init():</div><div class="line">    return ax.plot(x, np.sin(x))</div><div class="line"></div><div class="line"></div><div class="line">def animate(i):</div><div class="line">    try:</div><div class="line">        ax.lines.pop(1)</div><div class="line">    except Exception:</div><div class="line">        pass</div><div class="line">    line = ax.plot(x, np.sin(x + i / 10.0), &apos;r&apos;)</div><div class="line">    return line,</div></pre></td></tr></table></figure>
+<p>初始化没什么好说的，其实也可以不初始化，时间间隔太短效果基本是看不出来的。下面介绍一下 <code>ax.lines.pop(1)</code> 这句“擦除”函数。这里的 \( lines \)可以理解为存储 \( plot \) 上来的图像栈，前面 \( plot \) 了一个余弦函数，在初始化的时候绘制了第二条，所以索引是 \( 1 \) 的正弦函数被 \( pop \) 了然后进行下一条绘制。于是执行 <code>line = ax.plot(x, np.sin(x + i / 10.0), &#39;r&#39;)</code></p>
+<ul>
+<li>后续</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">animation = animation.FuncAnimation(fig=fig, func=animate, frames=100, init_func=init, interval=20, blit=False)</div><div class="line">animation.save(&apos;redraw.gif&apos;, writer=&apos;imagemagick&apos;)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>没区别</p>
+<p>生成图片的效果如图所示：</p>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/redraw.gif" alt=""></p>
+<h2 id="2-机器学习过程可视化"><a href="#2-机器学习过程可视化" class="headerlink" title="2. 机器学习过程可视化"></a>2. 机器学习过程可视化</h2><p>前面介绍了的知识基本够用了，但终究不是实操。如果你不是学习机器学习的，其实有上面的基础就可以了，这一节可以跳过。但是，如果你想学机器学习的话，这里提供一个小例子让你更加清晰的理解机器学习的过程中的数据变化。不过这里只专注于绘制，机器学习的部分参考<a href="http://fitzeng.org/2018/02/03/TensorFlowIntroduction/">从 TensorFlow 入门机器学习</a></p>
+<p>同样还是拿线性回归作为例子。</p>
+<p>原始代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"># coding: utf-8</div><div class="line">from __future__ import print_function</div><div class="line">import tensorflow as tf</div><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">import matplotlib.animation as animation</div><div class="line">from scipy.interpolate import spline</div><div class="line"></div><div class="line">train_X = np.linspace(0, 10, 50)</div><div class="line">noise = np.random.normal(0, 1, train_X.shape)</div><div class="line">train_Y = train_X * 1 - 2 + noise</div><div class="line"></div><div class="line">X = tf.placeholder(tf.float32)</div><div class="line">Y = tf.placeholder(tf.float32)</div><div class="line"></div><div class="line">W = tf.Variable(-1., name=&quot;weight&quot;)</div><div class="line">b = tf.Variable(1., name=&quot;bias&quot;)</div><div class="line"></div><div class="line">activation = tf.add(tf.multiply(X, W), b)</div><div class="line"></div><div class="line">learning_rate = 0.0001</div><div class="line"></div><div class="line">cost = tf.reduce_sum(tf.pow(activation - Y, 2))</div><div class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)</div><div class="line"></div><div class="line">training_epochs = 20</div><div class="line">display_step = 10</div><div class="line"></div><div class="line">with tf.Session() as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    for epoch in range(training_epochs):</div><div class="line">        for (x, y) in zip(train_X, train_Y):</div><div class="line">            sess.run(optimizer, feed_dict=&#123;X: x, Y: y&#125;)</div><div class="line">        if epoch &lt; 10 or epoch % display_step == 0:</div><div class="line">            c_tmp = sess.run(cost, feed_dict=&#123;X: train_X, Y: train_Y&#125;)</div><div class="line">            W_tmp = sess.run(W)</div><div class="line">            b_tmp = sess.run(b)</div><div class="line">            activation_tmp = sess.run(activation, feed_dict=&#123;X: train_X&#125;)</div><div class="line">            print(&quot;Epoch: %04d&quot; % (epoch + 1), &quot;cost=&quot;, &quot;&#123;:.9f&#125;&quot;.format(c_tmp), &quot;W=&quot;, W_tmp, &quot;b=&quot;, b_tmp)</div><div class="line">    print(&quot;Optimization Finished!&quot;)</div><div class="line">    print(&quot;cost=&quot;, sess.run(cost, feed_dict=&#123;X: train_X, Y: train_Y&#125;), &quot;W=&quot;, sess.run(W), &quot;b=&quot;, sess.run(b))</div></pre></td></tr></table></figure>
+<p>上面的代码就不解释了，为了方便测试，把迭代次数调的比较小。接下来我们在上面的基础上进行扩充。</p>
+<p>首先进行可视化，首先把我们觉得有用的数据提取出来吧。因为经过测试，前面的变化幅度比较大，为了图示明显，刻意进行非均匀采样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">c_trace = []</div><div class="line">W_trace = []</div><div class="line">b_trace = []</div><div class="line">activation_trace = []</div><div class="line"></div><div class="line">with tf.Session() as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    for epoch in range(training_epochs):</div><div class="line">        for (x, y) in zip(train_X, train_Y):</div><div class="line">            sess.run(optimizer, feed_dict=&#123;X: x, Y: y&#125;)</div><div class="line">        if epoch &lt; 10 or epoch % display_step == 0:</div><div class="line">            c_tmp = sess.run(cost, feed_dict=&#123;X: train_X, Y: train_Y&#125;)</div><div class="line">            W_tmp = sess.run(W)</div><div class="line">            b_tmp = sess.run(b)</div><div class="line">            activation_tmp = sess.run(activation, feed_dict=&#123;X: train_X&#125;)</div><div class="line">            print(&quot;Epoch: %04d&quot; % (epoch + 1), &quot;cost=&quot;, &quot;&#123;:.9f&#125;&quot;.format(c_tmp), &quot;W=&quot;, W_tmp, &quot;b=&quot;, b_tmp)</div><div class="line">            c_trace.append(c_tmp)</div><div class="line">            W_trace.append(W_tmp)</div><div class="line">            b_trace.append(b_tmp)</div><div class="line">            activation_trace.append(activation_tmp)</div><div class="line">    print(&quot;Optimization Finished!&quot;)</div><div class="line">    print(&quot;cost=&quot;, sess.run(cost, feed_dict=&#123;X: train_X, Y: train_Y&#125;), &quot;W=&quot;, sess.run(W), &quot;b=&quot;, sess.run(b))</div></pre></td></tr></table></figure>
+<p>参考前面的小例子，把数据填进去，做出动图来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">fig, ax = plt.subplots()</div><div class="line">l1 = ax.scatter(train_X, train_Y, color=&apos;red&apos;, label=r&apos;$Original\ data$&apos;)</div><div class="line">ax.set_xlabel(r&apos;$X\ data$&apos;)</div><div class="line">ax.set_ylabel(r&apos;$Y\ data$&apos;)</div><div class="line"></div><div class="line"></div><div class="line">def update(i):</div><div class="line">    try:</div><div class="line">        ax.lines.pop(0)</div><div class="line">    except Exception:</div><div class="line">        pass</div><div class="line">    line, = ax.plot(train_X, activation_trace[i], &apos;g--&apos;, label=r&apos;$Fitting\ line$&apos;, lw=2)</div><div class="line">    return line,</div><div class="line"></div><div class="line"></div><div class="line">ani = animation.FuncAnimation(fig, update, frames=len(activation_trace), interval=100)</div><div class="line">ani.save(&apos;linearregression.gif&apos;, writer=&apos;imagemagick&apos;)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/linearregression1.gif" alt=""></p>
+<p>接着把 \( Cost \) 函数也加上来并且在最后显示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def update(i):</div><div class="line">    try:</div><div class="line">        ax.lines.pop(0)</div><div class="line">    except Exception:</div><div class="line">        pass</div><div class="line">    line, = ax.plot(train_X, activation_trace[i], &apos;g--&apos;, label=r&apos;$Fitting\ line$&apos;, lw=2)</div><div class="line">    if i == len(activation_trace) - 1:</div><div class="line">        twinax = ax.twinx()</div><div class="line">        twinax.plot(np.linspace(0, 10, np.size(c_trace)), c_trace, &apos;b&apos;, label=&apos;Cost line&apos;, lw=2)</div><div class="line">    return line,</div></pre></td></tr></table></figure>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/linearregression2.gif" alt=""><br><img src="/2018/02/08/MatplotlibGenerateGif/linearregression2.png" alt=""></p>
+<p>可以看到，线条十分锋利，这时就可以使用 \( spline \)平滑过渡一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def update(i):</div><div class="line">    try:</div><div class="line">        ax.lines.pop(0)</div><div class="line">    except Exception:</div><div class="line">        pass</div><div class="line">    line, = ax.plot(train_X, activation_trace[i], &apos;g--&apos;, label=r&apos;$Fitting\ line$&apos;, lw=2)</div><div class="line">    if i == len(activation_trace) - 1:</div><div class="line">        xnew = np.linspace(0, 10, np.max(c_trace) - np.min(c_trace))</div><div class="line">        smooth = spline(np.linspace(0, 10, np.size(c_trace)), c_trace, xnew)</div><div class="line">        twinax = ax.twinx()</div><div class="line">        twinax.set_ylabel(r&apos;Cost&apos;)</div><div class="line">        twinax.plot(xnew, smooth, &apos;b&apos;, label=r&apos;$Cost\ line$&apos;, lw=2)</div><div class="line">    return line,</div></pre></td></tr></table></figure>
+<p>其实就是对 \( [0, 10] \) 这个区间进行采样。添加 <code>np.max(c_trace) - np.min(c_trace)</code> 个点来绘制这线条。</p>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/linearregression3.png" alt=""></p>
+<p>加上图例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">def update(i):</div><div class="line">    try:</div><div class="line">        ax.lines.pop(0)</div><div class="line">    except Exception:</div><div class="line">        pass</div><div class="line">    line, = ax.plot(train_X, activation_trace[i], &apos;g--&apos;, label=r&apos;$Fitting\ line$&apos;, lw=2)</div><div class="line">    plt.legend(handles=[l1, line], loc=&apos;upper center&apos;)</div><div class="line">    if i == len(activation_trace) - 1:</div><div class="line">        ax.text(6, -2, &apos;Cost: %s&apos; % c_trace[i], fontdict=&#123;&apos;size&apos;: 16, &apos;color&apos;: &apos;r&apos;&#125;)</div><div class="line">        xnew = np.linspace(0, 10, np.max(c_trace) - np.min(c_trace))</div><div class="line">        smooth = spline(np.linspace(0, 10, np.size(c_trace)), c_trace, xnew)</div><div class="line">        twinax = ax.twinx()</div><div class="line">        twinax.set_ylabel(r&apos;Cost&apos;)</div><div class="line">        costline, = twinax.plot(xnew, smooth, &apos;b&apos;, label=r&apos;$Cost\ line$&apos;, lw=2)</div><div class="line">        plt.legend(handles=[l1, line, costline], loc=&apos;upper center&apos;)</div><div class="line">    return line,</div></pre></td></tr></table></figure>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/linearregression3.gif" alt=""><br><img src="/2018/02/08/MatplotlibGenerateGif/linearregression4.png" alt=""></p>
+<p>下面把数据细节处理下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">learning_rate = 0.001</div><div class="line"></div><div class="line">training_epochs = 500</div><div class="line">display_step = 40</div></pre></td></tr></table></figure>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/linearregression5.png" alt=""></p>
+<p>可以看到，\( Cost \) 函数并非严格递减的，我们采用的是梯度下降算法求最优，所以问题出在学习率，具体为什么也是一个机器学习中应该注意的问题。另外大家还可以试试继续把学习率调大看看会发生什么有趣的事情？</p>
+<p>我们把学习率调整到 <code>0.0001</code> 将会得到以下结果：</p>
+<p><img src="/2018/02/08/MatplotlibGenerateGif/linearregression4.gif" alt=""><br><img src="/2018/02/08/MatplotlibGenerateGif/linearregression6.png" alt=""></p>
+<p>其实你观察输出可能并不怎么符合原始函数。而且在不断调整训练参数的时候会发现拟合程度似乎也没法每次后很好。原因其实在于加的干扰，至于为什么干扰会造成这样，就不在本文的讨论范围了。好了，到这里你应该可以绘制自己的 \( GIF \)了吧。</p>
+<p>源码详见 <a href="https://github.com/mk43/python-practice/tree/master/matplotlib" target="_blank" rel="external">GitHub</a></p>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><p>花时间把小细节搞懂就是节省时间，其实眼前的问题可以引申出其它更多值得思考的问题。多联系，多思考。</p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><ul>
+<li><a href="https://morvanzhou.github.io/tutorials/data-manipulation/plt/" target="_blank" rel="external">morvan：markdown + 视频</a></li>
+<li><a href="https://matplotlib.org/tutorials/index.html" target="_blank" rel="external">官方文档</a></li>
+<li><a href="https://www.jianshu.com/p/aa4150cf6c7f" target="_blank" rel="external">Matplotlib 入门教程</a></li>
+<li><a href="https://www.jianshu.com/p/aa4150cf6c7f" target="_blank" rel="external">Matplotlib 教程</a></li>
+<li><a href="https://www.tuicool.com/articles/Z7BzY3V" target="_blank" rel="external">如何用 Matplotlib 画 GIF 动图</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：为了可视化机器学习过程，并且保存下来，所以想直接利用 \( Matplotlib.animation \) 保存动图，期间参考了好多资料，过程比较艰辛，所以想记录下来。当然，此文还参考了好多网上的其它文章，再此一并感谢那些热爱分享的 \( coder \)，并且参考资料中给出链接。所有代码整理到&lt;a href=&quot;https://github.com/mk43/python-practice/tree/master/matplotlib&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+      <category term="Python" scheme="http://fitzeng.org/tags/Python/"/>
+    
+      <category term="NumPy" scheme="http://fitzeng.org/tags/NumPy/"/>
+    
+      <category term="Matplotlib" scheme="http://fitzeng.org/tags/Matplotlib/"/>
+    
+  </entry>
   
   <entry>
     <title>Matplotlib 基本操作</title>
@@ -883,49 +1014,6 @@
   </entry>
   
   <entry>
-    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
-    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
-    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T15:12:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
-<li>fixit.py</li>
-<li>fix.sh</li>
-<li>txt</li>
-</ul>
-<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
-<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
-<p>下面写 <code>fixit.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
-<p>最后执行 <code>./fix.sh</code>。</p>
-<p>然后就是等待执行结束了。</p>
-<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
-    
-      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
-    
-  </entry>
-  
-  <entry>
     <title>一个小白使用 devstack 部署 openstack 的心路历程</title>
     <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
     <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
@@ -992,6 +1080,49 @@
       <category term="devstack" scheme="http://fitzeng.org/tags/devstack/"/>
     
       <category term="openstack" scheme="http://fitzeng.org/tags/openstack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
+    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
+    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
+    <published>2017-11-04T03:27:00.000Z</published>
+    <updated>2017-11-04T15:12:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
+<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
+<li>fixit.py</li>
+<li>fix.sh</li>
+<li>txt</li>
+</ul>
+<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
+<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
+<p>下面写 <code>fixit.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
+<p>最后执行 <code>./fix.sh</code>。</p>
+<p>然后就是等待执行结束了。</p>
+<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
+    
+      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
     
   </entry>
   
@@ -2947,116 +3078,6 @@ semaphore full = <span class="number">0</span>; <span class="comment">// 计数�
       <category term="Java" scheme="http://fitzeng.org/tags/Java/"/>
     
       <category term="Tips" scheme="http://fitzeng.org/tags/Tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>leetcode 算法集锦</title>
-    <link href="http://fitzeng.org/2017/07/17/AlgoAndMath/"/>
-    <id>http://fitzeng.org/2017/07/17/AlgoAndMath/</id>
-    <published>2017-07-17T03:27:00.000Z</published>
-    <updated>2017-07-20T08:54:46.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="leetcode-算法集锦"><a href="#leetcode-算法集锦" class="headerlink" title="leetcode 算法集锦"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦</a></h2><blockquote>
-<p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">序号</th>
-<th style="text-align:center">考点</th>
-<th style="text-align:center">题目</th>
-<th style="text-align:center">C/C++</th>
-<th style="text-align:center">Java     </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">  01</td>
-<td style="text-align:center">树</td>
-<td style="text-align:center">Minimum Depth of Binary Tree</td>
-<td style="text-align:center">NULL</td>
-<td style="text-align:center"><a href="#jump_01">题解</a>  </td>
-</tr>
-<tr>
-<td style="text-align:center">  02</td>
-<td style="text-align:center">栈</td>
-<td style="text-align:center">evaluate-reverse-polish-notation</td>
-<td style="text-align:center">NULL</td>
-<td style="text-align:center"><a href="#jump_02">题解</a> </td>
-</tr>
-</tbody>
-</table>
-<a id="more"></a>
-<h3 id="02-evaluate-reverse-polish-notation"><a href="#02-evaluate-reverse-polish-notation" class="headerlink" title="02 : evaluate-reverse-polish-notation"></a><span id="jump_02"><a href="https://www.nowcoder.com/practice/22f9d7dd89374b6c8289e44237c70447?tpId=46&amp;tqId=29031&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">02 : evaluate-reverse-polish-notation</a></span></h3><blockquote>
-<p>Evaluate the value of an arithmetic expression in Reverse Polish Notation.Valid operators are+,-,*,/. Each operand may be an integer or another expression.</p>
-<p>Some examples:</p>
-<p>[“2”, “1”, “+”, “3”, “<em>“] -&gt; ((2 + 1) </em> 3) -&gt; 9</p>
-<p>[“4”, “13”, “5”, “/“, “+”] -&gt; (4 + (13 / 5)) -&gt; 6</p>
-</blockquote>
-<ul>
-<li>我的解法</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;String&gt; s = <span class="keyword">new</span> Stack&lt;&gt;();</div><div class="line">        <span class="keyword">int</span> op1 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> op2 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tokens.length; i++) &#123;</div><div class="line">            <span class="keyword">switch</span> (tokens[i]) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="string">"+"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 + op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"-"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 - op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"*"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 * op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">case</span> <span class="string">"/"</span>: &#123;</div><div class="line">                    op1 = Integer.parseInt(s.pop());</div><div class="line">                    op2 = Integer.parseInt(s.pop());</div><div class="line">                    s.push(String.valueOf(op2 / op1));</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">default</span>: &#123;</div><div class="line">                    s.push(tokens[i]);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> Integer.parseInt(s.pop());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>其他解法</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Stack;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</div><div class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;tokens.length;i++)&#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                <span class="keyword">int</span> num = Integer.parseInt(tokens[i]);</div><div class="line">                stack.add(num);</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                <span class="keyword">int</span> b = stack.pop();</div><div class="line">                <span class="keyword">int</span> a = stack.pop();</div><div class="line">                stack.add(get(a, b, tokens[i]));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> stack.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,String operator)</span></span>&#123;</div><div class="line">        <span class="keyword">switch</span> (operator) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">"+"</span>:</div><div class="line">            <span class="keyword">return</span> a+b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"-"</span>:</div><div class="line">            <span class="keyword">return</span> a-b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"*"</span>:</div><div class="line">            <span class="keyword">return</span> a*b;</div><div class="line">        <span class="keyword">case</span> <span class="string">"/"</span>:</div><div class="line">            <span class="keyword">return</span> a/b;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="01-Minimum-Depth-of-Binary-Tree"><a href="#01-Minimum-Depth-of-Binary-Tree" class="headerlink" title="01 : Minimum Depth of Binary Tree"></a><span id="jump_01"><a href="https://www.nowcoder.com/practice/e08819cfdeb34985a8de9c4e6562e724?tpId=46&amp;tqId=29030&amp;tPage=1&amp;rp=1&amp;ru=/ta/leetcode&amp;qru=/ta/leetcode/question-ranking" target="_blank" rel="external">01 : Minimum Depth of Binary Tree</a></span></h3><blockquote>
-<p>Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.</p>
-</blockquote>
-<ul>
-<li>我的解法</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">深度优先遍历所有节点, 直至叶子节点后返回长度. </div><div class="line">每次取当前节点左右子节点的 [最小值+<span class="number">1</span>] 为该节点的最小深度. </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">run</span><span class="params">(TreeNode root)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> length1 = run(root.left);</div><div class="line">        <span class="keyword">int</span> length2 = run(root.right);</div><div class="line">        <span class="keyword">if</span> (length1 == <span class="number">0</span> || length2 == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> length1 + length2 + <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> Math.min(length1, length2) + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>其他思路</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">typedef</span> TreeNode* tree;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">run</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="comment">//采用广度优先搜索，或者层序遍历，找到的第一个叶节点的深度即是最浅。</span></div><div class="line">      <span class="keyword">if</span>(! root) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">      <span class="built_in">queue</span>&lt;tree&gt; qu;</div><div class="line">      tree last,now;</div><div class="line">      <span class="keyword">int</span> level,size;</div><div class="line">      last = now = root;</div><div class="line">      level = <span class="number">1</span>;qu.push(root);</div><div class="line">      <span class="keyword">while</span>(qu.size())&#123;</div><div class="line">        now = qu.front();</div><div class="line">        qu.pop();</div><div class="line">        size = qu.size();</div><div class="line">        <span class="keyword">if</span>(now-&gt;left)qu.push(now-&gt;left);</div><div class="line">        <span class="keyword">if</span>(now-&gt;right)qu.push(now-&gt;right);</div><div class="line">        <span class="keyword">if</span>(qu.size()-size == <span class="number">0</span>)<span class="keyword">break</span>;</div><div class="line">        <span class="keyword">if</span>(last == now)&#123;</div><div class="line">          level++;</div><div class="line">          <span class="keyword">if</span>(qu.size())last = qu.back();</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> level;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;leetcode-算法集锦&quot;&gt;&lt;a href=&quot;#leetcode-算法集锦&quot; class=&quot;headerlink&quot; title=&quot;leetcode 算法集锦&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.nowcoder.com/ta/leetcode&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;leetcode 算法集锦&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;序号&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;考点&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;题目&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;C/C++&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;Java     &lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;  01&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;树&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;Minimum Depth of Binary Tree&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_01&quot;&gt;题解&lt;/a&gt;  &lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;  02&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;栈&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;evaluate-reverse-polish-notation&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_02&quot;&gt;题解&lt;/a&gt; &lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-    
-    </summary>
-    
-    
-      <category term="Algo" scheme="http://fitzeng.org/tags/Algo/"/>
-    
-      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
-    
-      <category term="Java" scheme="http://fitzeng.org/tags/Java/"/>
-    
-      <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
     
   </entry>
   
