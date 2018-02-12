@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-08T12:55:13.776Z</updated>
+  <updated>2018-02-12T08:50:48.613Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,133 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习基本算法之线性回归</title>
+    <link href="http://fitzeng.org/2018/02/11/MLLinearRegression/"/>
+    <id>http://fitzeng.org/2018/02/11/MLLinearRegression/</id>
+    <published>2018-02-11T03:27:00.000Z</published>
+    <updated>2018-02-12T08:50:48.613Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。对于开篇有比较多的东西想说，所以另取一章介绍一下我个人对机器学习这个领域的理解和一些基本常识介绍。如果你时间比较充裕，可以看看我<code>前言</code>的文字介绍。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>介绍一下个人想法</p>
+<h3 id="0-1-关于机器学习"><a href="#0-1-关于机器学习" class="headerlink" title="0.1 关于机器学习"></a>0.1 关于机器学习</h3><p>毫无疑问，机器学习现在越来越热门了，需求随着以后人工智能大爆发会持续增长。不管你是不是这个编程领域的人，都有必要了解一下机器学习是怎么回事，至少有个理性的认识，而不是觉得很神秘。但是涉及到算法数学知识是可以忽略的，只要知道，我们通过某个数学手段可以达到某个目的。比如这里要介绍的线性回归在更新权重时是依据梯度下降算法的，你可以不必知道什么是梯度下降，知道知道数学上对于求解最优化是有自己的手段的，当然如果能知道更好。由于机器学习的性质，速成基本不太可能，而且现在处于高速发展的阶段，必须保持学习的热情才能学得下去。另外，这个前期的学习成本是比较高的，在自己写代码之前，要想心里有点底，至少要对 <code>微积分</code>、<code>线性代数</code> 和 <code>概率论</code> 的应用要有点自己的理解的。所以这也是一大优势，不太容易被取代。</p>
+<h3 id="0-2-关于线性回归"><a href="#0-2-关于线性回归" class="headerlink" title="0.2 关于线性回归"></a>0.2 关于线性回归</h3><p>对于理性了解机器学习的捷径就是弄懂线性回归算法的整个流程，如果你通过这篇文章真的理解了线性回归，那么你应该就理解这句话了。当然，对于大多数阅读者篇文章的人来说，可能早就对线性回归有了自己的理解。但是我这要提的是，如果你没打算入门机器学习，阅读一下线性回归也是对自己知识面进行拓展的一个好方式，因为基本大多数人都是从这里开始的。</p>
+<h3 id="0-3-关于基础"><a href="#0-3-关于基础" class="headerlink" title="0.3 关于基础"></a>0.3 关于基础</h3><p>首先，你需要一点 \( Python \) 基础。如果没有也简单，自学一下就行。然后就是要学习一下以下工具的使用：<code>NumPy</code>，<code>Matplotlib</code>，<code>sklearn</code>，<code>TensorFlow</code>。其中部分可以参考我以前的文章。</p>
+<ul>
+<li><a href="http://fitzeng.org/2018/02/03/TensorFlowIntroduction/">从 TensorFlow 入门机器学习</a></li>
+<li><a href="http://fitzeng.org/2018/02/04/NumPyOfficialQuickstartTutorial/">NumPy 官方快速入门教程(译)</a></li>
+<li><a href="http://fitzeng.org/2018/02/07/MatplotlibDraw/">Matplotlib 基本操作</a></li>
+<li><a href="http://fitzeng.org/2018/02/08/MatplotlibGenerateGif/">Matplotlib 保存 GIF 动图</a></li>
+</ul>
+<p>有了这些你还需要一些数学基础。数学的话我觉得不要求全学会，也不太现实，可以在写代码过程中碰到什么算法再去寻求数学证明，前提是之前的知识量最好能达到看懂大多数数学知识的水平。这里我觉得知乎上有些数学科普其实挺不错的，毕竟不是数学系，所以理解主要逻辑之后持有一种拿来用的态度我觉得没问题。</p>
+<ul>
+<li><a href="http://fitzeng.org/2018/01/26/reProbabilityTheory/">机器学习之重拾概率论</a></li>
+</ul>
+<h3 id="0-4-关于参考"><a href="#0-4-关于参考" class="headerlink" title="0.4 关于参考"></a>0.4 关于参考</h3><p>这里很感谢像吴恩达、莫烦等老师的无私奉献，还有很多在网上写博客分享知识的人，让编程这个行业形成一个良好的学习风气。而且网上还流传很多优质的学习资源，所以这里我将我学习过程的参考资料整理进了 <a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a>，我想大家奉献出来就是为了别人更好的学习吧，如果有侵权之类的话，我会立即删除的。然后这一系列的文章，我会主要以吴恩达老师的课程为基础，以初学者的视角记录并且实践。</p>
+<ul>
+<li><a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">学习参考书籍</a></li>
+</ul>
+<h3 id="0-5-关于我"><a href="#0-5-关于我" class="headerlink" title="0.5 关于我"></a>0.5 关于我</h3><p>一个即将毕业的知识水平有限的本科生，所以文章肯定有很多不足之处，望大家指正。然后实验的代码在<a href="https://github.com/mk43/machine-learning/tree/master/algorithm/linear-regression" target="_blank" rel="external">这里</a>。</p>
+<h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景</h2><p>故事就不讲了，可以参考视视频。下面我讲讲这个是要解决什么问题？生活中往往有很多现象，而我们可以从现象总结出某些结论，但是，如果我们看到了一个之前从来都没有看到过的现象，我们就无法下结论了。但但是一些有经验的人可以凭借丰富的经验进行预测。就比如，一个处于懵懂期的小孩子，看见一片乌云不能推测出会下雨，而一个大人就会知道，提醒小孩出门要带伞。。。好吧，还是在讲故事，那就继续吧😂😂😂。这个例子中的大人小孩的区别在于年龄不同，见识不同，知识水平自然不同，能做出的判断也自然不同。所以要想达到对现象进行预测，那么就必须进行学习，等小孩慢慢长大了，看到蚂蚁搬家就会带伞出门了。</p>
+<p>好了，我们总结一下上面的故事：现象可以比喻成数据，结论造成的行为也是数据，唯一不同的是，是有现象得出的结论，所以可以将现象的数据看作是输入，结论的数据看成是输出。那么机器学习就是将输入数据输入进一个模型，然后将模型的输出结果和之前的“正确”结论作比对慢慢更改模型，直到这个模型对出入数据有较好的预测，那么这个模型就可以拿来用了。抽象出来的话就是找一个输入\( X \) 和输出 \( Y \)之间的映射\( f \)，使得对于绝大多数 \( X \) 都能通过映射 \( f(X) \rightarrow Y \) 较好地得到 \( Y \)。</p>
+<p>房价的例子我就不举了，直接看下面的图，看看能不能解决 \( X = 4,\ Y = ? \) </p>
+<p><img src="/2018/02/11/MLLinearRegression/scattergraph.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># coding: utf-8</div><div class="line"></div><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line"></div><div class="line">def draw():</div><div class="line">    X = np.linspace(0, 10, 50)</div><div class="line">    noise = np.random.normal(0, 0.5, X.shape)</div><div class="line">    Y = X * 0.5 + 3 + noise</div><div class="line"></div><div class="line">    plt.scatter(X, Y)</div><div class="line">    plt.savefig(&quot;scattergraph.png&quot;)</div><div class="line">    plt.show()</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    draw()</div></pre></td></tr></table></figure>
+<p>好了，你可能会发现，要想给出 \( Y \) 依赖的是直觉，所以每一个人的答案都是不一样的，而对于某些标准统一的领域（比如军事项目），这种依靠直觉判断的情况绝对不容许发生。想象在现代信息化战场上靠直觉怎么可能作战成功？</p>
+<p>所以我们需要一个模型，你可以理解成一个黑盒，把 \( X \) 喂进去，把 \( Y \) 取出来，而且无论谁，只要那个黑盒是同一个，那么每个人的输入 \( X \) 相同的话，输出 \( Y \) 就是相同的。 那么在这里这个模型大概是什么形状的呢？目前这个还是我们人为干预进行选择的。直观来说，可以这个分布看成一条很粗的线，那么我们选择线性模型来模拟分布。那么如何确定这个线性模型呢？这里就涉及到今天的主角：<a href="https://en.wikipedia.org/w/index.php?title=Linear_regression" target="_blank" rel="external">线性回归</a></p>
+<h2 id="2-一元线性回归"><a href="#2-一元线性回归" class="headerlink" title="2 一元线性回归"></a>2 一元线性回归</h2><p>先从一元线性函数开始分析，既然假设是一元线性，那么我们的拟合函数就可以定义为 \( Y = X*W + b \) 了。同样那前一个图作为例子，我们现在的目的是求出\( W, b \)，如果求出来了，给定任意一个 \( X \) 就能求出 \( Y \) 来了。</p>
+<h3 id="2-1-定义评估函数-损失函数"><a href="#2-1-定义评估函数-损失函数" class="headerlink" title="2.1 定义评估函数-损失函数"></a>2.1 定义评估函数-损失函数</h3><p>这里讲解如何求出 \( W, b \) 的整个思考过程。</p>
+<p>我们选取一个点 \( (x_0, y_0) \) 因为误差的存在，所以 \( y_0 = x_0 <em> W + b + \delta_0 \)。同理如果有很多点，那么就有以下结果，为了方便，我们取评估值 \( h(x) = x </em> W + b \)。</p>
+<p>$$<br>\delta_0 = y_0 - h(x_0) \\<br>\delta_1 = y_1 - h(x_1) \\<br>\ldots \\<br>\delta_n = y_n - h(x_n) \\\<br>$$</p>
+<p>我们的目的自然是误差越小越好，所以采用平方和的形式表达误差：</p>
+<p>$$<br>loss(W, b) = \sum_{i = 0}^{n}\delta_i^2 = \sum_{i = 0}^{n} [y_i - h(x_i)]^2<br>$$</p>
+<p>到这里，我们来看看图像是怎么样的？</p>
+<p><img src="/2018/02/11/MLLinearRegression/lossgraph.png" alt=""></p>
+<p>PS：图有点丑，实在是没办法了，设置了噪点，使得函数值跨度很大，稍微改一下就会呼脸。只能设置散点图凑合看了，望知道的小伙伴告知。好了，就不在这浪费过多时间了，直接看代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">ax = Axes3D(fig)</div><div class="line">ax.set_xlabel(<span class="string">r'$Weight$'</span>)</div><div class="line">ax.set_ylabel(<span class="string">r'$bias$'</span>)</div><div class="line">ax.set_zlabel(<span class="string">r'$loss\ value$'</span>)</div><div class="line">N = <span class="number">200</span></div><div class="line"></div><div class="line">X = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N)</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.1</span>, X.shape)</div><div class="line">Y = X * <span class="number">0.5</span> + <span class="number">3</span> + noise</div><div class="line"></div><div class="line">W = np.linspace(<span class="number">-10</span>, <span class="number">10</span>, N)</div><div class="line">b = np.linspace(<span class="number">-2</span>, <span class="number">8</span>, N)</div><div class="line"></div><div class="line">p = <span class="number">0.6</span></div><div class="line">plt.xlim(W.min() * p, W.max() * p)</div><div class="line">plt.ylim(b.min() * p, b.max() * p)</div><div class="line">ax.set_zlim(<span class="number">0</span>, <span class="number">1000</span>)</div><div class="line"></div><div class="line">h = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> W:</div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> b:</div><div class="line">        h.append(np.sum(np.square(Y - (X * i + j))))</div><div class="line"></div><div class="line">print(np.min(h))</div><div class="line">h = np.asarray(h).reshape(N, N)</div><div class="line">W, b = np.meshgrid(W, b)</div><div class="line"></div><div class="line">ax.scatter(W, b, h, c=<span class="string">'b'</span>)</div><div class="line">plt.savefig(<span class="string">"lossgraph.png"</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>现在我们通过可视化的手段知道了大概什么位置取最小值，其实我们还是没有达到目的，我们要的是 \( W, b \) 具体值。</p>
+<h3 id="2-2-求解最小值-梯度下降"><a href="#2-2-求解最小值-梯度下降" class="headerlink" title="2.2 求解最小值-梯度下降"></a>2.2 求解最小值-梯度下降</h3><p>问题被进一步细化，就是求解下面二元函数在什么时候取极值：</p>
+<p>$$<br>loss(W, b) = \sum_{i = 0}^{n}\delta_i^2 = \sum_{i = 0}^{n} [y_i - h(x_i)]^2<br>$$</p>
+<p>这时候高数就登场了，找了一张图</p>
+<p><img src="/2018/02/11/MLLinearRegression/findextremum.png" alt=""></p>
+<p>那问题就很简单了，就是直接求对 \( W, b \) 的偏导等于 \( 0 \) 的方程组。但是这是数学方法，不符合计算机思维，就好像我们解一个一元一次方程，普通方法是直接拿定义域内的值一个一个试，直到结果符合预期。当然，高级一点点的方法是可以写一个解释器，把人类计算方法程序化。显然这里不太现实，而且方程类型一变，解释器很可能就不适用了。所以我们还是采用那种机器认可的“笨”办法，想起开学时计算机导论老师评价计算机的一句话：<code>fast but stupid</code>。说明在这种情况下，我们可以接受用快来弥补其它劣势，只要计算的值一步一步靠近最终结果就能满足需求。其实说到这里，计算机变快的这些特点和现在机器学习、人工智能领域的兴起有一定关系。</p>
+<p>好了，下面开始想一个办法如何让结果慢慢趋近与极值。</p>
+<p>我们可以这样想，随机放一个球在这个平面上，等到球禁止时，它所在的位置就是极值的位置。那我们如何模仿这一过程呢？</p>
+<blockquote>
+<p>第一步：放球</p>
+</blockquote>
+<p>这个好做，就是直接随机一个在定义域内的任意位置就好了。</p>
+<blockquote>
+<p>第二步：滚动</p>
+</blockquote>
+<p>滚动的话如何去模拟是一个比较难的点，但是仔细分析就很好理解了。你可以把自己想象成那个球，开始站在某个地方，这个地方很不稳，那么你自然反应肯定是往平整的地方去，前提是每个位置的海拔差不多。那这样就说明那些斜率越大的地方有更大的几率更快跌落谷底。这个例子有个不恰当的地方，可以思考下二次函数，这里主要是体会这种思维，而我们是可以变通的。当你有了这种斜率的思维，那就好办了，下面给出总结：<code>我们总是希望在给定步长的情况下，往水平最低的地方行进</code>。而其中要知道那个是最低，又是一个难题，计算机可没有直觉，如果数值设置不当，可能导致函数收敛过慢或者直接发散，而这些都是机器学习应该极力避免的。</p>
+<p>为了好分析问题，我们采用控制变量方法。可以看到，在损失函数中有两个变量 \( W, b \)，当 \( W \) 取某一值得时候，\( loss(n, b) \ n\ is\ a\ constant \)是一个二次函数。</p>
+<p><img src="/2018/02/11/MLLinearRegression/quadraticFunction.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line"></div><div class="line">N = <span class="number">200</span></div><div class="line"></div><div class="line">X = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N * <span class="number">2</span>)</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.1</span>, X.shape)</div><div class="line">Y = X * <span class="number">0.5</span> + <span class="number">3</span> + noise</div><div class="line"></div><div class="line">W = <span class="number">1</span></div><div class="line">b = np.linspace(<span class="number">-5</span>, <span class="number">6</span>, N)</div><div class="line"></div><div class="line">h = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> b:</div><div class="line">    h.append(np.sum(np.square(Y - (X * W + i))))</div><div class="line"></div><div class="line">plt.plot(b, h)</div><div class="line"></div><div class="line">plt.savefig(<span class="string">"quadraticFunction.png"</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>我们来直接看吴恩达老师的课件吧，有点不想做图了。。。</p>
+<p><img src="/2018/02/11/MLLinearRegression/wuenda_1.png" alt=""></p>
+<p>现在我们可以引出更新规则了，在这里求解最小值，对于一元函数来说就是求导，对于多元函数就是求偏导了。很明显，当斜率为正的时候，我们要往负反向走，反之往正方向走。所以我们可以加上一个关于斜率呈反比的函数来跟新值，至于更新力度也就是前面说的一次走多远就是学习率的设定了。而且离极值点越远，斜率绝对值越大，步子迈得越大，符合更新逻辑。</p>
+<p>$$<br>\begin{aligned}<br>&amp;W:=W-\frac{\alpha}{2n}\frac{\partial\,loss(W)}{\partial\,W} = W + \frac{ \alpha}{n}\sum_{i = 1}^{n}{x_i*(y_i-h(x_i))}\\<br>&amp;b:=b-\frac{\alpha}{2n}\frac{\partial\,loss(b)}{\partial\,b} = b + \frac{ \alpha}{n}\sum_{i = 0}^{n}{y_i-h(x_i)}<br>\end{aligned}<br>$$</p>
+<p>这里可能有点思维跳跃的是除了一个 \( 2n \)，可以从数据量的角度思考，也可以从更新斜率的角度思考，因为在更新权重中，我们不仅仅只是计算一个点的斜率，如果直接求和必定会导致权重过大从而最终结果是发散的，这点大家可以自己改改代码试试。好了，既然基本思路都出来了，那就写代码实现吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">N = <span class="number">200</span></div><div class="line"></div><div class="line">X = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N * <span class="number">2</span>)</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.5</span>, X.shape)</div><div class="line">Y = X * <span class="number">0.5</span> + <span class="number">3</span> + noise</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcLoss</span><span class="params">(train_X, train_Y, W, b)</span>:</span></div><div class="line">    <span class="keyword">return</span> np.sum(np.square(train_Y - (train_X * W + b)))</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(train_X, train_Y, W, b, learningrate=<span class="number">0.001</span>, trainingtimes=<span class="number">500</span>)</span>:</span></div><div class="line">    <span class="keyword">global</span> loss</div><div class="line">    <span class="keyword">global</span> W_trace</div><div class="line">    <span class="keyword">global</span> b_trace</div><div class="line">    size = train_Y.size</div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(trainingtimes):</div><div class="line">        prediction = W * train_X + b</div><div class="line">        tempW = W + learningrate * np.sum(train_X * (train_Y - prediction)) / size</div><div class="line">        tempb = b + learningrate * np.sum(train_Y - prediction) / size</div><div class="line">        W = tempW</div><div class="line">        b = tempb</div><div class="line">        loss.append(calcLoss(train_X, train_Y, W, b))</div><div class="line">        W_trace.append(W)</div><div class="line">        b_trace.append(b)</div><div class="line"></div><div class="line"></div><div class="line">Training_Times = <span class="number">100</span></div><div class="line">Learning_Rate = <span class="number">0.002</span></div><div class="line"></div><div class="line">loss = []</div><div class="line">W_trace = [<span class="number">-1</span>]</div><div class="line">b_trace = [<span class="number">1</span>]</div><div class="line">gradientDescent(X, Y, W_trace[<span class="number">0</span>], b_trace[<span class="number">0</span>], learningrate=Learning_Rate, trainingtimes=Training_Times)</div><div class="line">print(W_trace[<span class="number">-1</span>], b_trace[<span class="number">-1</span>])</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">plt.title(<span class="string">r'$loss\ function\ change\ tendency$'</span>)</div><div class="line">plt.xlabel(<span class="string">r'$learning\ times$'</span>)</div><div class="line">plt.ylabel(<span class="string">r'$loss\ value$'</span>)</div><div class="line">plt.plot(np.linspace(<span class="number">1</span>, Training_Times, Training_Times), loss)</div><div class="line">plt.savefig(<span class="string">"gradientDescentLR.png"</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="/2018/02/11/MLLinearRegression/gradientDescentLR.png" alt=""></p>
+<p>到这里，我们基本手写实现了一元变量的线性回归，这里为了方便训练次数取得比较少，只有 \( 100 \) 次，这远远不够，我测试了一下，大概达到 \( 10000 \) 次训练效果就比较好了。当然也可以调整学习率，初始值……读者可以自行尝试。</p>
+<h2 id="3-多元线性回归"><a href="#3-多元线性回归" class="headerlink" title="3 多元线性回归"></a>3 多元线性回归</h2><p>这里我们先拆分理解多元代表多个自变量，线性代表自变量之间满足齐次性和可加性，回归就是一种方法的表述。一元好办，我们可以通过各种工具实现可视化，但是多元的表述就有了一些困难，特别是在高维线性空间我们想象不出来。所以我们就必须抽象出来，使用数学符号代替那些复杂的变量。</p>
+<p>可能你已经想到了，对，没错，我们要使用线性代数了。如果之前没有一点基础的话，可以稍微花点时间在知乎上了解下线性代数是做什么的就好了，这里只涉及线性代数的基础认识应用。</p>
+<p>假如当我们有三个自变量 \( X_1, X_2, X_3 \) 和一个因变量 \( Y \)，且符合线性关系。那么就会有以下方程成立：</p>
+<p>$$<br>w_1X_1 + w_2X_2 + w_3X_3 + b = Y<br>$$</p>
+<p>再假设我们有四组数据\((x_1, x_2, x_3, y): \{(1,1,1,1), (1,1,2,3), (1,3,4,1), (3,2,4,2) \} \)，那么有：</p>
+<p>$$<br>1w_1 + 1w_2 + 1w_3 + b = 1 \\<br>1w_1 + 1w_2 + 2w_3 + b = 3 \\<br>1w_1 + 3w_2 + 4w_3 + b = 1 \\<br>3w_1 + 2w_2 + 4w_3 + b = 2<br>$$</p>
+<p>于是我们可以抽象以下，写成矩阵的形式：</p>
+<p>$$<br>\begin{bmatrix}<br>1 &amp; 1 &amp; 1 &amp; 1 \\<br>1 &amp; 1 &amp; 2 &amp; 1 \\<br>1 &amp; 3 &amp; 4 &amp; 1 \\<br>3 &amp; 2 &amp; 4 &amp; 1<br>\end{bmatrix} * \begin{bmatrix}<br>w_1 \\<br>w_2 \\<br>w_3 \\ b \end{bmatrix} = \begin{bmatrix}<br>1 \\<br>3 \\<br>1 \\<br>2<br>\end{bmatrix}<br>$$</p>
+<p>再抽象：</p>
+<p>$$<br>XW = Y<br>$$</p>
+<p>其中</p>
+<p>$$<br>X =<br>\begin{bmatrix}<br>X_1 &amp; X_2 &amp; X_3 &amp; 1<br>\end{bmatrix}<br>and\ X_i =<br>\begin{bmatrix}<br>x_{1i} \\<br>x_{2i} \\<br>\ldots \\<br>x_{ni}<br>\end{bmatrix} \\<br>W =<br>\begin{bmatrix}<br>w_1 \\<br>w_2 \\<br>w_3 \\<br>b<br>\end{bmatrix}<br>$$</p>
+<p>我们的目的是求解 \( W \)，也就是把方程 \(XW = Y \) 中的 \( W \) 解出来。直接解个方程就能得到我们想要的效果，太好了，马上开始：</p>
+<p>$$<br>\begin{aligned}<br>&amp;XW = Y \\<br>\Longrightarrow &amp;X^TXW = X^TY \\<br>\Longrightarrow &amp;(X^TX)^{-1}X^TXW = (X^TX)^{-1}X^TY \\<br>\Longrightarrow &amp;W = (X^TX)^{-1}X^TY<br>\end{aligned}<br>$$</p>
+<p>如果这里不理解的话，我简单说一下，求逆运算必须是形如 \( \mathbb{R}^{n*n} \) 的形式，也就是行和列要相等。为什么这样呢？我的理解是矩阵是对一个线性空间到另一个线性空间的映射，所以如果一个矩阵的秩小于行数，也就是里面有线性相关的向量，在对线性空间进行变换时，可能进行降维影响，也就是造成某个维度塌缩，这种影响是不可逆的，所以这种矩阵是没有逆矩阵进行恢复的。如果要从一个向量映射到另一个向量，还有从另一个向量映射回来的话，这个矩阵必须有逆矩阵也就是满秩的。还有个东西叫奇异矩阵，感兴趣的可以了解一下。</p>
+<p>回到主线，直接求解方程吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">X1 = np.asarray([<span class="number">2104</span>, <span class="number">1416</span>, <span class="number">1534</span>, <span class="number">852</span>]).reshape(<span class="number">4</span>, <span class="number">1</span>)</div><div class="line">X2 = np.asarray([<span class="number">5</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>]).reshape(<span class="number">4</span>, <span class="number">1</span>)</div><div class="line">X3 = np.asarray([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]).reshape(<span class="number">4</span>, <span class="number">1</span>)</div><div class="line"></div><div class="line">X = np.mat(np.column_stack((X1, X2, X3, np.ones(shape=(<span class="number">4</span>, <span class="number">1</span>)))))</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.1</span>, X1.shape)</div><div class="line">Y = np.mat(<span class="number">2.5</span> * X1 - X2 + <span class="number">2</span> * X3 + <span class="number">4</span> + noise)</div><div class="line">YTwin = np.mat(<span class="number">2.5</span> * X1 - X2 + <span class="number">2</span> * X3 + <span class="number">4</span>)</div><div class="line"></div><div class="line">W = (X.T * X).I * X.T * Y</div><div class="line">WTWin = (X.T * X).I * X.T * YTwin</div><div class="line">print(W, <span class="string">"\n"</span>, WTWin)</div><div class="line"></div><div class="line"><span class="comment"># output:</span></div><div class="line"><span class="comment"># [[ 2.50043958]</span></div><div class="line"><span class="comment">#  [-1.16868808]</span></div><div class="line"><span class="comment">#  [ 1.79213736]</span></div><div class="line"><span class="comment">#  [ 4.27637958]] </span></div><div class="line"><span class="comment">#  [[ 2.5]</span></div><div class="line"><span class="comment">#  [-1. ]</span></div><div class="line"><span class="comment">#  [ 2. ]</span></div><div class="line"><span class="comment">#  [ 4. ]]</span></div></pre></td></tr></table></figure>
+<p><img src="/2018/02/11/MLLinearRegression/wuenda_2.png" alt=""></p>
+<p>这里我们采用吴恩达老师的房子数据，自己生成的数据之间有太大的相似性，算出的结果误差太大。</p>
+<p>我们基本可以计算多元线性回归，但是一点也体现不出机器学习中学习这个词，当然我们可以自己利用前面给出的例子利用 \( loss \) 函数求解。这里我们借助 \( TensorFlow \) 帮我们完成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line">N = <span class="number">1000</span></div><div class="line">train_X1 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line">train_X2 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line">train_X3 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line">train_X4 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># train_X = np.column_stack((train_X1, np.ones(shape=(N, 1))))</span></div><div class="line">train_X = np.column_stack((train_X1, train_X2, train_X3, train_X4, np.ones(shape=(N, <span class="number">1</span>))))</div><div class="line"></div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.5</span>, train_X1.shape)</div><div class="line"><span class="comment"># train_Y = 3 * train_X1 + 4</span></div><div class="line">train_Y = train_X1 + train_X2 + train_X3 + train_X4 + <span class="number">4</span> + noise</div><div class="line"></div><div class="line">length = len(train_X[<span class="number">0</span>])</div><div class="line"></div><div class="line">X = tf.placeholder(tf.float32, [<span class="keyword">None</span>, length], name=<span class="string">"X"</span>)</div><div class="line">Y = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">1</span>], name=<span class="string">"Y"</span>)</div><div class="line"></div><div class="line">W = tf.Variable(np.random.random(size=length).reshape(length, <span class="number">1</span>), dtype=tf.float32, name=<span class="string">"weight"</span>)</div><div class="line"></div><div class="line">activation = tf.matmul(X, W)</div><div class="line">learning_rate = <span class="number">0.006</span></div><div class="line"></div><div class="line">loss = tf.reduce_mean(tf.reduce_sum(tf.pow(activation - Y, <span class="number">2</span>), reduction_indices=[<span class="number">1</span>]))</div><div class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</div><div class="line"></div><div class="line">training_epochs = <span class="number">2000</span></div><div class="line">display_step = <span class="number">100</span></div><div class="line"></div><div class="line">loss_trace = []</div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</div><div class="line">        sess.run(optimizer, feed_dict=&#123;X: train_X, Y: train_Y&#125;)</div><div class="line">        temp_loss = sess.run(loss, feed_dict=&#123;X: train_X, Y: train_Y&#125;)</div><div class="line">        loss_trace.append(temp_loss)</div><div class="line">        <span class="keyword">if</span> <span class="number">1</span> == epoch % display_step:</div><div class="line">            print(<span class="string">'epoch: %4s'</span>%epoch, <span class="string">'\tloss: %s'</span>%temp_loss)</div><div class="line">    print(<span class="string">"\nOptimization Finished!"</span>)</div><div class="line">    print(<span class="string">"\nloss = "</span>, loss_trace[<span class="number">-1</span>], <span class="string">"\nWeight =\n"</span>, sess.run(W, feed_dict=&#123;X: train_X, Y: train_Y&#125;))</div><div class="line"></div><div class="line"></div><div class="line">plt.plot(np.linspace(<span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>), loss_trace[:<span class="number">100</span>])</div><div class="line">plt.savefig(<span class="string">"tensorflowLR.png"</span>)</div><div class="line">plt.show()</div><div class="line"></div><div class="line"><span class="comment"># output:</span></div><div class="line"><span class="comment"># epoch:    1 	loss: 118.413925</span></div><div class="line"><span class="comment"># epoch:  101 	loss: 1.4500043</span></div><div class="line"><span class="comment"># epoch:  201 	loss: 1.0270562</span></div><div class="line"><span class="comment"># epoch:  301 	loss: 0.75373846</span></div><div class="line"><span class="comment"># epoch:  401 	loss: 0.5771168</span></div><div class="line"><span class="comment"># epoch:  501 	loss: 0.46298113</span></div><div class="line"><span class="comment"># epoch:  601 	loss: 0.38922414</span></div><div class="line"><span class="comment"># epoch:  701 	loss: 0.34156123</span></div><div class="line"><span class="comment"># epoch:  801 	loss: 0.31076077</span></div><div class="line"><span class="comment"># epoch:  901 	loss: 0.29085675</span></div><div class="line"><span class="comment"># epoch: 1001 	loss: 0.27799463</span></div><div class="line"><span class="comment"># epoch: 1101 	loss: 0.26968285</span></div><div class="line"><span class="comment"># epoch: 1201 	loss: 0.2643118</span></div><div class="line"><span class="comment"># epoch: 1301 	loss: 0.26084095</span></div><div class="line"><span class="comment"># epoch: 1401 	loss: 0.2585978</span></div><div class="line"><span class="comment"># epoch: 1501 	loss: 0.25714833</span></div><div class="line"><span class="comment"># epoch: 1601 	loss: 0.25621164</span></div><div class="line"><span class="comment"># epoch: 1701 	loss: 0.2556064</span></div><div class="line"><span class="comment"># epoch: 1801 	loss: 0.2552152</span></div><div class="line"><span class="comment"># epoch: 1901 	loss: 0.2549625</span></div><div class="line"><span class="comment"># Optimization Finished!</span></div><div class="line"><span class="comment"># loss =  0.25480175 </span></div><div class="line"><span class="comment"># Weight =</span></div><div class="line"><span class="comment">#  [[1.0982682 ]</span></div><div class="line"><span class="comment">#  [0.9760315 ]</span></div><div class="line"><span class="comment">#  [1.0619627 ]</span></div><div class="line"><span class="comment">#  [0.87049955]</span></div><div class="line"><span class="comment">#  [3.9700394 ]]</span></div></pre></td></tr></table></figure>
+<p>这里的拟合效果不太好，不知道是不是数据的问题，因为数据增长的相似性太高，感觉可能过拟合了，如果有知道的小伙伴欢迎告知。下图可以看到 \( loss \) 早早就收敛了。</p>
+<p><img src="/2018/02/11/MLLinearRegression/tensorflowLR.png" alt=""></p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>线性回归的求解过程很直观，符合我们的理解。对于这个问题有一个先入为主的观点就是数据一定是拟合成线性的，因为这里讲的是线性回归。当然，数据分布不是线性的这个方法就不适用了，同样，如果我们看不到数据的分布，不能对模型进行预估，那只能一步一步去试探，所以机器学习开始就是选取适用于当前数据的模型，可以理解为找一个输入输出的合理映射关系，然后导入数据，构造一个能够正确评估拟合效果的损失函数，接着就是对损失函数进行最优化，这里有一个问题前面没有提及的是如果只是随机地找，其实我们不能保证找到的就是全局最优，当然一般情况下，局部最优得到的模型已经能很好的预测输出了。这只是我的个人理解啦，欢迎大家一起讨论，然后实验的代码在我的 <a href="https://github.com/mk43/machine-learning" target="_blank" rel="external">GitHub</a> 上，需要的可以自取。然后这个系列可能会继续更新，不过离下一次更新可能要点时间，因为新年快乐^_^，对了参考资料前面又给出，就不一一列举感谢了。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。对于开篇有比较多的东西想说，所以另取一章介绍一下我个人对机器学习这个领域的理解和一些基本常识介绍。如果你时间比较充裕，可以看看我&lt;code&gt;前言&lt;/code&gt;的文字介绍。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+      <category term="Python" scheme="http://fitzeng.org/tags/Python/"/>
+    
+      <category term="NumPy" scheme="http://fitzeng.org/tags/NumPy/"/>
+    
+      <category term="Matplotlib" scheme="http://fitzeng.org/tags/Matplotlib/"/>
+    
+      <category term="LinearRegression" scheme="http://fitzeng.org/tags/LinearRegression/"/>
+    
+  </entry>
   
   <entry>
     <title>Matplotlib 保存 GIF 动图</title>
@@ -2880,204 +3007,6 @@ semaphore full = <span class="number">0</span>; <span class="comment">// 计数�
       <category term="Android" scheme="http://fitzeng.org/tags/Android/"/>
     
       <category term="Android Unit Test" scheme="http://fitzeng.org/tags/Android-Unit-Test/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JavaTips</title>
-    <link href="http://fitzeng.org/2017/07/25/JavaTips/"/>
-    <id>http://fitzeng.org/2017/07/25/JavaTips/</id>
-    <published>2017-07-25T03:27:00.000Z</published>
-    <updated>2017-09-19T11:31:43.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote>
-<p>这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析. </p>
-<p>主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.</p>
-</blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>基本类型<ul>
-<li>== 和 equals</li>
-<li>String, StringBuffer 和 StringBuilder</li>
-<li>Array</li>
-<li>ArrayList</li>
-<li>LinkedList</li>
-<li>Exception</li>
-<li>Collction</li>
-</ul>
-</li>
-<li>基本概念<ul>
-<li>类变量和局部变量</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="和-equals"><a href="#和-equals" class="headerlink" title="== 和 equals"></a>== 和 equals</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer a = <span class="number">100</span>;</div><div class="line">Integer b = <span class="number">100</span>;</div><div class="line">System.out.println(a == b);</div><div class="line"></div><div class="line">Integer c = <span class="number">1000</span>;</div><div class="line">Integer d = <span class="number">1000</span>;</div><div class="line">System.out.println(c == d);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>其中 == 结果不一致是因为 Integer 类对在 -128 到 127 之间的数值进行了缓存. </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">Integer e = new Integer(100);</div><div class="line">Integer f = new Integer(100);</div><div class="line">System.out.println(e == f);</div><div class="line"></div><div class="line">Output:</div><div class="line">false</div></pre></td></tr></table></figure>
-<blockquote>
-<p><code>Integer a = 100;</code>涉及到自动装箱问题, 反编译之后就是 <code>Integer a = Integer.valueOf(100);</code>.<br>而<code>Integer e = new Integer(100);</code> 反编译不改变. 所以在 a 和 e 这两个对象引用的堆区域一个是通过<code>valueOf()</code>获得, 另一个是通过<code>new</code>获得. 毫无疑问 <code>new</code> 出来的肯定不会是同一块区域. 而 <code>valueOf()</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">&gt; 	<span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</div><div class="line">&gt; 		<span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</div><div class="line">&gt; 	<span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</div><div class="line">&gt; &#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>这里就解释了前面的<code>Integer 类对在 -128 到 127 之间的数值进行了缓存</code>. 详情见源码.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">TestCode:</div><div class="line">String s1 = <span class="string">"1234"</span>;</div><div class="line">String s2 = <span class="string">"1234"</span>;</div><div class="line">System.out.println(s1 == s2);</div><div class="line"></div><div class="line">String s3 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">String s4 = <span class="keyword">new</span> String(<span class="string">"1234"</span>);</div><div class="line">System.out.println(s3 == s4);</div><div class="line"></div><div class="line">Output:</div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div></pre></td></tr></table></figure>
-<p>这个比较简单, 就是在 JVM 中存在常量池. 还有要注意的是两种初始化方式的不同才造成了这个差异. </p>
-<p>下面分析 equals ,详情见参考.这里只提几点易混淆的地方.</p>
-<blockquote>
-<p>equals 是属于类方法, 而且是 Object 类的. 而 Object 类的实现就是判断引用是否相等.</p>
-<p>而对于某个类来说判断相等一般是判断里面的某些成员变量是否相等. 所以就要重写父类方法.这里要区分重写和重载.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; 重写:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;&#125;</div><div class="line">&gt; 重载:</div><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(MyObject myObj)</span> </span>&#123;&#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>所以要想实现自己想要的 equals 方法应该是重写.</p>
-<p>其实这里面的主要内容就是了解了自动拆装箱和 JVM 内分配就不难了.</p>
-<ul>
-<li>第一类：整型 byte Byte | short Short | int Integer | long Long</li>
-<li>第二类：浮点型 float Float | double Double</li>
-<li>第三类：逻辑型 boolean Boolean</li>
-<li>第四类：字符型 char Character</li>
-</ul>
-<p>在支持 equals 特性的时候, 往往还要支持 hashCode </p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27562748" target="_blank" rel="external">让人疑惑的Java代码</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27570687" target="_blank" rel="external">Java字符串那些事儿</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27573287" target="_blank" rel="external">说说Java里的equals（上）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27657548" target="_blank" rel="external">Java自动装箱/拆箱</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27741179" target="_blank" rel="external">说说Java里的equals（中）</a></li>
-</ul>
-<h4 id="String-StringBuffer-和-StringBuilder"><a href="#String-StringBuffer-和-StringBuilder" class="headerlink" title="String, StringBuffer 和 StringBuilder"></a>String, StringBuffer 和 StringBuilder</h4><ul>
-<li>String</li>
-</ul>
-<blockquote>
-<p>final 类.</p>
-<p>String s=”sss”;    会在静态常量池中查找</p>
-<p>String s = new String(“sss”);    直接在堆中开辟内存</p>
-<p>使用场合: 在字符串不经常变化的场景中可以使用 String 类, 如: 常量的声明, 少量的变量运算等</p>
-</blockquote>
-<ul>
-<li>StringBuffer</li>
-</ul>
-<blockquote>
-<p>线程安全, 可自身修改</p>
-<p>必须通过构造函数初始化</p>
-<p>使用场合: 在频繁进行字符串的运算(拼接, 替换, 删除等), 并且运行在多线程的环境中, 则可以考虑使用 StringBuffer, 例如 XML 解析, HTTP 参数解析和封装等</p>
-</blockquote>
-<ul>
-<li>StringBuilder</li>
-</ul>
-<blockquote>
-<p>线程不安全, 操作最快</p>
-<p>使用场合: 和 StringBuffer 类似的不要求线程安全场景, 效率比 StringBuffer 高</p>
-</blockquote>
-<h4 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h4><blockquote>
-<p>是一个在 JVM 中的特殊对象, 可以使用反射查看</p>
-<p>拷贝时注意深拷贝还是浅拷贝</p>
-</blockquote>
-<h4 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h4><blockquote>
-<p>首先要知道的是这是一个 Array 所以在进行修改操作时十分不方便的. 特别是增加或者删除元素, 扩大存储等方式相比链表结构来说麻烦太多.知道这个为出发点, 对于源码实现的理解就理所当然了.<br>应该了解的几个点</p>
-<ul>
-<li>在 ArrayList 中从有元素开始就会分配 10 的对象大小容量. 接下来以 <code>currentSize * 1.5</code> 的大小扩容.</li>
-<li>对于修改空间是以 System.arraycopy() 形式修改的. 为了提高效率采用的是 native 方法.</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src, </span></span></div><div class="line">&gt; 		<span class="keyword">int</span>  srcPos, Object dest, <span class="keyword">int</span> destPos, <span class="keyword">int</span> length);</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>详情源码分析见参考.</p>
-</blockquote>
-<p>参考: </p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/27873515" target="_blank" rel="external">ArrayList初探</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27878015" target="_blank" rel="external">再探ArrayList（ArrayList的扩容）</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/27938717" target="_blank" rel="external">三顾ArrayList</a></li>
-</ul>
-<h4 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h4><blockquote>
-<p>实现方式是双向链表</p>
-</blockquote>
-<h4 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h4><p><img src="http://img.my.csdn.net/uploads/201212/02/1354439580_6933.PNG" alt=""></p>
-<ul>
-<li>尽可能的减小try块</li>
-<li>保证所有资源都被正确释放, 充分运用finally关键词</li>
-<li>catch语句应当尽量指定具体的异常类型, 而不应该指定涵盖范围太广的 Exception 类. 不要一个Exception试图处理所有可能出现的异常</li>
-<li>既然捕获了异常, 就要对它进行适当的处理</li>
-<li>在异常处理模块中提供适量的错误原因信息, 组织错误信息使其易于理解和阅读</li>
-<li>不要在 finally 块中处理返回值</li>
-<li>不要在构造函数中抛出异常</li>
-</ul>
-<p>参考: </p>
-<ul>
-<li><a href="http://www.cnblogs.com/chenssy/category/525010.html" target="_blank" rel="external">树上月</a></li>
-</ul>
-<h4 id="Collction"><a href="#Collction" class="headerlink" title="Collction"></a>Collction</h4><p><img src="/2017/07/25/JavaTips/collection.jpg" alt=""></p>
-<h5 id="List-列表-可重复"><a href="#List-列表-可重复" class="headerlink" title="List 列表(可重复)"></a>List 列表(可重复)</h5><ul>
-<li>ArrayList (数组)</li>
-<li>LinkedList (链表)</li>
-</ul>
-<h5 id="Map-映射-key-value"><a href="#Map-映射-key-value" class="headerlink" title="Map 映射(key-value)"></a>Map 映射(key-value)</h5><ul>
-<li>HashMap</li>
-</ul>
-<blockquote>
-<p>extends AbstractMap<k,v> implements Map<k,v></k,v></k,v></p>
-<p>table 数组 + Enter 节点</p>
-<p>默认初始容量(16) 默认加载因子(0.75)</p>
-<p>查找采用 static int indexFor(int h, int length) { return h &amp; (length-1); } 提高效率, 而不是取模.</p>
-</blockquote>
-<ul>
-<li>TreeMap</li>
-</ul>
-<blockquote>
-<p>extends AbstractMap<k,v> implements NavigableMap<k,v> </k,v></k,v></p>
-<p>interface NavigableMap<k,v> extends SortedMap<k,v></k,v></k,v></p>
-<p>interface SortedMap<k,v> extends Map<k,v></k,v></k,v></p>
-<p>红黑树 + Enter 节点</p>
-</blockquote>
-<h5 id="Set-集合-不能重复"><a href="#Set-集合-不能重复" class="headerlink" title="Set 集合(不能重复)"></a>Set 集合(不能重复)</h5><ul>
-<li>HashSet</li>
-</ul>
-<blockquote>
-<p>extends AbstractSet<e> implements Set<e></e></e></p>
-<p>内部基于 HashMap 实现 </p>
-</blockquote>
-<ul>
-<li>TreeSet</li>
-</ul>
-<blockquote>
-<p>extends AbstractSet<e> implements NavigableSet<e> </e></e></p>
-<p>interface NavigableSet<e> extends SortedSet<e></e></e></p>
-<p>interface SortedSet<e> extends Set<e></e></e></p>
-<p>基于 TreeMap 实现</p>
-</blockquote>
-<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h4 id="类变量和局部变量"><a href="#类变量和局部变量" class="headerlink" title="类变量和局部变量"></a>类变量和局部变量</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> a;</div><div class="line">	System.out.println(a);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>类变量：准备阶段、初始化阶段都可赋值。<br>局部变量：准备阶段不能检测，初始化阶段未初始化不能使用。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;这篇文章主要是个人在二次学习 Java 过程中, 对 Java 的一些常见特性误解的分析. &lt;/p&gt;
-&lt;p&gt;主要是以测试代码加测试结果的形式来记录. 这里只做收集整理和简单分析, 详情请见参考链接, 支持原作者.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;基本类型&lt;ul&gt;
-&lt;li&gt;== 和 equals&lt;/li&gt;
-&lt;li&gt;String, StringBuffer 和 StringBuilder&lt;/li&gt;
-&lt;li&gt;Array&lt;/li&gt;
-&lt;li&gt;ArrayList&lt;/li&gt;
-&lt;li&gt;LinkedList&lt;/li&gt;
-&lt;li&gt;Exception&lt;/li&gt;
-&lt;li&gt;Collction&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;基本概念&lt;ul&gt;
-&lt;li&gt;类变量和局部变量&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://fitzeng.org/tags/Java/"/>
-    
-      <category term="Tips" scheme="http://fitzeng.org/tags/Tips/"/>
     
   </entry>
   

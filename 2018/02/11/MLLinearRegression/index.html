@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://fitzeng.org">
+  <title>机器学习基本算法之线性回归 | Fitzeng</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。对于开篇有比较多的东西想说，所以另取一章介绍一下我个人对机器学习这个领域的理解和一些基本常识介绍。如果你时间比较充裕，可以看看我前言的文字介绍。">
+<meta name="keywords" content="Math,MachineLearning,Python,NumPy,Matplotlib,LinearRegression">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习基本算法之线性回归">
+<meta property="og:url" content="http://fitzeng.org/2018/02/11/MLLinearRegression/index.html">
+<meta property="og:site_name" content="Fitzeng">
+<meta property="og:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。对于开篇有比较多的东西想说，所以另取一章介绍一下我个人对机器学习这个领域的理解和一些基本常识介绍。如果你时间比较充裕，可以看看我前言的文字介绍。">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/scattergraph.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/lossgraph.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/findextremum.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/quadraticFunction.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/wuenda_1.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/gradientDescentLR.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/wuenda_2.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/tensorflowLR.png">
+<meta property="og:updated_time" content="2018-02-12T08:50:48.613Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习基本算法之线性回归">
+<meta name="twitter:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。对于开篇有比较多的东西想说，所以另取一章介绍一下我个人对机器学习这个领域的理解和一些基本常识介绍。如果你时间比较充裕，可以看看我前言的文字介绍。">
+<meta name="twitter:image" content="http://fitzeng.org/2018/02/11/MLLinearRegression/scattergraph.png">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.234bc0.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#a0cfe4,#e8c37e);
+    }
+  </style>
+  
+
+  
+
+</head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+<div class="overlay" style="background: #01aaff"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="/img/avatar.png" class="js-avatar">
+		</a>
+		<hgroup>
+		  <h1 class="header-author"><a href="/">fitzeng</a></h1>
+		</hgroup>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">Home</a></li>
+	        
+				<li><a href="/tags/Android/">Android</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/mk43" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/3964303496/profile?topnav=1&wvr=6" title="weibo"><i class="icon-weibo"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #01aaff"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/avatar.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">fitzeng</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/mk43" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/3964303496/profile?topnav=1&wvr=6" title="weibo"><i class="icon-weibo"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 50%">
+				
+				
+					<li style="width: 50%"><a href="/">Home</a></li>
+		        
+					<li style="width: 50%"><a href="/tags/Android/">Android</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-MLLinearRegression" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      机器学习基本算法之线性回归
+    </h1>
+  
+
+        
+        <a href="/2018/02/11/MLLinearRegression/" class="archive-article-date">
+  	<time datetime="2018-02-11T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。对于开篇有比较多的东西想说，所以另取一章介绍一下我个人对机器学习这个领域的理解和一些基本常识介绍。如果你时间比较充裕，可以看看我<code>前言</code>的文字介绍。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>介绍一下个人想法</p>
+<h3 id="0-1-关于机器学习"><a href="#0-1-关于机器学习" class="headerlink" title="0.1 关于机器学习"></a>0.1 关于机器学习</h3><p>毫无疑问，机器学习现在越来越热门了，需求随着以后人工智能大爆发会持续增长。不管你是不是这个编程领域的人，都有必要了解一下机器学习是怎么回事，至少有个理性的认识，而不是觉得很神秘。但是涉及到算法数学知识是可以忽略的，只要知道，我们通过某个数学手段可以达到某个目的。比如这里要介绍的线性回归在更新权重时是依据梯度下降算法的，你可以不必知道什么是梯度下降，知道知道数学上对于求解最优化是有自己的手段的，当然如果能知道更好。由于机器学习的性质，速成基本不太可能，而且现在处于高速发展的阶段，必须保持学习的热情才能学得下去。另外，这个前期的学习成本是比较高的，在自己写代码之前，要想心里有点底，至少要对 <code>微积分</code>、<code>线性代数</code> 和 <code>概率论</code> 的应用要有点自己的理解的。所以这也是一大优势，不太容易被取代。</p>
+<h3 id="0-2-关于线性回归"><a href="#0-2-关于线性回归" class="headerlink" title="0.2 关于线性回归"></a>0.2 关于线性回归</h3><p>对于理性了解机器学习的捷径就是弄懂线性回归算法的整个流程，如果你通过这篇文章真的理解了线性回归，那么你应该就理解这句话了。当然，对于大多数阅读者篇文章的人来说，可能早就对线性回归有了自己的理解。但是我这要提的是，如果你没打算入门机器学习，阅读一下线性回归也是对自己知识面进行拓展的一个好方式，因为基本大多数人都是从这里开始的。</p>
+<h3 id="0-3-关于基础"><a href="#0-3-关于基础" class="headerlink" title="0.3 关于基础"></a>0.3 关于基础</h3><p>首先，你需要一点 \( Python \) 基础。如果没有也简单，自学一下就行。然后就是要学习一下以下工具的使用：<code>NumPy</code>，<code>Matplotlib</code>，<code>sklearn</code>，<code>TensorFlow</code>。其中部分可以参考我以前的文章。</p>
+<ul>
+<li><a href="http://fitzeng.org/2018/02/03/TensorFlowIntroduction/">从 TensorFlow 入门机器学习</a></li>
+<li><a href="http://fitzeng.org/2018/02/04/NumPyOfficialQuickstartTutorial/">NumPy 官方快速入门教程(译)</a></li>
+<li><a href="http://fitzeng.org/2018/02/07/MatplotlibDraw/">Matplotlib 基本操作</a></li>
+<li><a href="http://fitzeng.org/2018/02/08/MatplotlibGenerateGif/">Matplotlib 保存 GIF 动图</a></li>
+</ul>
+<p>有了这些你还需要一些数学基础。数学的话我觉得不要求全学会，也不太现实，可以在写代码过程中碰到什么算法再去寻求数学证明，前提是之前的知识量最好能达到看懂大多数数学知识的水平。这里我觉得知乎上有些数学科普其实挺不错的，毕竟不是数学系，所以理解主要逻辑之后持有一种拿来用的态度我觉得没问题。</p>
+<ul>
+<li><a href="http://fitzeng.org/2018/01/26/reProbabilityTheory/">机器学习之重拾概率论</a></li>
+</ul>
+<h3 id="0-4-关于参考"><a href="#0-4-关于参考" class="headerlink" title="0.4 关于参考"></a>0.4 关于参考</h3><p>这里很感谢像吴恩达、莫烦等老师的无私奉献，还有很多在网上写博客分享知识的人，让编程这个行业形成一个良好的学习风气。而且网上还流传很多优质的学习资源，所以这里我将我学习过程的参考资料整理进了 <a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a>，我想大家奉献出来就是为了别人更好的学习吧，如果有侵权之类的话，我会立即删除的。然后这一系列的文章，我会主要以吴恩达老师的课程为基础，以初学者的视角记录并且实践。</p>
+<ul>
+<li><a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">学习参考书籍</a></li>
+</ul>
+<h3 id="0-5-关于我"><a href="#0-5-关于我" class="headerlink" title="0.5 关于我"></a>0.5 关于我</h3><p>一个即将毕业的知识水平有限的本科生，所以文章肯定有很多不足之处，望大家指正。然后实验的代码在<a href="https://github.com/mk43/machine-learning/tree/master/algorithm/linear-regression" target="_blank" rel="external">这里</a>。</p>
+<h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景</h2><p>故事就不讲了，可以参考视视频。下面我讲讲这个是要解决什么问题？生活中往往有很多现象，而我们可以从现象总结出某些结论，但是，如果我们看到了一个之前从来都没有看到过的现象，我们就无法下结论了。但但是一些有经验的人可以凭借丰富的经验进行预测。就比如，一个处于懵懂期的小孩子，看见一片乌云不能推测出会下雨，而一个大人就会知道，提醒小孩出门要带伞。。。好吧，还是在讲故事，那就继续吧😂😂😂。这个例子中的大人小孩的区别在于年龄不同，见识不同，知识水平自然不同，能做出的判断也自然不同。所以要想达到对现象进行预测，那么就必须进行学习，等小孩慢慢长大了，看到蚂蚁搬家就会带伞出门了。</p>
+<p>好了，我们总结一下上面的故事：现象可以比喻成数据，结论造成的行为也是数据，唯一不同的是，是有现象得出的结论，所以可以将现象的数据看作是输入，结论的数据看成是输出。那么机器学习就是将输入数据输入进一个模型，然后将模型的输出结果和之前的“正确”结论作比对慢慢更改模型，直到这个模型对出入数据有较好的预测，那么这个模型就可以拿来用了。抽象出来的话就是找一个输入\( X \) 和输出 \( Y \)之间的映射\( f \)，使得对于绝大多数 \( X \) 都能通过映射 \( f(X) \rightarrow Y \) 较好地得到 \( Y \)。</p>
+<p>房价的例子我就不举了，直接看下面的图，看看能不能解决 \( X = 4,\ Y = ? \) </p>
+<p><img src="/2018/02/11/MLLinearRegression/scattergraph.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># coding: utf-8</div><div class="line"></div><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line"></div><div class="line">def draw():</div><div class="line">    X = np.linspace(0, 10, 50)</div><div class="line">    noise = np.random.normal(0, 0.5, X.shape)</div><div class="line">    Y = X * 0.5 + 3 + noise</div><div class="line"></div><div class="line">    plt.scatter(X, Y)</div><div class="line">    plt.savefig(&quot;scattergraph.png&quot;)</div><div class="line">    plt.show()</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    draw()</div></pre></td></tr></table></figure>
+<p>好了，你可能会发现，要想给出 \( Y \) 依赖的是直觉，所以每一个人的答案都是不一样的，而对于某些标准统一的领域（比如军事项目），这种依靠直觉判断的情况绝对不容许发生。想象在现代信息化战场上靠直觉怎么可能作战成功？</p>
+<p>所以我们需要一个模型，你可以理解成一个黑盒，把 \( X \) 喂进去，把 \( Y \) 取出来，而且无论谁，只要那个黑盒是同一个，那么每个人的输入 \( X \) 相同的话，输出 \( Y \) 就是相同的。 那么在这里这个模型大概是什么形状的呢？目前这个还是我们人为干预进行选择的。直观来说，可以这个分布看成一条很粗的线，那么我们选择线性模型来模拟分布。那么如何确定这个线性模型呢？这里就涉及到今天的主角：<a href="https://en.wikipedia.org/w/index.php?title=Linear_regression" target="_blank" rel="external">线性回归</a></p>
+<h2 id="2-一元线性回归"><a href="#2-一元线性回归" class="headerlink" title="2 一元线性回归"></a>2 一元线性回归</h2><p>先从一元线性函数开始分析，既然假设是一元线性，那么我们的拟合函数就可以定义为 \( Y = X*W + b \) 了。同样那前一个图作为例子，我们现在的目的是求出\( W, b \)，如果求出来了，给定任意一个 \( X \) 就能求出 \( Y \) 来了。</p>
+<h3 id="2-1-定义评估函数-损失函数"><a href="#2-1-定义评估函数-损失函数" class="headerlink" title="2.1 定义评估函数-损失函数"></a>2.1 定义评估函数-损失函数</h3><p>这里讲解如何求出 \( W, b \) 的整个思考过程。</p>
+<p>我们选取一个点 \( (x_0, y_0) \) 因为误差的存在，所以 \( y_0 = x_0 <em> W + b + \delta_0 \)。同理如果有很多点，那么就有以下结果，为了方便，我们取评估值 \( h(x) = x </em> W + b \)。</p>
+<p>$$<br>\delta_0 = y_0 - h(x_0) \\<br>\delta_1 = y_1 - h(x_1) \\<br>\ldots \\<br>\delta_n = y_n - h(x_n) \\\<br>$$</p>
+<p>我们的目的自然是误差越小越好，所以采用平方和的形式表达误差：</p>
+<p>$$<br>loss(W, b) = \sum_{i = 0}^{n}\delta_i^2 = \sum_{i = 0}^{n} [y_i - h(x_i)]^2<br>$$</p>
+<p>到这里，我们来看看图像是怎么样的？</p>
+<p><img src="/2018/02/11/MLLinearRegression/lossgraph.png" alt=""></p>
+<p>PS：图有点丑，实在是没办法了，设置了噪点，使得函数值跨度很大，稍微改一下就会呼脸。只能设置散点图凑合看了，望知道的小伙伴告知。好了，就不在这浪费过多时间了，直接看代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">ax = Axes3D(fig)</div><div class="line">ax.set_xlabel(<span class="string">r'$Weight$'</span>)</div><div class="line">ax.set_ylabel(<span class="string">r'$bias$'</span>)</div><div class="line">ax.set_zlabel(<span class="string">r'$loss\ value$'</span>)</div><div class="line">N = <span class="number">200</span></div><div class="line"></div><div class="line">X = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N)</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.1</span>, X.shape)</div><div class="line">Y = X * <span class="number">0.5</span> + <span class="number">3</span> + noise</div><div class="line"></div><div class="line">W = np.linspace(<span class="number">-10</span>, <span class="number">10</span>, N)</div><div class="line">b = np.linspace(<span class="number">-2</span>, <span class="number">8</span>, N)</div><div class="line"></div><div class="line">p = <span class="number">0.6</span></div><div class="line">plt.xlim(W.min() * p, W.max() * p)</div><div class="line">plt.ylim(b.min() * p, b.max() * p)</div><div class="line">ax.set_zlim(<span class="number">0</span>, <span class="number">1000</span>)</div><div class="line"></div><div class="line">h = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> W:</div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> b:</div><div class="line">        h.append(np.sum(np.square(Y - (X * i + j))))</div><div class="line"></div><div class="line">print(np.min(h))</div><div class="line">h = np.asarray(h).reshape(N, N)</div><div class="line">W, b = np.meshgrid(W, b)</div><div class="line"></div><div class="line">ax.scatter(W, b, h, c=<span class="string">'b'</span>)</div><div class="line">plt.savefig(<span class="string">"lossgraph.png"</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>现在我们通过可视化的手段知道了大概什么位置取最小值，其实我们还是没有达到目的，我们要的是 \( W, b \) 具体值。</p>
+<h3 id="2-2-求解最小值-梯度下降"><a href="#2-2-求解最小值-梯度下降" class="headerlink" title="2.2 求解最小值-梯度下降"></a>2.2 求解最小值-梯度下降</h3><p>问题被进一步细化，就是求解下面二元函数在什么时候取极值：</p>
+<p>$$<br>loss(W, b) = \sum_{i = 0}^{n}\delta_i^2 = \sum_{i = 0}^{n} [y_i - h(x_i)]^2<br>$$</p>
+<p>这时候高数就登场了，找了一张图</p>
+<p><img src="/2018/02/11/MLLinearRegression/findextremum.png" alt=""></p>
+<p>那问题就很简单了，就是直接求对 \( W, b \) 的偏导等于 \( 0 \) 的方程组。但是这是数学方法，不符合计算机思维，就好像我们解一个一元一次方程，普通方法是直接拿定义域内的值一个一个试，直到结果符合预期。当然，高级一点点的方法是可以写一个解释器，把人类计算方法程序化。显然这里不太现实，而且方程类型一变，解释器很可能就不适用了。所以我们还是采用那种机器认可的“笨”办法，想起开学时计算机导论老师评价计算机的一句话：<code>fast but stupid</code>。说明在这种情况下，我们可以接受用快来弥补其它劣势，只要计算的值一步一步靠近最终结果就能满足需求。其实说到这里，计算机变快的这些特点和现在机器学习、人工智能领域的兴起有一定关系。</p>
+<p>好了，下面开始想一个办法如何让结果慢慢趋近与极值。</p>
+<p>我们可以这样想，随机放一个球在这个平面上，等到球禁止时，它所在的位置就是极值的位置。那我们如何模仿这一过程呢？</p>
+<blockquote>
+<p>第一步：放球</p>
+</blockquote>
+<p>这个好做，就是直接随机一个在定义域内的任意位置就好了。</p>
+<blockquote>
+<p>第二步：滚动</p>
+</blockquote>
+<p>滚动的话如何去模拟是一个比较难的点，但是仔细分析就很好理解了。你可以把自己想象成那个球，开始站在某个地方，这个地方很不稳，那么你自然反应肯定是往平整的地方去，前提是每个位置的海拔差不多。那这样就说明那些斜率越大的地方有更大的几率更快跌落谷底。这个例子有个不恰当的地方，可以思考下二次函数，这里主要是体会这种思维，而我们是可以变通的。当你有了这种斜率的思维，那就好办了，下面给出总结：<code>我们总是希望在给定步长的情况下，往水平最低的地方行进</code>。而其中要知道那个是最低，又是一个难题，计算机可没有直觉，如果数值设置不当，可能导致函数收敛过慢或者直接发散，而这些都是机器学习应该极力避免的。</p>
+<p>为了好分析问题，我们采用控制变量方法。可以看到，在损失函数中有两个变量 \( W, b \)，当 \( W \) 取某一值得时候，\( loss(n, b) \ n\ is\ a\ constant \)是一个二次函数。</p>
+<p><img src="/2018/02/11/MLLinearRegression/quadraticFunction.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line"></div><div class="line">N = <span class="number">200</span></div><div class="line"></div><div class="line">X = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N * <span class="number">2</span>)</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.1</span>, X.shape)</div><div class="line">Y = X * <span class="number">0.5</span> + <span class="number">3</span> + noise</div><div class="line"></div><div class="line">W = <span class="number">1</span></div><div class="line">b = np.linspace(<span class="number">-5</span>, <span class="number">6</span>, N)</div><div class="line"></div><div class="line">h = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> b:</div><div class="line">    h.append(np.sum(np.square(Y - (X * W + i))))</div><div class="line"></div><div class="line">plt.plot(b, h)</div><div class="line"></div><div class="line">plt.savefig(<span class="string">"quadraticFunction.png"</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>我们来直接看吴恩达老师的课件吧，有点不想做图了。。。</p>
+<p><img src="/2018/02/11/MLLinearRegression/wuenda_1.png" alt=""></p>
+<p>现在我们可以引出更新规则了，在这里求解最小值，对于一元函数来说就是求导，对于多元函数就是求偏导了。很明显，当斜率为正的时候，我们要往负反向走，反之往正方向走。所以我们可以加上一个关于斜率呈反比的函数来跟新值，至于更新力度也就是前面说的一次走多远就是学习率的设定了。而且离极值点越远，斜率绝对值越大，步子迈得越大，符合更新逻辑。</p>
+<p>$$<br>\begin{aligned}<br>&amp;W:=W-\frac{\alpha}{2n}\frac{\partial\,loss(W)}{\partial\,W} = W + \frac{ \alpha}{n}\sum_{i = 1}^{n}{x_i*(y_i-h(x_i))}\\<br>&amp;b:=b-\frac{\alpha}{2n}\frac{\partial\,loss(b)}{\partial\,b} = b + \frac{ \alpha}{n}\sum_{i = 0}^{n}{y_i-h(x_i)}<br>\end{aligned}<br>$$</p>
+<p>这里可能有点思维跳跃的是除了一个 \( 2n \)，可以从数据量的角度思考，也可以从更新斜率的角度思考，因为在更新权重中，我们不仅仅只是计算一个点的斜率，如果直接求和必定会导致权重过大从而最终结果是发散的，这点大家可以自己改改代码试试。好了，既然基本思路都出来了，那就写代码实现吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">N = <span class="number">200</span></div><div class="line"></div><div class="line">X = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N * <span class="number">2</span>)</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.5</span>, X.shape)</div><div class="line">Y = X * <span class="number">0.5</span> + <span class="number">3</span> + noise</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcLoss</span><span class="params">(train_X, train_Y, W, b)</span>:</span></div><div class="line">    <span class="keyword">return</span> np.sum(np.square(train_Y - (train_X * W + b)))</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(train_X, train_Y, W, b, learningrate=<span class="number">0.001</span>, trainingtimes=<span class="number">500</span>)</span>:</span></div><div class="line">    <span class="keyword">global</span> loss</div><div class="line">    <span class="keyword">global</span> W_trace</div><div class="line">    <span class="keyword">global</span> b_trace</div><div class="line">    size = train_Y.size</div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(trainingtimes):</div><div class="line">        prediction = W * train_X + b</div><div class="line">        tempW = W + learningrate * np.sum(train_X * (train_Y - prediction)) / size</div><div class="line">        tempb = b + learningrate * np.sum(train_Y - prediction) / size</div><div class="line">        W = tempW</div><div class="line">        b = tempb</div><div class="line">        loss.append(calcLoss(train_X, train_Y, W, b))</div><div class="line">        W_trace.append(W)</div><div class="line">        b_trace.append(b)</div><div class="line"></div><div class="line"></div><div class="line">Training_Times = <span class="number">100</span></div><div class="line">Learning_Rate = <span class="number">0.002</span></div><div class="line"></div><div class="line">loss = []</div><div class="line">W_trace = [<span class="number">-1</span>]</div><div class="line">b_trace = [<span class="number">1</span>]</div><div class="line">gradientDescent(X, Y, W_trace[<span class="number">0</span>], b_trace[<span class="number">0</span>], learningrate=Learning_Rate, trainingtimes=Training_Times)</div><div class="line">print(W_trace[<span class="number">-1</span>], b_trace[<span class="number">-1</span>])</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">plt.title(<span class="string">r'$loss\ function\ change\ tendency$'</span>)</div><div class="line">plt.xlabel(<span class="string">r'$learning\ times$'</span>)</div><div class="line">plt.ylabel(<span class="string">r'$loss\ value$'</span>)</div><div class="line">plt.plot(np.linspace(<span class="number">1</span>, Training_Times, Training_Times), loss)</div><div class="line">plt.savefig(<span class="string">"gradientDescentLR.png"</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="/2018/02/11/MLLinearRegression/gradientDescentLR.png" alt=""></p>
+<p>到这里，我们基本手写实现了一元变量的线性回归，这里为了方便训练次数取得比较少，只有 \( 100 \) 次，这远远不够，我测试了一下，大概达到 \( 10000 \) 次训练效果就比较好了。当然也可以调整学习率，初始值……读者可以自行尝试。</p>
+<h2 id="3-多元线性回归"><a href="#3-多元线性回归" class="headerlink" title="3 多元线性回归"></a>3 多元线性回归</h2><p>这里我们先拆分理解多元代表多个自变量，线性代表自变量之间满足齐次性和可加性，回归就是一种方法的表述。一元好办，我们可以通过各种工具实现可视化，但是多元的表述就有了一些困难，特别是在高维线性空间我们想象不出来。所以我们就必须抽象出来，使用数学符号代替那些复杂的变量。</p>
+<p>可能你已经想到了，对，没错，我们要使用线性代数了。如果之前没有一点基础的话，可以稍微花点时间在知乎上了解下线性代数是做什么的就好了，这里只涉及线性代数的基础认识应用。</p>
+<p>假如当我们有三个自变量 \( X_1, X_2, X_3 \) 和一个因变量 \( Y \)，且符合线性关系。那么就会有以下方程成立：</p>
+<p>$$<br>w_1X_1 + w_2X_2 + w_3X_3 + b = Y<br>$$</p>
+<p>再假设我们有四组数据\((x_1, x_2, x_3, y): \{(1,1,1,1), (1,1,2,3), (1,3,4,1), (3,2,4,2) \} \)，那么有：</p>
+<p>$$<br>1w_1 + 1w_2 + 1w_3 + b = 1 \\<br>1w_1 + 1w_2 + 2w_3 + b = 3 \\<br>1w_1 + 3w_2 + 4w_3 + b = 1 \\<br>3w_1 + 2w_2 + 4w_3 + b = 2<br>$$</p>
+<p>于是我们可以抽象以下，写成矩阵的形式：</p>
+<p>$$<br>\begin{bmatrix}<br>1 &amp; 1 &amp; 1 &amp; 1 \\<br>1 &amp; 1 &amp; 2 &amp; 1 \\<br>1 &amp; 3 &amp; 4 &amp; 1 \\<br>3 &amp; 2 &amp; 4 &amp; 1<br>\end{bmatrix} * \begin{bmatrix}<br>w_1 \\<br>w_2 \\<br>w_3 \\ b \end{bmatrix} = \begin{bmatrix}<br>1 \\<br>3 \\<br>1 \\<br>2<br>\end{bmatrix}<br>$$</p>
+<p>再抽象：</p>
+<p>$$<br>XW = Y<br>$$</p>
+<p>其中</p>
+<p>$$<br>X =<br>\begin{bmatrix}<br>X_1 &amp; X_2 &amp; X_3 &amp; 1<br>\end{bmatrix}<br>and\ X_i =<br>\begin{bmatrix}<br>x_{1i} \\<br>x_{2i} \\<br>\ldots \\<br>x_{ni}<br>\end{bmatrix} \\<br>W =<br>\begin{bmatrix}<br>w_1 \\<br>w_2 \\<br>w_3 \\<br>b<br>\end{bmatrix}<br>$$</p>
+<p>我们的目的是求解 \( W \)，也就是把方程 \(XW = Y \) 中的 \( W \) 解出来。直接解个方程就能得到我们想要的效果，太好了，马上开始：</p>
+<p>$$<br>\begin{aligned}<br>&amp;XW = Y \\<br>\Longrightarrow &amp;X^TXW = X^TY \\<br>\Longrightarrow &amp;(X^TX)^{-1}X^TXW = (X^TX)^{-1}X^TY \\<br>\Longrightarrow &amp;W = (X^TX)^{-1}X^TY<br>\end{aligned}<br>$$</p>
+<p>如果这里不理解的话，我简单说一下，求逆运算必须是形如 \( \mathbb{R}^{n*n} \) 的形式，也就是行和列要相等。为什么这样呢？我的理解是矩阵是对一个线性空间到另一个线性空间的映射，所以如果一个矩阵的秩小于行数，也就是里面有线性相关的向量，在对线性空间进行变换时，可能进行降维影响，也就是造成某个维度塌缩，这种影响是不可逆的，所以这种矩阵是没有逆矩阵进行恢复的。如果要从一个向量映射到另一个向量，还有从另一个向量映射回来的话，这个矩阵必须有逆矩阵也就是满秩的。还有个东西叫奇异矩阵，感兴趣的可以了解一下。</p>
+<p>回到主线，直接求解方程吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">X1 = np.asarray([<span class="number">2104</span>, <span class="number">1416</span>, <span class="number">1534</span>, <span class="number">852</span>]).reshape(<span class="number">4</span>, <span class="number">1</span>)</div><div class="line">X2 = np.asarray([<span class="number">5</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>]).reshape(<span class="number">4</span>, <span class="number">1</span>)</div><div class="line">X3 = np.asarray([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]).reshape(<span class="number">4</span>, <span class="number">1</span>)</div><div class="line"></div><div class="line">X = np.mat(np.column_stack((X1, X2, X3, np.ones(shape=(<span class="number">4</span>, <span class="number">1</span>)))))</div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.1</span>, X1.shape)</div><div class="line">Y = np.mat(<span class="number">2.5</span> * X1 - X2 + <span class="number">2</span> * X3 + <span class="number">4</span> + noise)</div><div class="line">YTwin = np.mat(<span class="number">2.5</span> * X1 - X2 + <span class="number">2</span> * X3 + <span class="number">4</span>)</div><div class="line"></div><div class="line">W = (X.T * X).I * X.T * Y</div><div class="line">WTWin = (X.T * X).I * X.T * YTwin</div><div class="line">print(W, <span class="string">"\n"</span>, WTWin)</div><div class="line"></div><div class="line"><span class="comment"># output:</span></div><div class="line"><span class="comment"># [[ 2.50043958]</span></div><div class="line"><span class="comment">#  [-1.16868808]</span></div><div class="line"><span class="comment">#  [ 1.79213736]</span></div><div class="line"><span class="comment">#  [ 4.27637958]] </span></div><div class="line"><span class="comment">#  [[ 2.5]</span></div><div class="line"><span class="comment">#  [-1. ]</span></div><div class="line"><span class="comment">#  [ 2. ]</span></div><div class="line"><span class="comment">#  [ 4. ]]</span></div></pre></td></tr></table></figure>
+<p><img src="/2018/02/11/MLLinearRegression/wuenda_2.png" alt=""></p>
+<p>这里我们采用吴恩达老师的房子数据，自己生成的数据之间有太大的相似性，算出的结果误差太大。</p>
+<p>我们基本可以计算多元线性回归，但是一点也体现不出机器学习中学习这个词，当然我们可以自己利用前面给出的例子利用 \( loss \) 函数求解。这里我们借助 \( TensorFlow \) 帮我们完成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line">N = <span class="number">1000</span></div><div class="line">train_X1 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line">train_X2 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line">train_X3 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line">train_X4 = np.linspace(<span class="number">1</span>, <span class="number">10</span>, N).reshape(N, <span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># train_X = np.column_stack((train_X1, np.ones(shape=(N, 1))))</span></div><div class="line">train_X = np.column_stack((train_X1, train_X2, train_X3, train_X4, np.ones(shape=(N, <span class="number">1</span>))))</div><div class="line"></div><div class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.5</span>, train_X1.shape)</div><div class="line"><span class="comment"># train_Y = 3 * train_X1 + 4</span></div><div class="line">train_Y = train_X1 + train_X2 + train_X3 + train_X4 + <span class="number">4</span> + noise</div><div class="line"></div><div class="line">length = len(train_X[<span class="number">0</span>])</div><div class="line"></div><div class="line">X = tf.placeholder(tf.float32, [<span class="keyword">None</span>, length], name=<span class="string">"X"</span>)</div><div class="line">Y = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">1</span>], name=<span class="string">"Y"</span>)</div><div class="line"></div><div class="line">W = tf.Variable(np.random.random(size=length).reshape(length, <span class="number">1</span>), dtype=tf.float32, name=<span class="string">"weight"</span>)</div><div class="line"></div><div class="line">activation = tf.matmul(X, W)</div><div class="line">learning_rate = <span class="number">0.006</span></div><div class="line"></div><div class="line">loss = tf.reduce_mean(tf.reduce_sum(tf.pow(activation - Y, <span class="number">2</span>), reduction_indices=[<span class="number">1</span>]))</div><div class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</div><div class="line"></div><div class="line">training_epochs = <span class="number">2000</span></div><div class="line">display_step = <span class="number">100</span></div><div class="line"></div><div class="line">loss_trace = []</div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</div><div class="line">        sess.run(optimizer, feed_dict=&#123;X: train_X, Y: train_Y&#125;)</div><div class="line">        temp_loss = sess.run(loss, feed_dict=&#123;X: train_X, Y: train_Y&#125;)</div><div class="line">        loss_trace.append(temp_loss)</div><div class="line">        <span class="keyword">if</span> <span class="number">1</span> == epoch % display_step:</div><div class="line">            print(<span class="string">'epoch: %4s'</span>%epoch, <span class="string">'\tloss: %s'</span>%temp_loss)</div><div class="line">    print(<span class="string">"\nOptimization Finished!"</span>)</div><div class="line">    print(<span class="string">"\nloss = "</span>, loss_trace[<span class="number">-1</span>], <span class="string">"\nWeight =\n"</span>, sess.run(W, feed_dict=&#123;X: train_X, Y: train_Y&#125;))</div><div class="line"></div><div class="line"></div><div class="line">plt.plot(np.linspace(<span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>), loss_trace[:<span class="number">100</span>])</div><div class="line">plt.savefig(<span class="string">"tensorflowLR.png"</span>)</div><div class="line">plt.show()</div><div class="line"></div><div class="line"><span class="comment"># output:</span></div><div class="line"><span class="comment"># epoch:    1 	loss: 118.413925</span></div><div class="line"><span class="comment"># epoch:  101 	loss: 1.4500043</span></div><div class="line"><span class="comment"># epoch:  201 	loss: 1.0270562</span></div><div class="line"><span class="comment"># epoch:  301 	loss: 0.75373846</span></div><div class="line"><span class="comment"># epoch:  401 	loss: 0.5771168</span></div><div class="line"><span class="comment"># epoch:  501 	loss: 0.46298113</span></div><div class="line"><span class="comment"># epoch:  601 	loss: 0.38922414</span></div><div class="line"><span class="comment"># epoch:  701 	loss: 0.34156123</span></div><div class="line"><span class="comment"># epoch:  801 	loss: 0.31076077</span></div><div class="line"><span class="comment"># epoch:  901 	loss: 0.29085675</span></div><div class="line"><span class="comment"># epoch: 1001 	loss: 0.27799463</span></div><div class="line"><span class="comment"># epoch: 1101 	loss: 0.26968285</span></div><div class="line"><span class="comment"># epoch: 1201 	loss: 0.2643118</span></div><div class="line"><span class="comment"># epoch: 1301 	loss: 0.26084095</span></div><div class="line"><span class="comment"># epoch: 1401 	loss: 0.2585978</span></div><div class="line"><span class="comment"># epoch: 1501 	loss: 0.25714833</span></div><div class="line"><span class="comment"># epoch: 1601 	loss: 0.25621164</span></div><div class="line"><span class="comment"># epoch: 1701 	loss: 0.2556064</span></div><div class="line"><span class="comment"># epoch: 1801 	loss: 0.2552152</span></div><div class="line"><span class="comment"># epoch: 1901 	loss: 0.2549625</span></div><div class="line"><span class="comment"># Optimization Finished!</span></div><div class="line"><span class="comment"># loss =  0.25480175 </span></div><div class="line"><span class="comment"># Weight =</span></div><div class="line"><span class="comment">#  [[1.0982682 ]</span></div><div class="line"><span class="comment">#  [0.9760315 ]</span></div><div class="line"><span class="comment">#  [1.0619627 ]</span></div><div class="line"><span class="comment">#  [0.87049955]</span></div><div class="line"><span class="comment">#  [3.9700394 ]]</span></div></pre></td></tr></table></figure>
+<p>这里的拟合效果不太好，不知道是不是数据的问题，因为数据增长的相似性太高，感觉可能过拟合了，如果有知道的小伙伴欢迎告知。下图可以看到 \( loss \) 早早就收敛了。</p>
+<p><img src="/2018/02/11/MLLinearRegression/tensorflowLR.png" alt=""></p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>线性回归的求解过程很直观，符合我们的理解。对于这个问题有一个先入为主的观点就是数据一定是拟合成线性的，因为这里讲的是线性回归。当然，数据分布不是线性的这个方法就不适用了，同样，如果我们看不到数据的分布，不能对模型进行预估，那只能一步一步去试探，所以机器学习开始就是选取适用于当前数据的模型，可以理解为找一个输入输出的合理映射关系，然后导入数据，构造一个能够正确评估拟合效果的损失函数，接着就是对损失函数进行最优化，这里有一个问题前面没有提及的是如果只是随机地找，其实我们不能保证找到的就是全局最优，当然一般情况下，局部最优得到的模型已经能很好的预测输出了。这只是我的个人理解啦，欢迎大家一起讨论，然后实验的代码在我的 <a href="https://github.com/mk43/machine-learning" target="_blank" rel="external">GitHub</a> 上，需要的可以自取。然后这个系列可能会继续更新，不过离下一次更新可能要点时间，因为新年快乐^_^，对了参考资料前面又给出，就不一一列举感谢了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Math</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NumPy</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Matplotlib</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">LinearRegression</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/02/11/MLLinearRegression/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/02/08/MatplotlibGenerateGif/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Matplotlib 保存 GIF 动图</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
+  
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'fitzeng-org'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 fitzeng
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true,
+		showTags: false
+	}
+</script>
+
+<script>!function(t){function n(r){if(e[r])return e[r].exports;var o=e[r]={exports:{},id:r,loaded:!1};return t[r].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var e={};return n.m=t,n.c=e,n.p="./",n(0)}([function(t,n,e){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function o(t,n){var e=/\/|index.html/g;return t.replace(e,"")===n.replace(e,"")}function i(){for(var t=document.querySelectorAll(".js-header-menu li a"),n=window.location.pathname,e=0,r=t.length;e<r;e++){var i=t[e];o(n,i.getAttribute("href"))&&(0,d.default)(i,"active")}}function u(t){for(var n=t.offsetLeft,e=t.offsetParent;null!==e;)n+=e.offsetLeft,e=e.offsetParent;return n}function f(t){for(var n=t.offsetTop,e=t.offsetParent;null!==e;)n+=e.offsetTop,e=e.offsetParent;return n}function c(t,n,e,r,o){var i=u(t),c=f(t)-n;if(c-e<=o){var a=t.$newDom;a||(a=t.cloneNode(!0),(0,h.default)(t,a),t.$newDom=a,a.style.position="fixed",a.style.top=(e||c)+"px",a.style.left=i+"px",a.style.zIndex=r||2,a.style.width="100%",a.style.color="#fff"),a.style.visibility="visible",t.style.visibility="hidden"}else{t.style.visibility="visible";var s=t.$newDom;s&&(s.style.visibility="hidden")}}function a(){var t=document.querySelector(".js-overlay"),n=document.querySelector(".js-header-menu");c(t,document.body.scrollTop,-63,2,0),c(n,document.body.scrollTop,1,3,0)}function s(){document.querySelector("#container").addEventListener("scroll",function(t){a()}),window.addEventListener("scroll",function(t){a()}),a()}function l(){x.default.versions.mobile&&window.screen.width<800&&(i(),s())}var p=e(71),d=r(p),v=e(72),y=(r(v),e(84)),h=r(y),b=e(69),x=r(b),m=e(75),g=r(m),w=e(70);l(),(0,w.addLoadEvent)(function(){g.default.init()}),t.exports={}},function(t,n){var e=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=e)},function(t,n){var e={}.hasOwnProperty;t.exports=function(t,n){return e.call(t,n)}},function(t,n,e){var r=e(49),o=e(15);t.exports=function(t){return r(o(t))}},function(t,n,e){t.exports=!e(8)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n,e){var r=e(6),o=e(12);t.exports=e(4)?function(t,n,e){return r.f(t,n,o(1,e))}:function(t,n,e){return t[n]=e,t}},function(t,n,e){var r=e(10),o=e(30),i=e(24),u=Object.defineProperty;n.f=e(4)?Object.defineProperty:function(t,n,e){if(r(t),n=i(n,!0),r(e),o)try{return u(t,n,e)}catch(t){}if("get"in e||"set"in e)throw TypeError("Accessors not supported!");return"value"in e&&(t[n]=e.value),t}},function(t,n,e){var r=e(22)("wks"),o=e(13),i=e(1).Symbol,u="function"==typeof i,f=t.exports=function(t){return r[t]||(r[t]=u&&i[t]||(u?i:o)("Symbol."+t))};f.store=r},function(t,n){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,n,e){var r=e(35),o=e(16);t.exports=Object.keys||function(t){return r(t,o)}},function(t,n,e){var r=e(11);t.exports=function(t){if(!r(t))throw TypeError(t+" is not an object!");return t}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n){var e=0,r=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++e+r).toString(36))}},function(t,n){var e=t.exports={version:"2.4.0"};"number"==typeof __e&&(__e=e)},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n){t.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(t,n){t.exports={}},function(t,n){t.exports=!0},function(t,n){n.f={}.propertyIsEnumerable},function(t,n,e){var r=e(6).f,o=e(2),i=e(7)("toStringTag");t.exports=function(t,n,e){t&&!o(t=e?t:t.prototype,i)&&r(t,i,{configurable:!0,value:n})}},function(t,n,e){var r=e(22)("keys"),o=e(13);t.exports=function(t){return r[t]||(r[t]=o(t))}},function(t,n,e){var r=e(1),o="__core-js_shared__",i=r[o]||(r[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n){var e=Math.ceil,r=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?r:e)(t)}},function(t,n,e){var r=e(11);t.exports=function(t,n){if(!r(t))return t;var e,o;if(n&&"function"==typeof(e=t.toString)&&!r(o=e.call(t)))return o;if("function"==typeof(e=t.valueOf)&&!r(o=e.call(t)))return o;if(!n&&"function"==typeof(e=t.toString)&&!r(o=e.call(t)))return o;throw TypeError("Can't convert object to primitive value")}},function(t,n,e){var r=e(1),o=e(14),i=e(18),u=e(26),f=e(6).f;t.exports=function(t){var n=o.Symbol||(o.Symbol=i?{}:r.Symbol||{});"_"==t.charAt(0)||t in n||f(n,t,{value:u.f(t)})}},function(t,n,e){n.f=e(7)},function(t,n,e){var r=e(1),o=e(14),i=e(46),u=e(5),f="prototype",c=function(t,n,e){var a,s,l,p=t&c.F,d=t&c.G,v=t&c.S,y=t&c.P,h=t&c.B,b=t&c.W,x=d?o:o[n]||(o[n]={}),m=x[f],g=d?r:v?r[n]:(r[n]||{})[f];d&&(e=n);for(a in e)s=!p&&g&&void 0!==g[a],s&&a in x||(l=s?g[a]:e[a],x[a]=d&&"function"!=typeof g[a]?e[a]:h&&s?i(l,r):b&&g[a]==l?function(t){var n=function(n,e,r){if(this instanceof t){switch(arguments.length){case 0:return new t;case 1:return new t(n);case 2:return new t(n,e)}return new t(n,e,r)}return t.apply(this,arguments)};return n[f]=t[f],n}(l):y&&"function"==typeof l?i(Function.call,l):l,y&&((x.virtual||(x.virtual={}))[a]=l,t&c.R&&m&&!m[a]&&u(m,a,l)))};c.F=1,c.G=2,c.S=4,c.P=8,c.B=16,c.W=32,c.U=64,c.R=128,t.exports=c},function(t,n){var e={}.toString;t.exports=function(t){return e.call(t).slice(8,-1)}},function(t,n,e){var r=e(11),o=e(1).document,i=r(o)&&r(o.createElement);t.exports=function(t){return i?o.createElement(t):{}}},function(t,n,e){t.exports=!e(4)&&!e(8)(function(){return 7!=Object.defineProperty(e(29)("div"),"a",{get:function(){return 7}}).a})},function(t,n,e){"use strict";var r=e(18),o=e(27),i=e(36),u=e(5),f=e(2),c=e(17),a=e(51),s=e(20),l=e(58),p=e(7)("iterator"),d=!([].keys&&"next"in[].keys()),v="@@iterator",y="keys",h="values",b=function(){return this};t.exports=function(t,n,e,x,m,g,w){a(e,n,x);var O,S,_,j=function(t){if(!d&&t in A)return A[t];switch(t){case y:return function(){return new e(this,t)};case h:return function(){return new e(this,t)}}return function(){return new e(this,t)}},P=n+" Iterator",E=m==h,M=!1,A=t.prototype,T=A[p]||A[v]||m&&A[m],L=T||j(m),N=m?E?j("entries"):L:void 0,C="Array"==n?A.entries||T:T;if(C&&(_=l(C.call(new t)),_!==Object.prototype&&(s(_,P,!0),r||f(_,p)||u(_,p,b))),E&&T&&T.name!==h&&(M=!0,L=function(){return T.call(this)}),r&&!w||!d&&!M&&A[p]||u(A,p,L),c[n]=L,c[P]=b,m)if(O={values:E?L:j(h),keys:g?L:j(y),entries:N},w)for(S in O)S in A||i(A,S,O[S]);else o(o.P+o.F*(d||M),n,O);return O}},function(t,n,e){var r=e(10),o=e(55),i=e(16),u=e(21)("IE_PROTO"),f=function(){},c="prototype",a=function(){var t,n=e(29)("iframe"),r=i.length,o="<",u=">";for(n.style.display="none",e(48).appendChild(n),n.src="javascript:",t=n.contentWindow.document,t.open(),t.write(o+"script"+u+"document.F=Object"+o+"/script"+u),t.close(),a=t.F;r--;)delete a[c][i[r]];return a()};t.exports=Object.create||function(t,n){var e;return null!==t?(f[c]=r(t),e=new f,f[c]=null,e[u]=t):e=a(),void 0===n?e:o(e,n)}},function(t,n,e){var r=e(35),o=e(16).concat("length","prototype");n.f=Object.getOwnPropertyNames||function(t){return r(t,o)}},function(t,n){n.f=Object.getOwnPropertySymbols},function(t,n,e){var r=e(2),o=e(3),i=e(45)(!1),u=e(21)("IE_PROTO");t.exports=function(t,n){var e,f=o(t),c=0,a=[];for(e in f)e!=u&&r(f,e)&&a.push(e);for(;n.length>c;)r(f,e=n[c++])&&(~i(a,e)||a.push(e));return a}},function(t,n,e){t.exports=e(5)},function(t,n,e){var r=e(15);t.exports=function(t){return Object(r(t))}},function(t,n,e){t.exports={default:e(41),__esModule:!0}},function(t,n,e){t.exports={default:e(42),__esModule:!0}},function(t,n,e){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}n.__esModule=!0;var o=e(39),i=r(o),u=e(38),f=r(u),c="function"==typeof f.default&&"symbol"==typeof i.default?function(t){return typeof t}:function(t){return t&&"function"==typeof f.default&&t.constructor===f.default&&t!==f.default.prototype?"symbol":typeof t};n.default="function"==typeof f.default&&"symbol"===c(i.default)?function(t){return"undefined"==typeof t?"undefined":c(t)}:function(t){return t&&"function"==typeof f.default&&t.constructor===f.default&&t!==f.default.prototype?"symbol":"undefined"==typeof t?"undefined":c(t)}},function(t,n,e){e(65),e(63),e(66),e(67),t.exports=e(14).Symbol},function(t,n,e){e(64),e(68),t.exports=e(26).f("iterator")},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){t.exports=function(){}},function(t,n,e){var r=e(3),o=e(61),i=e(60);t.exports=function(t){return function(n,e,u){var f,c=r(n),a=o(c.length),s=i(u,a);if(t&&e!=e){for(;a>s;)if(f=c[s++],f!=f)return!0}else for(;a>s;s++)if((t||s in c)&&c[s]===e)return t||s||0;return!t&&-1}}},function(t,n,e){var r=e(43);t.exports=function(t,n,e){if(r(t),void 0===n)return t;switch(e){case 1:return function(e){return t.call(n,e)};case 2:return function(e,r){return t.call(n,e,r)};case 3:return function(e,r,o){return t.call(n,e,r,o)}}return function(){return t.apply(n,arguments)}}},function(t,n,e){var r=e(9),o=e(34),i=e(19);t.exports=function(t){var n=r(t),e=o.f;if(e)for(var u,f=e(t),c=i.f,a=0;f.length>a;)c.call(t,u=f[a++])&&n.push(u);return n}},function(t,n,e){t.exports=e(1).document&&document.documentElement},function(t,n,e){var r=e(28);t.exports=Object("z").propertyIsEnumerable(0)?Object:function(t){return"String"==r(t)?t.split(""):Object(t)}},function(t,n,e){var r=e(28);t.exports=Array.isArray||function(t){return"Array"==r(t)}},function(t,n,e){"use strict";var r=e(32),o=e(12),i=e(20),u={};e(5)(u,e(7)("iterator"),function(){return this}),t.exports=function(t,n,e){t.prototype=r(u,{next:o(1,e)}),i(t,n+" Iterator")}},function(t,n){t.exports=function(t,n){return{value:n,done:!!t}}},function(t,n,e){var r=e(9),o=e(3);t.exports=function(t,n){for(var e,i=o(t),u=r(i),f=u.length,c=0;f>c;)if(i[e=u[c++]]===n)return e}},function(t,n,e){var r=e(13)("meta"),o=e(11),i=e(2),u=e(6).f,f=0,c=Object.isExtensible||function(){return!0},a=!e(8)(function(){return c(Object.preventExtensions({}))}),s=function(t){u(t,r,{value:{i:"O"+ ++f,w:{}}})},l=function(t,n){if(!o(t))return"symbol"==typeof t?t:("string"==typeof t?"S":"P")+t;if(!i(t,r)){if(!c(t))return"F";if(!n)return"E";s(t)}return t[r].i},p=function(t,n){if(!i(t,r)){if(!c(t))return!0;if(!n)return!1;s(t)}return t[r].w},d=function(t){return a&&v.NEED&&c(t)&&!i(t,r)&&s(t),t},v=t.exports={KEY:r,NEED:!1,fastKey:l,getWeak:p,onFreeze:d}},function(t,n,e){var r=e(6),o=e(10),i=e(9);t.exports=e(4)?Object.defineProperties:function(t,n){o(t);for(var e,u=i(n),f=u.length,c=0;f>c;)r.f(t,e=u[c++],n[e]);return t}},function(t,n,e){var r=e(19),o=e(12),i=e(3),u=e(24),f=e(2),c=e(30),a=Object.getOwnPropertyDescriptor;n.f=e(4)?a:function(t,n){if(t=i(t),n=u(n,!0),c)try{return a(t,n)}catch(t){}if(f(t,n))return o(!r.f.call(t,n),t[n])}},function(t,n,e){var r=e(3),o=e(33).f,i={}.toString,u="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],f=function(t){try{return o(t)}catch(t){return u.slice()}};t.exports.f=function(t){return u&&"[object Window]"==i.call(t)?f(t):o(r(t))}},function(t,n,e){var r=e(2),o=e(37),i=e(21)("IE_PROTO"),u=Object.prototype;t.exports=Object.getPrototypeOf||function(t){return t=o(t),r(t,i)?t[i]:"function"==typeof t.constructor&&t instanceof t.constructor?t.constructor.prototype:t instanceof Object?u:null}},function(t,n,e){var r=e(23),o=e(15);t.exports=function(t){return function(n,e){var i,u,f=String(o(n)),c=r(e),a=f.length;return c<0||c>=a?t?"":void 0:(i=f.charCodeAt(c),i<55296||i>56319||c+1===a||(u=f.charCodeAt(c+1))<56320||u>57343?t?f.charAt(c):i:t?f.slice(c,c+2):(i-55296<<10)+(u-56320)+65536)}}},function(t,n,e){var r=e(23),o=Math.max,i=Math.min;t.exports=function(t,n){return t=r(t),t<0?o(t+n,0):i(t,n)}},function(t,n,e){var r=e(23),o=Math.min;t.exports=function(t){return t>0?o(r(t),9007199254740991):0}},function(t,n,e){"use strict";var r=e(44),o=e(52),i=e(17),u=e(3);t.exports=e(31)(Array,"Array",function(t,n){this._t=u(t),this._i=0,this._k=n},function(){var t=this._t,n=this._k,e=this._i++;return!t||e>=t.length?(this._t=void 0,o(1)):"keys"==n?o(0,e):"values"==n?o(0,t[e]):o(0,[e,t[e]])},"values"),i.Arguments=i.Array,r("keys"),r("values"),r("entries")},function(t,n){},function(t,n,e){"use strict";var r=e(59)(!0);e(31)(String,"String",function(t){this._t=String(t),this._i=0},function(){var t,n=this._t,e=this._i;return e>=n.length?{value:void 0,done:!0}:(t=r(n,e),this._i+=t.length,{value:t,done:!1})})},function(t,n,e){"use strict";var r=e(1),o=e(2),i=e(4),u=e(27),f=e(36),c=e(54).KEY,a=e(8),s=e(22),l=e(20),p=e(13),d=e(7),v=e(26),y=e(25),h=e(53),b=e(47),x=e(50),m=e(10),g=e(3),w=e(24),O=e(12),S=e(32),_=e(57),j=e(56),P=e(6),E=e(9),M=j.f,A=P.f,T=_.f,L=r.Symbol,N=r.JSON,C=N&&N.stringify,k="prototype",F=d("_hidden"),q=d("toPrimitive"),I={}.propertyIsEnumerable,B=s("symbol-registry"),D=s("symbols"),W=s("op-symbols"),H=Object[k],K="function"==typeof L,R=r.QObject,J=!R||!R[k]||!R[k].findChild,U=i&&a(function(){return 7!=S(A({},"a",{get:function(){return A(this,"a",{value:7}).a}})).a})?function(t,n,e){var r=M(H,n);r&&delete H[n],A(t,n,e),r&&t!==H&&A(H,n,r)}:A,G=function(t){var n=D[t]=S(L[k]);return n._k=t,n},$=K&&"symbol"==typeof L.iterator?function(t){return"symbol"==typeof t}:function(t){return t instanceof L},z=function(t,n,e){return t===H&&z(W,n,e),m(t),n=w(n,!0),m(e),o(D,n)?(e.enumerable?(o(t,F)&&t[F][n]&&(t[F][n]=!1),e=S(e,{enumerable:O(0,!1)})):(o(t,F)||A(t,F,O(1,{})),t[F][n]=!0),U(t,n,e)):A(t,n,e)},Y=function(t,n){m(t);for(var e,r=b(n=g(n)),o=0,i=r.length;i>o;)z(t,e=r[o++],n[e]);return t},Q=function(t,n){return void 0===n?S(t):Y(S(t),n)},X=function(t){var n=I.call(this,t=w(t,!0));return!(this===H&&o(D,t)&&!o(W,t))&&(!(n||!o(this,t)||!o(D,t)||o(this,F)&&this[F][t])||n)},V=function(t,n){if(t=g(t),n=w(n,!0),t!==H||!o(D,n)||o(W,n)){var e=M(t,n);return!e||!o(D,n)||o(t,F)&&t[F][n]||(e.enumerable=!0),e}},Z=function(t){for(var n,e=T(g(t)),r=[],i=0;e.length>i;)o(D,n=e[i++])||n==F||n==c||r.push(n);return r},tt=function(t){for(var n,e=t===H,r=T(e?W:g(t)),i=[],u=0;r.length>u;)!o(D,n=r[u++])||e&&!o(H,n)||i.push(D[n]);return i};K||(L=function(){if(this instanceof L)throw TypeError("Symbol is not a constructor!");var t=p(arguments.length>0?arguments[0]:void 0),n=function(e){this===H&&n.call(W,e),o(this,F)&&o(this[F],t)&&(this[F][t]=!1),U(this,t,O(1,e))};return i&&J&&U(H,t,{configurable:!0,set:n}),G(t)},f(L[k],"toString",function(){return this._k}),j.f=V,P.f=z,e(33).f=_.f=Z,e(19).f=X,e(34).f=tt,i&&!e(18)&&f(H,"propertyIsEnumerable",X,!0),v.f=function(t){return G(d(t))}),u(u.G+u.W+u.F*!K,{Symbol:L});for(var nt="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),et=0;nt.length>et;)d(nt[et++]);for(var nt=E(d.store),et=0;nt.length>et;)y(nt[et++]);u(u.S+u.F*!K,"Symbol",{for:function(t){return o(B,t+="")?B[t]:B[t]=L(t)},keyFor:function(t){if($(t))return h(B,t);throw TypeError(t+" is not a symbol!")},useSetter:function(){J=!0},useSimple:function(){J=!1}}),u(u.S+u.F*!K,"Object",{create:Q,defineProperty:z,defineProperties:Y,getOwnPropertyDescriptor:V,getOwnPropertyNames:Z,getOwnPropertySymbols:tt}),N&&u(u.S+u.F*(!K||a(function(){var t=L();return"[null]"!=C([t])||"{}"!=C({a:t})||"{}"!=C(Object(t))})),"JSON",{stringify:function(t){if(void 0!==t&&!$(t)){for(var n,e,r=[t],o=1;arguments.length>o;)r.push(arguments[o++]);return n=r[1],"function"==typeof n&&(e=n),!e&&x(n)||(n=function(t,n){if(e&&(n=e.call(this,t,n)),!$(n))return n}),r[1]=n,C.apply(N,r)}}}),L[k][q]||e(5)(L[k],q,L[k].valueOf),l(L,"Symbol"),l(Math,"Math",!0),l(r.JSON,"JSON",!0)},function(t,n,e){e(25)("asyncIterator")},function(t,n,e){e(25)("observable")},function(t,n,e){e(62);for(var r=e(1),o=e(5),i=e(17),u=e(7)("toStringTag"),f=["NodeList","DOMTokenList","MediaList","StyleSheetList","CSSRuleList"],c=0;c<5;c++){var a=f[c],s=r[a],l=s&&s.prototype;l&&!l[u]&&o(l,u,a),i[a]=i.Array}},function(t,n){"use strict";var e={versions:function(){var t=window.navigator.userAgent;return{trident:t.indexOf("Trident")>-1,presto:t.indexOf("Presto")>-1,webKit:t.indexOf("AppleWebKit")>-1,gecko:t.indexOf("Gecko")>-1&&t.indexOf("KHTML")==-1,mobile:!!t.match(/AppleWebKit.*Mobile.*/),ios:!!t.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),android:t.indexOf("Android")>-1||t.indexOf("Linux")>-1,iPhone:t.indexOf("iPhone")>-1||t.indexOf("Mac")>-1,iPad:t.indexOf("iPad")>-1,webApp:t.indexOf("Safari")==-1,weixin:t.indexOf("MicroMessenger")==-1}}()};t.exports=e},function(t,n,e){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}var o=e(40),i=r(o),u=function(){function t(t,n,e){return n||e?String.fromCharCode(n||e):o[t]||t}function n(t){return l[t]}var e=/&quot;|&lt;|&gt;|&amp;|&nbsp;|&apos;|&#(\d+);|&#(\d+)/g,r=/['<> "&]/g,o={"&quot;":'"',"&lt;":"<","&gt;":">","&amp;":"&","&nbsp;":" "},f=/\u00a0/g,c=/<br\s*\/?>/gi,a=/\r?\n/g,s=/\s/g,l={};for(var p in o)l[o[p]]=p;return o["&apos;"]="'",l["'"]="&#39;",{encode:function(t){return t?(""+t).replace(r,n).replace(a,"<br/>").replace(s,"&nbsp;"):""},decode:function(n){return n?(""+n).replace(c,"\n").replace(e,t).replace(f," "):""},encodeBase16:function(t){if(!t)return t;t+="";for(var n=[],e=0,r=t.length;r>e;e++)n.push(t.charCodeAt(e).toString(16).toUpperCase());return n.join("")},encodeBase16forJSON:function(t){if(!t)return t;t=t.replace(/[\u4E00-\u9FBF]/gi,function(t){return escape(t).replace("%u","\\u")});for(var n=[],e=0,r=t.length;r>e;e++)n.push(t.charCodeAt(e).toString(16).toUpperCase());return n.join("")},decodeBase16:function(t){if(!t)return t;t+="";for(var n=[],e=0,r=t.length;r>e;e+=2)n.push(String.fromCharCode("0x"+t.slice(e,e+2)));return n.join("")},encodeObject:function(t){if(t instanceof Array)for(var n=0,e=t.length;e>n;n++)t[n]=u.encodeObject(t[n]);else if("object"==("undefined"==typeof t?"undefined":(0,i.default)(t)))for(var r in t)t[r]=u.encodeObject(t[r]);else if("string"==typeof t)return u.encode(t);return t},loadScript:function(t){var n=document.createElement("script");document.getElementsByTagName("body")[0].appendChild(n),n.setAttribute("src",t)},addLoadEvent:function(t){var n=window.onload;"function"!=typeof window.onload?window.onload=t:window.onload=function(){n(),t()}}}}();t.exports=u},function(t,n){function e(t,n){t.classList?t.classList.add(n):t.className+=" "+n}t.exports=e},function(t,n){function e(t,n){if(t.classList)t.classList.remove(n);else{var e=new RegExp("(^|\\b)"+n.split(" ").join("|")+"(\\b|$)","gi");t.className=t.className.replace(e," ")}}t.exports=e},,,function(t,n){"use strict";function e(){var t=document.querySelector("#page-nav");if(t&&!document.querySelector("#page-nav .extend.prev")&&(t.innerHTML='<a class="extend prev disabled" rel="prev">&laquo; Prev</a>'+t.innerHTML),t&&!document.querySelector("#page-nav .extend.next")&&(t.innerHTML=t.innerHTML+'<a class="extend next disabled" rel="next">Next &raquo;</a>'),yiliaConfig&&yiliaConfig.open_in_new){var n=document.querySelectorAll(".article-entry a:not(.article-more-a)");n.forEach(function(t){t.setAttribute("target","_blank")})}var e=document.querySelector("#js-aboutme");e&&0!==e.length&&(e.innerHTML=e.innerText)}t.exports={init:e}},,,,,,,,,function(t,n){function e(t,n){if("string"==typeof n)return t.insertAdjacentHTML("afterend",n);var e=t.nextSibling;return e?t.parentNode.insertBefore(n,e):t.parentNode.appendChild(n)}t.exports=e}])</script><script src="/./main.234bc0.js"></script><script>!function(){var e=function(e){var t=document.createElement("script");document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)};e("/slider.885efe.js")}()</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+        
+      
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Math</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">图像处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">GitHub</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Tool</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MachineLearning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">NumPy</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Matplotlib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Life</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Marvel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ZZChat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">devstack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">openstack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dpkg</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ppt</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DataStruct</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ProbabilityTheory</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Job</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">一个十足的理想主义者.</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
