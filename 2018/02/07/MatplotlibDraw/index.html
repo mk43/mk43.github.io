@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_9_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_10_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_11_01.png">
-<meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_11_02.png">
+<meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_12_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_13_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_13_02.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_13_03.png">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_14_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_15_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/07/MatplotlibDraw/1_16_01.gif">
-<meta property="og:updated_time" content="2018-02-08T06:32:17.337Z">
+<meta property="og:updated_time" content="2018-02-13T02:43:09.248Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Matplotlib 基本操作">
 <meta name="twitter:description" content="写在前面：这篇主要为了自己的学习，先理一下基础概念，然后记录下来，下次使用起来就方便了。学这个的主要目的是为了可视化机器学习的学习过程。网络上的资料太多了，每次写的时候去查算起来也是挺花费时间的。所以还是花点时间直接整理记录好了。这里推荐morvan：markdown + 视频 和 官方文档。当然，此文还参考了好多网上的其它文章，再此一并感谢，并且参考资料中给出链接。所有代码整理到GitHu">
@@ -243,7 +243,7 @@
 <h3 id="1-11-图像"><a href="#1-11-图像" class="headerlink" title="1.11 图像"></a>1.11 图像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">import matplotlib.pyplot as plt</div><div class="line">import numpy as np</div><div class="line"></div><div class="line">a = np.random.normal(2, 1, 16).reshape(4, 4)</div><div class="line"></div><div class="line">plt.imshow(a, interpolation=&apos;nearest&apos;, cmap=&apos;coolwarm&apos;, origin=&apos;lower&apos;)</div><div class="line"></div><div class="line">plt.colorbar(shrink=.98)</div><div class="line"></div><div class="line">plt.xticks(())</div><div class="line">plt.yticks(())</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
 <p><img src="/2018/02/07/MatplotlibDraw/1_11_01.png" alt=""></p>
 <h3 id="1-12-3D"><a href="#1-12-3D" class="headerlink" title="1.12 3D"></a>1.12 3D</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">from mpl_toolkits.mplot3d import Axes3D</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">ax = Axes3D(fig)</div><div class="line"></div><div class="line">X = np.arange(-4, 4, 0.25)</div><div class="line">Y = np.arange(-4, 4, 0.25)</div><div class="line">X, Y = np.meshgrid(X, Y)</div><div class="line">R = np.sqrt(X ** 2 + Y ** 2)</div><div class="line">Z = np.sin(R)</div><div class="line"></div><div class="line">ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap(&apos;rainbow&apos;))</div><div class="line"></div><div class="line">ax.contourf(X, Y, Z, zdir=&apos;x&apos;, offset=-5, cmap=plt.get_cmap(&apos;rainbow&apos;))</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
-<p><img src="/2018/02/07/MatplotlibDraw/1_11_02.png" alt=""></p>
+<p><img src="/2018/02/07/MatplotlibDraw/1_12_01.png" alt=""></p>
 <h3 id="1-13-子图"><a href="#1-13-子图" class="headerlink" title="1.13 子图"></a>1.13 子图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">import matplotlib.pyplot as plt</div><div class="line"></div><div class="line"># example 1:</div><div class="line">###############################</div><div class="line">plt.figure(figsize=(6, 4))</div><div class="line"># plt.subplot(n_rows, n_cols, plot_num)</div><div class="line">plt.subplot(2, 2, 1)</div><div class="line">plt.plot([0, 1], [0, 1])</div><div class="line"></div><div class="line">plt.subplot(222)</div><div class="line">plt.plot([0, 1], [0, 2])</div><div class="line"></div><div class="line">plt.subplot(223)</div><div class="line">plt.plot([0, 1], [0, 3])</div><div class="line"></div><div class="line">plt.subplot(224)</div><div class="line">plt.plot([0, 1], [0, 4])</div><div class="line"></div><div class="line">plt.tight_layout()</div><div class="line"></div><div class="line"># example 2:</div><div class="line">###############################</div><div class="line">plt.figure(figsize=(6, 4))</div><div class="line"># plt.subplot(n_rows, n_cols, plot_num)</div><div class="line">plt.subplot(2, 1, 1)</div><div class="line"># figure splits into 2 rows, 1 col, plot to the 1st sub-fig</div><div class="line">plt.plot([0, 1], [0, 1])</div><div class="line"></div><div class="line">plt.subplot(234)</div><div class="line"># figure splits into 2 rows, 3 col, plot to the 4th sub-fig</div><div class="line">plt.plot([0, 1], [0, 2])</div><div class="line"></div><div class="line">plt.subplot(235)</div><div class="line"># figure splits into 2 rows, 3 col, plot to the 5th sub-fig</div><div class="line">plt.plot([0, 1], [0, 3])</div><div class="line"></div><div class="line">plt.subplot(236)</div><div class="line"># figure splits into 2 rows, 3 col, plot to the 6th sub-fig</div><div class="line">plt.plot([0, 1], [0, 4])</div><div class="line"></div><div class="line"></div><div class="line">plt.tight_layout()</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
 <p><img src="/2018/02/07/MatplotlibDraw/1_13_01.png" alt=""><br><img src="/2018/02/07/MatplotlibDraw/1_13_02.png" alt=""></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">import matplotlib.pyplot as plt</div><div class="line">import matplotlib.gridspec as gridspec</div><div class="line"></div><div class="line"># method 1: subplot2grid</div><div class="line">##########################</div><div class="line">plt.figure()</div><div class="line">ax1 = plt.subplot2grid((3, 3), (0, 0), colspan=3)  # stands for axes</div><div class="line">ax1.plot([1, 2], [1, 2])</div><div class="line">ax1.set_title(&apos;ax1_title&apos;)</div><div class="line">ax2 = plt.subplot2grid((3, 3), (1, 0), colspan=2)</div><div class="line">ax3 = plt.subplot2grid((3, 3), (1, 2), rowspan=2)</div><div class="line">ax4 = plt.subplot2grid((3, 3), (2, 0))</div><div class="line">ax4.scatter([1, 2], [2, 2])</div><div class="line">ax4.set_xlabel(&apos;ax4_x&apos;)</div><div class="line">ax4.set_ylabel(&apos;ax4_y&apos;)</div><div class="line">ax5 = plt.subplot2grid((3, 3), (2, 1))</div><div class="line"></div><div class="line"># method 2: gridspec</div><div class="line">#########################</div><div class="line">plt.figure()</div><div class="line">gs = gridspec.GridSpec(3, 3)</div><div class="line"># use index from 0</div><div class="line">ax6 = plt.subplot(gs[0, :])</div><div class="line">ax7 = plt.subplot(gs[1, :2])</div><div class="line">ax8 = plt.subplot(gs[1:, 2])</div><div class="line">ax9 = plt.subplot(gs[-1, 0])</div><div class="line">ax10 = plt.subplot(gs[-1, -2])</div><div class="line"></div><div class="line"># method 3: easy to define structure</div><div class="line">####################################</div><div class="line">f, ((ax11, ax12), (ax13, ax14)) = plt.subplots(2, 2, sharex=True, sharey=True)</div><div class="line">ax11.scatter([1,2], [1,2])</div><div class="line"></div><div class="line">plt.tight_layout()</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
@@ -526,11 +526,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -554,18 +554,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">MachineLearning</a>
               </li>
              
@@ -586,7 +574,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -595,6 +591,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Marvel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -630,11 +630,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
