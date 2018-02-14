@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2017/07/17/AlgoAndMath/</loc>
+    
+    <lastmod>2018-02-14T03:00:16.708Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/02/07/MatplotlibDraw/</loc>
     
     <lastmod>2018-02-13T02:43:09.248Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://fitzeng.org/2018/02/11/MLLinearRegression/</loc>
     
     <lastmod>2018-02-12T08:50:48.613Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fitzeng.org/2017/07/17/AlgoAndMath/</loc>
-    
-    <lastmod>2018-02-11T03:20:45.380Z</lastmod>
     
   </url>
   
