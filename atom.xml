@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-12T08:50:48.613Z</updated>
+  <updated>2018-02-15T02:51:29.780Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,99 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>leetcode 算法集锦（二）</title>
+    <link href="http://fitzeng.org/2018/02/14/AlgoAndMath2/"/>
+    <id>http://fitzeng.org/2018/02/14/AlgoAndMath2/</id>
+    <published>2018-02-14T03:27:00.000Z</published>
+    <updated>2018-02-15T02:51:29.780Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="leetcode-算法集锦（二）"><a href="#leetcode-算法集锦（二）" class="headerlink" title="leetcode 算法集锦（二）"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦（二）</a></h2><blockquote>
+<p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">序号</th>
+<th style="text-align:center">考点</th>
+<th style="text-align:center">题目</th>
+<th style="text-align:center">C/C++</th>
+<th style="text-align:center">Java     </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">  11</td>
+<td style="text-align:center">树</td>
+<td style="text-align:center">word-break-ii</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center"><a href="#jump_11">题解</a>  </td>
+</tr>
+<tr>
+<td style="text-align:center">  12</td>
+<td style="text-align:center">栈</td>
+<td style="text-align:center">word-break</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center"><a href="#jump_12">题解</a> </td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h3 id="12-word-break"><a href="#12-word-break" class="headerlink" title="12 : word-break"></a><span id="jump_12"><a href="https://www.nowcoder.com/practice/5f3b7bf611764c8ba7868f3ed40d6b2c" target="_blank" rel="external">12 : word-break</a></span></h3><h4 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h4><p>参考上一题，不过不用记录结果，用个标记就可以了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Set;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, Set&lt;String&gt; dict)</span> </span>&#123;</div><div class="line">        ArrayList&lt;String&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = s.length() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</div><div class="line">            String word = s.substring(i, s.length());</div><div class="line">            <span class="keyword">if</span> (dict.contains(word)) &#123;</div><div class="line">                flag = wordBreak(s.substring(<span class="number">0</span>, i), dict);</div><div class="line">                <span class="keyword">if</span> (<span class="keyword">true</span> == flag || <span class="number">0</span> == i) &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> flag;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="其他思路"><a href="#其他思路" class="headerlink" title="其他思路"></a>其他思路</h4><p>用动态规划，dp[i]表示字符串s[0~i]是否可分的bool值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> len = s.length();</div><div class="line"><span class="function">vector&lt;bool&gt; <span class="title">dp</span><span class="params">(len+<span class="number">1</span>,<span class="keyword">false</span>)</span></span>;</div><div class="line">dp[<span class="number">0</span>]=<span class="keyword">true</span>;</div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> pos=<span class="number">0</span>;pos&lt;len;++pos)</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=pos;dp[pos] &amp;&amp; i&lt;len;++i)</div><div class="line">        <span class="keyword">if</span> (dict.find(s.substr(pos,i-pos+<span class="number">1</span>))!=dict.end())</div><div class="line">            dp[i+<span class="number">1</span>]=<span class="keyword">true</span>;</div><div class="line"><span class="keyword">return</span> dp[len];</div></pre></td></tr></table></figure>
+<h3 id="11-word-break-ii"><a href="#11-word-break-ii" class="headerlink" title="11 : word-break-ii"></a><span id="jump_11"><a href="https://www.nowcoder.com/practice/bd73f6b52fdc421d91b14f9c909f9104" target="_blank" rel="external">11 : word-break-ii</a></span></h3><h4 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h4><p>利用递归和动态规划的思想，每次截取最后面的一个然后把剩下的递归截取，接下来继续循环计算不截取该单词之后的情况。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Set;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ArrayList&lt;String&gt; <span class="title">wordBreak</span><span class="params">(String s, Set&lt;String&gt; dict)</span> </span>&#123;</div><div class="line">        ArrayList&lt;String&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        ArrayList&lt;String&gt; temp = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = s.length() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</div><div class="line">            String word = s.substring(i, s.length());</div><div class="line">            <span class="keyword">if</span> (dict.contains(word)) &#123;</div><div class="line">                temp = wordBreak(s.substring(<span class="number">0</span>, i), dict);</div><div class="line">                <span class="keyword">if</span> (<span class="number">0</span> == temp.size() &amp;&amp; i == <span class="number">0</span>) &#123;</div><div class="line">                    result.add(word);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">for</span> (String str : temp) &#123;</div><div class="line">                        result.add(str + <span class="string">" "</span> + word);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="其他思路-1"><a href="#其他思路-1" class="headerlink" title="其他思路"></a>其他思路</h4><p>很基本的动态规划思路，值得学习。DP[i][j] 表示 S 从第 i 个字母到第 j 个字母的字符串，如果在字典中，就标记为 1，直到整个遍历完成。<br>然后从 i = 0 开始找寻为 1 的下标 j 代表截取前面一个字母成功，然后从 i = j + 1 开始找下一个等于 1 的 j 直到 j = S.length() 就说明截取成功。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div></pre></td><td class="code"><pre><div class="line">思路CSDN Allan:</div><div class="line">=================================思路Allan========================================</div><div class="line">s ="catsand",</div><div class="line">dict =["cat", "cats", "and", "sand", "dog"].</div><div class="line"> </div><div class="line">动态规划根本思想是记录状态值:</div><div class="line">DP[i][j]:</div><div class="line">           j    0       1       2       3       4       5       6  </div><div class="line">        i </div><div class="line">        0       c       ca      cat(1)  cats(1) catsa   catsan  catsand</div><div class="line">        1               a       at      ats     atsa    atsan   atsand       </div><div class="line">        2                       t       ts      tsa     tsan    tsand</div><div class="line">        3                               s       sa      san     sand(1)</div><div class="line">        4                                       a       an      and(1)</div><div class="line">        5                                               n       nd</div><div class="line">        6                                                       d</div><div class="line"> </div><div class="line">DP[i][j]里:</div><div class="line">0       c       ca      cat(1)  cats(1) catsa   catsan  catsand</div><div class="line">1       a       at      ats     atsa    atsan   atsand</div><div class="line">2       t       ts      tsa     tsan    tsand</div><div class="line">3       s       sa      san     sand(1)</div><div class="line">4       a       an      and(1)</div><div class="line">5       n       nd</div><div class="line">6       d</div><div class="line">思路:</div><div class="line">DP[i][j]存放着字符串s的所有子字符串在dict中的状态值。</div><div class="line">遍历顺序是先搜索i到串尾的子串，若子串在dict里，再搜索串头到i的子串。</div><div class="line">        c a t s a n d</div><div class="line">        j     i</div><div class="line">比如，dp[3][3]=1表明"sand"在dict里，再搜索cat......</div><div class="line">再搜索顺序为cat at t......</div><div class="line"> </div><div class="line"> </div><div class="line">output(6,s):</div><div class="line">i=6     k:0 1 2 3 4 5 6</div><div class="line">dp[k][i-k]:偏移为k，截断字符串长度i-k+1</div><div class="line">沿着次对角线遍历,相当于从头部每隔一个字符截断!!!</div><div class="line">dp[0][6]:偏移为0，截断字符串长度7      0</div><div class="line">dp[1][5]:偏移为1，截断字符串长度6      0</div><div class="line">dp[2][4]:偏移为2，截断字符串长度5      0</div><div class="line">dp[3][3]:偏移为3，截断字符串长度4      1   --&gt;output(2,s)</div><div class="line">dp[4][2]:偏移为4，截断字符串长度3      1   --&gt;output(3,s)</div><div class="line">dp[5][1]:偏移为5，截断字符串长度2      0</div><div class="line">dp[6][0]:偏移为6，截断字符串长度1      0</div><div class="line"> </div><div class="line">output(2,s):</div><div class="line">i=2     k:0 1 2</div><div class="line">dp[k][i-k]:偏移为k，截断字符串长度i-k+1</div><div class="line">沿着次对角线遍历,相当于从头部每隔一个字符截断!!!</div><div class="line">dp[0][2]:偏移为0，截断字符串长度3      1   --&gt;output(-1,s)</div><div class="line">dp[1][1]:偏移为1，截断字符串长度2      0</div><div class="line">dp[2][0]:偏移为2，截断字符串长度1      0</div><div class="line"> </div><div class="line">output(-1,s):</div><div class="line">......</div><div class="line"> </div><div class="line"> </div><div class="line">mystring.push_back(s.substr(k,i-k+1));</div><div class="line">output(k-1,s);</div><div class="line">s.substr(k,i-k+1)==&gt;递归output(k-1,s)!!!</div><div class="line">偏移为k,截断长度i-(k-1);                           ------</div><div class="line">==&gt;递归为k-1                                              |---&gt;处理字符串长度i </div><div class="line">从偏移为0，截断长度k开始以次对角线方向遍历!!!       ------</div><div class="line">================================================================================</div><div class="line"> </div><div class="line">*/</div><div class="line">#include &lt;iostream&gt;</div><div class="line">#include &lt;string&gt;</div><div class="line">#include &lt;vector&gt;</div><div class="line">#include &lt;stack&gt;</div><div class="line">#include &lt;list&gt;</div><div class="line">#include &lt;set&gt;</div><div class="line">#include &lt;unordered_set&gt;</div><div class="line">#include &lt;map&gt;</div><div class="line">#include &lt;queue&gt;</div><div class="line">#include &lt;algorithm&gt;</div><div class="line">#include &lt;numeric&gt;        //accmulate</div><div class="line">#include &lt;functional&gt;   //greater&lt;int&gt;()!!!</div><div class="line">using namespace std;</div><div class="line"> </div><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    vector&lt;string&gt; wordBreak(string s, unordered_set&lt;string&gt; &amp;dict) &#123;</div><div class="line">        dp = new vector&lt;bool&gt;[s.size()];</div><div class="line"> </div><div class="line">        for (int i = 0; i &lt; s.size(); i++)</div><div class="line">        &#123;</div><div class="line">            for (int j = i; j &lt; s.size(); j++)</div><div class="line">            &#123;</div><div class="line">                dp[i].push_back(match(s.substr(i, j - i + 1), dict));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        /*</div><div class="line">        for (int i = 0; i &lt; s.size(); i++)</div><div class="line">        &#123;</div><div class="line">            for (int j = 0; j &lt; dp[i].size(); j++)</div><div class="line">            &#123;</div><div class="line">                cout &lt;&lt; dp[i][j] &lt;&lt; " ";</div><div class="line">            &#125;</div><div class="line">            cout &lt;&lt; endl;</div><div class="line">        &#125;</div><div class="line">        */</div><div class="line">        output(s.size() - 1, s);</div><div class="line">         </div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line">    bool match(string s, unordered_set&lt;string&gt; &amp;dict)</div><div class="line">    &#123;</div><div class="line">        if (dict.find(s) != dict.end()) return true;</div><div class="line">        else return false;</div><div class="line">    &#125;</div><div class="line">    void output(int i, string s)</div><div class="line">    &#123;</div><div class="line">        if (i == -1)    //递归退出条件</div><div class="line">        &#123;</div><div class="line">            string str;</div><div class="line">            for (int j = mystring.size() - 1; j &gt;= 0; j--)</div><div class="line">            &#123;</div><div class="line">                str += mystring[j];</div><div class="line">                if (j != 0) str += " ";</div><div class="line">            &#125;</div><div class="line">            result.push_back(str);</div><div class="line">        &#125;</div><div class="line">        else</div><div class="line">        &#123;</div><div class="line">            for (int k = 0; k &lt;= i; k++) //error!!!  for (int k = 0; k &lt; i; k++)</div><div class="line">            &#123;</div><div class="line">                if (dp[k][i - k])       //dp[k][i-k]:偏移为k，截断长度i-k+1</div><div class="line">                &#123;</div><div class="line">                    mystring.push_back(s.substr(k, i - k + 1));</div><div class="line">                    output(k - 1, s);   //递归:dp[0][i]:偏移为0，截断长度i+1      i=k-1,则截断长度为k,与递归前偏移k互补</div><div class="line">                    mystring.pop_back();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    vector&lt;string&gt; result;</div><div class="line">    vector&lt;string&gt; mystring;</div><div class="line">    vector&lt;bool&gt; *dp;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;leetcode-算法集锦（二）&quot;&gt;&lt;a href=&quot;#leetcode-算法集锦（二）&quot; class=&quot;headerlink&quot; title=&quot;leetcode 算法集锦（二）&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.nowcoder.com/ta/leetcode&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;leetcode 算法集锦（二）&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;序号&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;考点&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;题目&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;C/C++&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Java     &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;  11&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;树&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;word-break-ii&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_11&quot;&gt;题解&lt;/a&gt;  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;  12&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;栈&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;word-break&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_12&quot;&gt;题解&lt;/a&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+    
+    </summary>
+    
+    
+      <category term="Algo" scheme="http://fitzeng.org/tags/Algo/"/>
+    
+      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
+    
+      <category term="Java" scheme="http://fitzeng.org/tags/Java/"/>
+    
+      <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
+    
+  </entry>
   
   <entry>
     <title>机器学习基本算法之线性回归</title>
@@ -1141,49 +1234,6 @@
   </entry>
   
   <entry>
-    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
-    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
-    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T15:12:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
-<li>fixit.py</li>
-<li>fix.sh</li>
-<li>txt</li>
-</ul>
-<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
-<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
-<p>下面写 <code>fixit.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
-<p>最后执行 <code>./fix.sh</code>。</p>
-<p>然后就是等待执行结束了。</p>
-<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
-    
-      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
-    
-  </entry>
-  
-  <entry>
     <title>一个小白使用 devstack 部署 openstack 的心路历程</title>
     <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
     <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
@@ -1250,6 +1300,49 @@
       <category term="devstack" scheme="http://fitzeng.org/tags/devstack/"/>
     
       <category term="openstack" scheme="http://fitzeng.org/tags/openstack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
+    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
+    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
+    <published>2017-11-04T03:27:00.000Z</published>
+    <updated>2017-11-04T15:12:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
+<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
+<li>fixit.py</li>
+<li>fix.sh</li>
+<li>txt</li>
+</ul>
+<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
+<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
+<p>下面写 <code>fixit.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
+<p>最后执行 <code>./fix.sh</code>。</p>
+<p>然后就是等待执行结束了。</p>
+<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
+    
+      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
     
   </entry>
   
@@ -2950,63 +3043,6 @@ semaphore full = <span class="number">0</span>; <span class="comment">// 计数�
       <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
     
       <category term="DataStruct" scheme="http://fitzeng.org/tags/DataStruct/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android 单元测试工具 Robolectric 中文文档</title>
-    <link href="http://fitzeng.org/2017/07/31/robolectric/"/>
-    <id>http://fitzeng.org/2017/07/31/robolectric/</id>
-    <published>2017-07-30T16:00:00.000Z</published>
-    <updated>2017-07-31T04:40:59.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/2017/07/31/robolectric/robolectric-cn.png" alt=""></p>
-<h3 id="为什么要翻译文档"><a href="#为什么要翻译文档" class="headerlink" title="为什么要翻译文档?"></a>为什么要翻译文档?</h3><blockquote>
-<p>由于在大三暑假时间算是比较充裕的, 然后加上自己英语比较渣, 又对 gitbook 有兴趣, 所以就想翻译一些文档. 平时也是一直看别人的干货, 所以也想自己做点贡献, 希望能帮助英语是短板的部分人. </p>
-</blockquote>
-<a id="more"></a>
-<h3 id="为什么是-Robolectric"><a href="#为什么是-Robolectric" class="headerlink" title="为什么是 Robolectric?"></a>为什么是 Robolectric?</h3><blockquote>
-<p>其实原因很简单, 就是我之前写过一篇 <a href="http://fitzeng.org/2017/05/14/Android%20%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%92%8C%20Robolectric%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Android 单元测试和 Robolectric 源码解析</a> 的文章, 直接看的二手资料, 感觉这种学习方式太被动了, 要自己尝试去啃第一手资料. 而正好网上没有对应的中文文档加上内容少, 一个人可以完成, 再加上前面的第一点就直接开始行动了.</p>
-</blockquote>
-<h3 id="阅读建议"><a href="#阅读建议" class="headerlink" title="阅读建议"></a>阅读建议</h3><blockquote>
-<p>我自知自己水平很渣, 所以一些实在想不通的直接给出了原文对应的英文文档供大家参考, 如果你已经是有了 4/6 级的水平, 推荐你直接看英文文档, 这份可以作参考. 当然如果可以的话, 欢迎大家留言提出修改意见. 对于翻译难理解, 有歧义, 有错误的地方欢迎大家指出来. 我在此先表示感谢. </p>
-</blockquote>
-<h3 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h3><blockquote>
-<ul>
-<li><p><a href="http://robolectric.org/" target="_blank" rel="external">Robolectric</a></p>
-</li>
-<li><p><a href="https://robolectric-cn.com/" target="_blank" rel="external">Robolectric-cn</a></p>
-</li>
-<li><p><a href="https://github.com/mk43/robolectric-cn" target="_blank" rel="external">GitHub</a></p>
-</li>
-<li><p><a href="https://www.gitbook.com/@mk43" target="_blank" rel="external">GitBook</a></p>
-</li>
-</ul>
-</blockquote>
-<h3 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h3><blockquote>
-<p>目前是一个 Android 开发者, 即将毕业面临就业, 希望在毕业前做一些自己喜欢的事情. 同时也希望能贡献自己的一份力, 和大家探讨学习.</p>
-<ul>
-<li><p><a href="http://fitzeng.org/">Blog</a></p>
-</li>
-<li><p><a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a></p>
-</li>
-</ul>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;/2017/07/31/robolectric/robolectric-cn.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;为什么要翻译文档&quot;&gt;&lt;a href=&quot;#为什么要翻译文档&quot; class=&quot;headerlink&quot; title=&quot;为什么要翻译文档?&quot;&gt;&lt;/a&gt;为什么要翻译文档?&lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;由于在大三暑假时间算是比较充裕的, 然后加上自己英语比较渣, 又对 gitbook 有兴趣, 所以就想翻译一些文档. 平时也是一直看别人的干货, 所以也想自己做点贡献, 希望能帮助英语是短板的部分人. &lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://fitzeng.org/tags/Android/"/>
-    
-      <category term="Android Unit Test" scheme="http://fitzeng.org/tags/Android-Unit-Test/"/>
     
   </entry>
   
