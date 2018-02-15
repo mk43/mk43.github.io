@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-15T02:51:29.780Z</updated>
+  <updated>2018-02-15T02:57:48.982Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,11 +20,12 @@
     <link href="http://fitzeng.org/2018/02/14/AlgoAndMath2/"/>
     <id>http://fitzeng.org/2018/02/14/AlgoAndMath2/</id>
     <published>2018-02-14T03:27:00.000Z</published>
-    <updated>2018-02-15T02:51:29.780Z</updated>
+    <updated>2018-02-15T02:57:48.982Z</updated>
     
     <content type="html"><![CDATA[<h2 id="leetcode-算法集锦（二）"><a href="#leetcode-算法集锦（二）" class="headerlink" title="leetcode 算法集锦（二）"></a><a href="https://www.nowcoder.com/ta/leetcode" target="_blank" rel="external">leetcode 算法集锦（二）</a></h2><blockquote>
 <p>主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.</p>
 </blockquote>
+<a id="more"></a>
 <table>
 <thead>
 <tr>
@@ -38,21 +39,20 @@
 <tbody>
 <tr>
 <td style="text-align:center">  11</td>
-<td style="text-align:center">树</td>
+<td style="text-align:center">动态规划</td>
 <td style="text-align:center">word-break-ii</td>
 <td style="text-align:center">NULL</td>
 <td style="text-align:center"><a href="#jump_11">题解</a>  </td>
 </tr>
 <tr>
 <td style="text-align:center">  12</td>
-<td style="text-align:center">栈</td>
+<td style="text-align:center">动态规划</td>
 <td style="text-align:center">word-break</td>
 <td style="text-align:center">NULL</td>
 <td style="text-align:center"><a href="#jump_12">题解</a> </td>
 </tr>
 </tbody>
 </table>
-<a id="more"></a>
 <h3 id="12-word-break"><a href="#12-word-break" class="headerlink" title="12 : word-break"></a><span id="jump_12"><a href="https://www.nowcoder.com/practice/5f3b7bf611764c8ba7868f3ed40d6b2c" target="_blank" rel="external">12 : word-break</a></span></h3><h4 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h4><p>参考上一题，不过不用记录结果，用个标记就可以了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Set;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, Set&lt;String&gt; dict)</span> </span>&#123;</div><div class="line">        ArrayList&lt;String&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = s.length() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</div><div class="line">            String word = s.substring(i, s.length());</div><div class="line">            <span class="keyword">if</span> (dict.contains(word)) &#123;</div><div class="line">                flag = wordBreak(s.substring(<span class="number">0</span>, i), dict);</div><div class="line">                <span class="keyword">if</span> (<span class="keyword">true</span> == flag || <span class="number">0</span> == i) &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> flag;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="其他思路"><a href="#其他思路" class="headerlink" title="其他思路"></a>其他思路</h4><p>用动态规划，dp[i]表示字符串s[0~i]是否可分的bool值。</p>
@@ -67,33 +67,6 @@
       &lt;h2 id=&quot;leetcode-算法集锦（二）&quot;&gt;&lt;a href=&quot;#leetcode-算法集锦（二）&quot; class=&quot;headerlink&quot; title=&quot;leetcode 算法集锦（二）&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.nowcoder.com/ta/leetcode&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;leetcode 算法集锦（二）&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;主要是牛客网上 leetcode 的算法题实践. 在 Blog 包含自己的解法和对别人优秀解法的分析.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;序号&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;考点&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;题目&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;C/C++&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;Java     &lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;  11&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;树&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;word-break-ii&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_11&quot;&gt;题解&lt;/a&gt;  &lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;  12&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;栈&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;word-break&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;NULL&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;&lt;a href=&quot;#jump_12&quot;&gt;题解&lt;/a&gt; &lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
     
     </summary>
     
