@@ -6,21 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>重拾计算机网络 | Fitzeng</title>
+  <title>机器学习基本算法之逻辑回归 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。">
-<meta name="keywords" content="计算机网络">
+  <meta name="keywords" content="Math,MachineLearning,Python,NumPy,Matplotlib,LogisticRegression">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重拾计算机网络">
-<meta property="og:url" content="http://fitzeng.org/2017/08/31/reCN/index.html">
+<meta property="og:title" content="机器学习基本算法之逻辑回归">
+<meta property="og:url" content="http://fitzeng.org/2018/02/11/MLLogisticRegression/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。">
-<meta property="og:image" content="http://fitzeng.org/2017/08/31/reCN/osi7.png">
-<meta property="og:updated_time" content="2017-09-02T02:00:18.000Z">
+<meta property="og:updated_time" content="2018-02-15T16:02:36.631Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="重拾计算机网络">
-<meta name="twitter:description" content="主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。">
-<meta name="twitter:image" content="http://fitzeng.org/2017/08/31/reCN/osi7.png">
+<meta name="twitter:title" content="机器学习基本算法之逻辑回归">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -144,96 +139,109 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-reCN" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-MLLogisticRegression" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      重拾计算机网络
+      机器学习基本算法之逻辑回归
     </h1>
   
 
         
-        <a href="/2017/08/31/reCN/" class="archive-article-date">
-  	<time datetime="2017-08-30T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-31</time>
+        <a href="/2018/02/11/MLLogisticRegression/" class="archive-article-date">
+  	<time datetime="2018-02-11T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>主要是把在重读 《计算机网络》 和 《数据通讯与网络》中觉得有价值的东西记录下来。</p>
-</blockquote>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+
 <a id="more"></a>
-<h2 id="1-计算机网络基础概念"><a href="#1-计算机网络基础概念" class="headerlink" title="1. 计算机网络基础概念"></a>1. 计算机网络基础概念</h2><blockquote>
-<p>一些互相连接的、自治的计算机的集合。</p>
-</blockquote>
-<h3 id="1-1-网络分类"><a href="#1-1-网络分类" class="headerlink" title="1.1 网络分类"></a>1.1 网络分类</h3><h4 id="不同作用范围的网络"><a href="#不同作用范围的网络" class="headerlink" title="不同作用范围的网络"></a>不同作用范围的网络</h4><ol>
-<li>广域网 WAN (Wide Area Network)</li>
-<li>城域网 MAN (Metropolitan Area Network)</li>
-<li>局域网 LAN (Local Area Network)</li>
-<li>个人区域网 PAN (Personal Area Network)</li>
-</ol>
-<h4 id="不同使用者的网络"><a href="#不同使用者的网络" class="headerlink" title="不同使用者的网络"></a>不同使用者的网络</h4><ol>
-<li>公用网 (public network)</li>
-<li>专用网 (private network)</li>
-</ol>
-<h4 id="用来把用户接入到因特网的网络"><a href="#用来把用户接入到因特网的网络" class="headerlink" title="用来把用户接入到因特网的网络"></a>用来把用户接入到因特网的网络</h4><ol>
-<li>接入网 AN (Access Network)</li>
-</ol>
-<h3 id="1-2-计算机网络的性能指标"><a href="#1-2-计算机网络的性能指标" class="headerlink" title="1.2 计算机网络的性能指标"></a>1.2 计算机网络的性能指标</h3><h4 id="速率-bit-s"><a href="#速率-bit-s" class="headerlink" title="速率 (bit/s)"></a>速率 (bit/s)</h4><h4 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h4><ol>
-<li>信号具有的频带宽度 (xxxHZ)</li>
-<li>在计算机网络中，从来表示通讯线路所能传送数据的能力。因此网络中的带宽表示在单位时间内ongoing 网络中的某一点到另一点所能通过的<code>最高数据率</code>。单位是比特每秒(b/s)</li>
-</ol>
-<h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><blockquote>
-<p>单位时间通过某个网络(或信道、接口)的数据量</p>
-</blockquote>
-<h4 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h4><blockquote>
-<p>数据从网络的一端发送到另一端所需的时间</p>
-</blockquote>
-<p><code>总延时 = 发送时延 + 传播时延 + 处理时延 + 排队时延</code></p>
-<p>发送时延(传输时延)</p>
+<!-- 
+> 写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。然后这是这个系列的第二篇了，对于初学者来说，如果你没看过第一篇，推荐看看[机器学习基本算法之线性回归](http://fitzeng.org/2018/02/11/MLLinearRegression/)，里面提及到了很多基础的数学知识和一些的机器学习思维，对于理解这篇文章很有帮助，很多机器学习流程化的东西这里就不在具体介绍为什么这样做了，而是直接解释为什么在逻辑回归中需要使用这样的方式来实现，更加聚焦于逻辑回归实现本身，而非机器学习的流程理解。
+
+
+## 0 准备
+
+### 0.1 环境
+
+> Python: 3.5
+> 
+> TensorFlow: Anaconda3 envs
+> 
+> IDE: PyCharm 2017.3.3
+
+### 0.2 基本认识
+
+如果你看过前面的线性回归介绍，可以知道，线性回归是通过对一类呈线性分布的数据进行拟合，然后训练一个线性模型对数据进行预测。那么在逻辑回归中，可以暂时理解为处理分类问题。比如给出一个人的经纬度，要判断这个人在哪个国家，如果仅仅以线性回归的思维，我们很难根据经纬度去构造出一个很好的线性模型去预测地区，我们就需要知道的是国家分界线，而这些分界线的获得就是通过逻辑回归。
+
+## 1 二元逻辑回归
+
+### 1.1 提出拟合函数 `Sigmoid`
+
+如果你还没有太理解逻辑回归处理的问题和线性回归比的独特性，我们再来举个小例子(注意：为了简单，这里的数据都是特殊取值的)，来引出今天的主角：
+
+![](linear2LogisticreGressionGraph.png)
+
+对于上面这张图，很明显，怎么画直线也不好，总会产生较大的误差。而如果有一个函数能够表示：
+
+$$
+y=\begin{cases}
+1,\quad x > 5 \\\\
+0,\quad x \leq 5
+\end{cases}
+$$
+
+那么就完美符合当前的数据分布，直觉告诉我们有很大可能其对数据的预测能力也比较强。接下来，就是找一个 \\( S \\) 形函数来作为拟合函数。这里很明显我们的函数不是线性的。这里提出一个叫 \\( Sigmoid \\) 的函数：
+
+$$
+y = \frac{1}{1 + e^{-x}}
+$$
+
+![](linear2LogisticreGressionGraphAddSigmoid.png)
+
+从图像中可以看到，这个函数的完美符合我们心中的预期。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</div><div class="line">y = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</div><div class="line"></div><div class="line">train_X = np.asarray(x)</div><div class="line">train_Y = np.asarray(y)</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">plt.xlim(<span class="number">-1</span>, <span class="number">12</span>)</div><div class="line">plt.ylim(<span class="number">-0.5</span>, <span class="number">1.5</span>)</div><div class="line">plt.scatter(train_X, train_Y)</div><div class="line"></div><div class="line">s_X = np.linspace(<span class="number">-2</span>, <span class="number">12</span>, <span class="number">100</span>)</div><div class="line">s_Y = <span class="number">1</span>/(<span class="number">1</span> + np.power(np.e, <span class="number">-6</span>*(s_X - <span class="number">5</span>)))</div><div class="line">plt.plot(s_X, s_Y)</div><div class="line">plt.savefig(<span class="string">"linear2LogisticreGressionGraphAddSigmoid.png"</span>)</div><div class="line"><span class="comment"># plt.savefig("linear2LogisticreGressionGraph.png")</span></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<h3 id="1-2-扩充分类"><a href="#1-2-扩充分类" class="headerlink" title="1.2 扩充分类"></a>1.2 扩充分类</h3><p>前面已经说了，为了更好体会逻辑回归，所以数据有点特殊和单一，下面我们再来看一组数据：</p>
+<p><img src="linear2LogisticreGressionGraphAddScatter.png" alt=""></p>
+<p>像这种有明显的聚拢效果的散点图，可以看做是一个分类问题，所以对于这里我们怎么利用前面提到的逻辑回归来处理类似于这种分类问题？</p>
+<p>这里思维要稍微转换一下，以前我们以 \( y \) 的值作为输出，这里不是了，这里需要预测的结果是给定 \( (x, y) \) 求出该点是红色的圆形还是蓝色的三角形？所以要找一个形如  \( g(x, y) \)<br>的函数来处理，前面的 \( Sigmoid\)函数可以帮我们分类，只要假设 \( 1 \) 和 \( 0 \) 各代表一种情况，那么得出 \( 1/0 \) 时就可以推断出 \( (x, y) \)现在的情况是红色的圆形还是蓝色的三角形，现在的情况是，如何将 \( g(x, y) \) 预处理的结果与 \( Sigmoid \) 函数联系起来。可能你已经想到了，将 \( g(x, y) \) 的值域当做 \( Sigmoid \) 的定义域。那么给定一个 \( (x,y) \) 我们就能得出一个在区间 \( [0, 1] \) 内的值。这下，函数就能够满足我们的要求了。</p>
+<p>模仿前面机器学习的思维，我们对于给定的输入统一用一个输入矩阵 \( X \) 表示 \( (x, y) \) 然后加入权重 \( W \)，则得出函数 \( g(W, X) \)，接下来我们要定义一个模型去区分这种分布？如果你看过代码就知道，在做数据的时候默认就是利用 \( x + y &gt; 7 \) 来分的类，所以自然取的是线性模型作为首选。至于怎么选模型我认为最简洁的表示往往就是最好的，下面看看吴恩达老师的例子体会一下这个过程。</p>
+<p><img src="wuenda_1.png" alt=""></p>
+<p>既然是线性，那么直接得出 \( g(W, X) = W^TX \) 这里提醒下加 \({}^T \) 是因为我们默认的向量都是列向量。 理解了这里那就好办了，综合我们的 \( Sigmoid \) 可以得出拟合函数：</p>
+<p>$$<br>h_W(X) = \frac{1}{1 + e^{-W^TX}}<br>$$</p>
+<h3 id="1-3-从直观感受推导损失函数"><a href="#1-3-从直观感受推导损失函数" class="headerlink" title="1.3 从直观感受推导损失函数"></a>1.3 从直观感受推导损失函数</h3><p>既然我们都已经把数据做了处理，所以对于输入是二元还是一元没差了，就是一个 \( h_W(X) \)而已。下面我们根据之前线性函数的例子，找一个适合描述误差的函数。看图：</p>
+<p><img src="linear2LogisticreGressionGraphAddSigmoid2.png" alt=""></p>
+<p>下面我们先只分析为 \( 1 \) 的点如何通过 \( h_W(x_1) &lt; h_W(x_2) &lt; h_W(x_3) \) 的关系找到一个函数来表达损失。首先可以肯定的是，要对 \( h_W(x_1) \) 的惩罚力度是最大的。因为从图中看出对它的预测最离谱，所以损失函数要是一个递减函数，然后继续分析损失函数是否对于 \( h_W(x_i) \) 的变化呈均匀变化，也就是这个递减函数的递减幅度是设么样的？很明显，\( h_W(x_i) \) 越靠近 \( 0 \)，它的惩罚力度应该和指数增长有点类似。越小一点点，惩罚力度立刻激增，这样对于最后损失函数收敛时的参数拟合结果比较符合大多数数据的情况，不会出现它极端的分类，因为对极端的数据处罚力度实在是太大了。好了，这个函数符合三个特点，<code>递减</code>、<code>导数绝对值递减</code>（递减幅度要减小）和定义域在 \( [0, 1] \)内的跨度必须大，最好是从正无穷到 \( 0 \) 因为如果函数值为 \( 0 \)我们就不要对这个点进行惩罚了，所以肯定是要有 \( 0 \) 这个函数值的。这时你可能想到了，对数函数正好满足情况。所以有如下结果：</p>
+<p>$$<br>loss(h_W(x_i), y_i) = -log(h_W(x_i))\quad if\ y_i = 1<br>$$</p>
+<p>这里就不贴函数图了，下面大家自己分析一下 \( y = 0 \) 的情况。自己实在想不出来再往下阅读吧，如果直接看缺少思考过程对自己的理解可能有点欠缺。就像很多书很多博客都是直接给公式，虽然勉强也能看懂，但是更多时候是自己记住，对于其中的思考过程没有一点自己的体会和心得。给个图大家自己猜猜：</p>
+<p><img src="linear2LogisticreGressionGraphAddSigmoid3.png" alt=""></p>
+<p>下面直接给出最后的结果：</p>
+<p>$$<br>loss(h_W(x_i), y_i) = -y_i <em> log(h_W(x_i)) - (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
+<h3 id="1-4-从概率论角度分析损失函数"><a href="#1-4-从概率论角度分析损失函数" class="headerlink" title="1.4 从概率论角度分析损失函数"></a>1.4 从概率论角度分析损失函数</h3><p>还记得前面说的逻辑回归可以看做是分类问题吗？而对于分类问题的预测我们可以看做概率来计算。所以函数 \( h_W(x_i) \) 可以看做，在 \( W \) 下，输入 \( x_i \) 取值为 \( 1 \) 的概率。而我们要做的就是求出一个 \( W \) 是的对于给定的 \( x_i \) 的概率尽可能和 \( y_i \) 符合。这时候你会发现，结果 \( y_i \) 服从伯努利分布，也就是随机变量 \( Y \)的取值只能是 \( 0/1 \)，在 \( h_W(x_i) \) 看做是取 \( 1 \) 的概率的情况下，当这个值大于 \( 0.5 \) 我们认为分类为 \( 1 \)。</p>
+<p>好了，把上面的东西都“忘掉”，接下来进入一个概率论的思维模式。假设这一个平面内有无数个点，而我们给出的数据只是一个抽样数据。但是我们不可能把所有的情况都列举出来，所以我们要做的就是通过给出的样本来估测整体分布。其实这也和机器学习需要大量样本训练有关，很明显数据量越大，偶然误差越小，样本的分布越接近整体分布。收回到概率论，我发现容易写着写着就跑偏了😂😂😂。现在我们统计数据的情况是：符合伯努利分布。而这种知道分布的求能够和分布匹配的参数的方法概率论中有一个参数估计方法叫：<code>极大似然估计</code>。如果不懂看一下简短介绍：</p>
 <blockquote>
-<p>发送数据帧的时间</p>
+<p>极大似然估计，通俗理解来说，就是利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值！<br>换句话说，极大似然估计提供了一种给定观察数据来评估模型参数的方法，即：“模型已定，参数未知”。</p>
 </blockquote>
-<p><code>发送时延 = 数据帧长度(b) / 信道带宽(b/s)</code></p>
-<p>传播时延</p>
-<blockquote>
-<p>电磁波在信道中传播一定距离花费的时间</p>
-</blockquote>
-<p><code>传播时延 = 信道长度(m) / 电磁波在信道上的传播速率(m/s)</code></p>
-<p>处理时延</p>
-<blockquote>
-<p>主机或路由器在收到分组时要花费一定时间处理。</p>
-</blockquote>
-<p>排队时延</p>
-<blockquote>
-<p>在路由器中输入队列中排队等待的时间</p>
-</blockquote>
-<h4 id="时延带宽积"><a href="#时延带宽积" class="headerlink" title="时延带宽积"></a>时延带宽积</h4><blockquote>
-<p>以比特为单位的链路长度(可以理解为 <code>体积 = 截面 * 长度</code>)</p>
-</blockquote>
-<p><code>时延带宽积 = 传播时延 * 带宽</code></p>
-<h4 id="往返时间-RTT-Round-Trip-Time"><a href="#往返时间-RTT-Round-Trip-Time" class="headerlink" title="往返时间 RTT (Round-Trip Time)"></a>往返时间 RTT (Round-Trip Time)</h4><blockquote>
-<p>从发送方发送数据开始到发送方接收到来自接收方的确认总共经历的时间。</p>
-</blockquote>
-<h4 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h4><p>信道利用率</p>
-<blockquote>
-<p>某信道有百分之几的时间是被利用的</p>
-</blockquote>
-<p>网络利用率</p>
-<blockquote>
-<p>D0 : 网络空闲时的时延 D : 当前网络的时延 U : 利用率</p>
-</blockquote>
-<p><code>D = D0 / (1 - U)</code></p>
-<h3 id="1-3-计算机网络的体系结构"><a href="#1-3-计算机网络的体系结构" class="headerlink" title="1.3 计算机网络的体系结构"></a>1.3 计算机网络的体系结构</h3><blockquote>
-<p>每层的具体介绍后面章节给出</p>
-</blockquote>
-<p><img src="/2017/08/31/reCN/osi7.png" alt=""></p>
-<h2 id="2-物理层"><a href="#2-物理层" class="headerlink" title="2. 物理层"></a>2. 物理层</h2>
+<p>参考自<a href="https://zhuanlan.zhihu.com/p/26614750">@忆臻：一文搞懂极大似然估计</a></p>
+<p>依照上面的意思那很明显，我们是把 \( h_W(x_i) = P(y = 1|x_i;W)\) 那自然就有：</p>
+<p>$$<br>P(y_i|x_i;W) = {h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
+<p>这是单个 \(（x_i, y）\)的概率。如果把整个样本看做 \( n \) 次的独立重复实验呢？那发生的概率就是这个的乘积了。这里使用 \( X, Y \) 向量表示整个数据。即：</p>
+<p>$$<br>P(Y|X;W) = \prod_{i = 1}^{n}P(y_i|x_i; W) = \prod_{i = 1}^{n}{h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
+<p>可以看出这是一个关于 \( W \) 的函数，现在比较玄学的部分来了，我们认为，这个事件既然发生了，那么它发生的概率就应该是所有事件中概率最大的，如果不是那它凭什么发生？哈哈，就是这么讲道(xuan)理(xue)。最大值？那就好办了，直接求导？不行不行，太难了。。。高中最常用的把戏：乘变加，用对数。</p>
+<p>$$<br>loss(W) = -\frac{1}{n}log(P(Y|X;W)) = -\frac{1}{n}\sum_{i = 1}^{n}y_i <em> log(h_W(x_i)) + (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
+<h3 id="1-5-梯度下降求极值"><a href="#1-5-梯度下降求极值" class="headerlink" title="1.5 梯度下降求极值"></a>1.5 梯度下降求极值</h3><p>前面已经给出了损失函数，我们再次利用梯度下降算法更新权重。如果自己手写代码来实现，我们还是要求偏导的😂😂😂</p>
+<p>高数的东西，这里偷懒了，字有点难打就直接截图了，毕竟这不是什么难点：</p>
+<p><img src="wuenda_2.png" alt=""></p>
+<h2 id="2-多元逻辑回归"><a href="#2-多元逻辑回归" class="headerlink" title="2 多元逻辑回归"></a>2 多元逻辑回归</h2><h2 id="3-模型优化"><a href="#3-模型优化" class="headerlink" title="3 模型优化"></a>3 模型优化</h2><h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><h2 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5 参考资料"></a>5 参考资料</h2><p><a href="https://zhuanlan.zhihu.com/p/26614750">@忆臻：一文搞懂极大似然估计</a></p>
+-->
       
 
       
@@ -246,7 +254,27 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">计算机网络</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Math</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NumPy</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Matplotlib</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">LogisticRegression</a>
         		</li>
       		
 		</ul>
@@ -302,7 +330,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/08/31/reCN/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/02/11/MLLogisticRegression/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -316,18 +344,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/09/02/reJVM/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/02/11/MLLinearRegression/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          重读 JVM
+          机器学习基本算法之线性回归
         
       </div>
     </a>
   
   
-    <a href="/2017/08/07/reOS/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">重拾操作系统</div>
+    <a href="/2018/02/08/MatplotlibGenerateGif/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Matplotlib 保存 GIF 动图</div>
       <i class="icon-circle-right"></i>
     </a>
   
