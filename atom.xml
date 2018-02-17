@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-15T03:02:44.999Z</updated>
+  <updated>2018-02-17T03:38:28.204Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,159 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习基本算法之逻辑回归</title>
+    <link href="http://fitzeng.org/2018/02/16/MLLogisticRegression/"/>
+    <id>http://fitzeng.org/2018/02/16/MLLogisticRegression/</id>
+    <published>2018-02-16T03:27:00.000Z</published>
+    <updated>2018-02-17T03:38:28.204Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。然后这是这个系列的第二篇了，对于初学者来说，如果你没看过第一篇，推荐看看<a href="http://fitzeng.org/2018/02/11/MLLinearRegression/">机器学习基本算法之线性回归</a>，里面提及到了很多基础的数学知识和一些的机器学习思维，对于理解这篇文章很有帮助，很多机器学习流程化的东西这里就不在具体介绍为什么这样做了，而是直接解释为什么在逻辑回归中需要使用这样的方式来实现，更加聚焦于逻辑回归实现本身，而非机器学习的流程理解。</p>
+<p><a href="https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression" target="_blank" rel="external">实验代码</a>-<a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">参考书籍</a>-[参考博客详见最后]</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="0-准备"><a href="#0-准备" class="headerlink" title="0 准备"></a>0 准备</h2><h3 id="0-1-环境"><a href="#0-1-环境" class="headerlink" title="0.1 环境"></a>0.1 环境</h3><blockquote>
+<p>Python: 3.5</p>
+<p>TensorFlow: Anaconda3 envs</p>
+<p>IDE: PyCharm 2017.3.3</p>
+</blockquote>
+<h3 id="0-2-基本认识"><a href="#0-2-基本认识" class="headerlink" title="0.2 基本认识"></a>0.2 基本认识</h3><p>如果你看过前面的线性回归介绍，可以知道，线性回归是通过对一类呈线性分布的数据进行拟合，然后训练一个线性模型对数据进行预测。那么在逻辑回归中，可以暂时理解为处理分类问题。比如给出一个人的经纬度，要判断这个人在哪个国家，如果仅仅以线性回归的思维，我们很难根据经纬度去构造出一个很好的线性模型去预测地区，我们就需要知道的是国家分界线，而这些分界线的获得就是通过逻辑回归。</p>
+<h2 id="1-二元分类"><a href="#1-二元分类" class="headerlink" title="1 二元分类"></a>1 二元分类</h2><h3 id="1-1-提出拟合函数-Sigmoid"><a href="#1-1-提出拟合函数-Sigmoid" class="headerlink" title="1.1 提出拟合函数 Sigmoid"></a>1.1 提出拟合函数 <code>Sigmoid</code></h3><p>如果你还没有太理解逻辑回归处理的问题和线性回归比的独特性，我们再来举个小例子(注意：为了简单，这里的数据都是特殊取值的)，来引出今天的主角：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/linear2LogisticreGressionGraph.png" alt=""></p>
+<p>对于上面这张图，很明显，怎么画直线也不好，总会产生较大的误差。而如果有一个函数能够表示：</p>
+<p>$$<br>y=\begin{cases}<br>1,\quad x &gt; 5 \\<br>0,\quad x \leq 5<br>\end{cases}<br>$$</p>
+<p>那么就完美符合当前的数据分布，直觉告诉我们有很大可能其对数据的预测能力也比较强。接下来，就是找一个 \( S \) 形函数来作为拟合函数。这里很明显我们的函数不是线性的。这里提出一个叫 \( Sigmoid \) 的函数：</p>
+<p>$$<br>y = \frac{1}{1 + e^{-x}}<br>$$</p>
+<p><img src="/2018/02/16/MLLogisticRegression/linear2LogisticreGressionGraphAddSigmoid.png" alt=""></p>
+<p>从图像中可以看到，这个函数的完美符合我们心中的预期。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</div><div class="line">y = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</div><div class="line"></div><div class="line">train_X = np.asarray(x)</div><div class="line">train_Y = np.asarray(y)</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">plt.xlim(<span class="number">-1</span>, <span class="number">12</span>)</div><div class="line">plt.ylim(<span class="number">-0.5</span>, <span class="number">1.5</span>)</div><div class="line">plt.scatter(train_X, train_Y)</div><div class="line"></div><div class="line">s_X = np.linspace(<span class="number">-2</span>, <span class="number">12</span>, <span class="number">100</span>)</div><div class="line">s_Y = <span class="number">1</span>/(<span class="number">1</span> + np.power(np.e, <span class="number">-6</span>*(s_X - <span class="number">5</span>)))</div><div class="line">plt.plot(s_X, s_Y)</div><div class="line">plt.savefig(<span class="string">"linear2LogisticreGressionGraphAddSigmoid.png"</span>)</div><div class="line"><span class="comment"># plt.savefig("linear2LogisticreGressionGraph.png")</span></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<h3 id="1-2-扩充分类"><a href="#1-2-扩充分类" class="headerlink" title="1.2 扩充分类"></a>1.2 扩充分类</h3><p>前面已经说了，为了更好体会逻辑回归，所以数据有点特殊和单一，下面我们再来看一组数据：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/linear2LogisticreGressionGraphAddScatter.png" alt=""></p>
+<p>像这种有明显的聚拢效果的散点图，可以看做是一个分类问题，所以对于这里我们怎么利用前面提到的逻辑回归来处理类似于这种分类问题？</p>
+<p>这里思维要稍微转换一下，以前我们以 \( y \) 的值作为输出，这里不是了，这里需要预测的结果是给定 \( (x, y) \) 求出该点是红色的圆形还是蓝色的三角形？所以要找一个形如  \( g(x, y) \)<br>的函数来处理，前面的 \( Sigmoid\)函数可以帮我们分类，只要假设 \( 1 \) 和 \( 0 \) 各代表一种情况，那么得出 \( 1/0 \) 时就可以推断出 \( (x, y) \)现在的情况是红色的圆形还是蓝色的三角形，现在的情况是，如何将 \( g(x, y) \) 预处理的结果与 \( Sigmoid \) 函数联系起来。可能你已经想到了，将 \( g(x, y) \) 的值域当做 \( Sigmoid \) 的定义域。那么给定一个 \( (x,y) \) 我们就能得出一个在区间 \( [0, 1] \) 内的值。这下，函数就能够满足我们的要求了。</p>
+<p>模仿前面机器学习的思维，我们对于给定的输入统一用一个输入矩阵 \( X \) 表示 \( (x, y) \) 然后加入权重 \( W \)，则得出函数 \( g(W, X) \)，接下来我们要定义一个模型去区分这种分布？如果你看过代码就知道，在做数据的时候默认就是利用 \( x + y &gt; 7 \) 来分的类，所以自然取的是线性模型作为首选。至于怎么选模型我认为最简洁的表示往往就是最好的，下面看看吴恩达老师的例子体会一下这个过程。</p>
+<p><img src="/2018/02/16/MLLogisticRegression/wuenda_1.png" alt=""></p>
+<p>既然是线性，那么直接得出 \( g(W, X) = W^TX \) 这里提醒下加 \({}^T \) 是因为我们默认的向量都是列向量。 理解了这里那就好办了，综合我们的 \( Sigmoid \) 可以得出拟合函数：</p>
+<p>$$<br>h_W(X) = \frac{1}{1 + e^{-W^TX}}<br>$$</p>
+<h3 id="1-3-从直观感受推导损失函数"><a href="#1-3-从直观感受推导损失函数" class="headerlink" title="1.3 从直观感受推导损失函数"></a>1.3 从直观感受推导损失函数</h3><p>既然我们都已经把数据做了处理，所以对于输入是二元还是一元没差了，就是一个 \( h_W(X) \)而已。下面我们根据之前线性函数的例子，找一个适合描述误差的函数。看图：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/linear2LogisticreGressionGraphAddSigmoid2.png" alt=""></p>
+<p>下面我们先只分析为 \( 1 \) 的点如何通过 \( h_W(x_1) &lt; h_W(x_2) &lt; h_W(x_3) \) 的关系找到一个函数来表达损失。首先可以肯定的是，要对 \( h_W(x_1) \) 的惩罚力度是最大的。因为从图中看出对它的预测最离谱，所以损失函数要是一个递减函数，然后继续分析损失函数是否对于 \( h_W(x_i) \) 的变化呈均匀变化，也就是这个递减函数的递减幅度是设么样的？很明显，\( h_W(x_i) \) 越靠近 \( 0 \)，它的惩罚力度应该和指数增长有点类似。越小一点点，惩罚力度立刻激增，这样对于最后损失函数收敛时的参数拟合结果比较符合大多数数据的情况，不会出现它极端的分类，因为对极端的数据处罚力度实在是太大了。好了，这个函数符合三个特点，<code>递减</code>、<code>导数绝对值递减</code>（递减幅度要减小）和定义域在 \( [0, 1] \)内的跨度必须大，最好是从正无穷到 \( 0 \) 因为如果函数值为 \( 0 \)我们就不要对这个点进行惩罚了，所以肯定是要有 \( 0 \) 这个函数值的。这时你可能想到了，对数函数正好满足情况。所以有如下结果：</p>
+<p>$$<br>loss(h_W(x_i), y_i) = -log(h_W(x_i))\quad if\ y_i = 1<br>$$</p>
+<p>这里就不贴函数图了，下面大家自己分析一下 \( y = 0 \) 的情况。自己实在想不出来再往下阅读吧，如果直接看缺少思考过程对自己的理解可能有点欠缺。就像很多书很多博客都是直接给公式，虽然勉强也能看懂，但是更多时候是自己记住，对于其中的思考过程没有一点自己的体会和心得。给个图大家自己猜猜：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/linear2LogisticreGressionGraphAddSigmoid3.png" alt=""></p>
+<p>下面直接给出最后的结果：</p>
+<p>$$<br>loss(h_W(x_i), y_i) = -y_i <em> log(h_W(x_i)) - (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
+<h3 id="1-4-从概率论角度分析损失函数"><a href="#1-4-从概率论角度分析损失函数" class="headerlink" title="1.4 从概率论角度分析损失函数"></a>1.4 从概率论角度分析损失函数</h3><p>还记得前面说的逻辑回归可以看做是分类问题吗？而对于分类问题的预测我们可以看做概率来计算。所以函数 \( h_W(x_i) \) 可以看做，在 \( W \) 下，输入 \( x_i \) 取值为 \( 1 \) 的概率。而我们要做的就是求出一个 \( W \) 是的对于给定的 \( x_i \) 的概率尽可能和 \( y_i \) 符合。这时候你会发现，结果 \( y_i \) 服从伯努利分布，也就是随机变量 \( Y \)的取值只能是 \( 0/1 \)，在 \( h_W(x_i) \) 看做是取 \( 1 \) 的概率的情况下，当这个值大于 \( 0.5 \) 我们认为分类为 \( 1 \)。</p>
+<p>好了，把上面的东西都“忘掉”，接下来进入一个概率论的思维模式。假设这一个平面内有无数个点，而我们给出的数据只是一个抽样数据。但是我们不可能把所有的情况都列举出来，所以我们要做的就是通过给出的样本来估测整体分布。其实这也和机器学习需要大量样本训练有关，很明显数据量越大，偶然误差越小，样本的分布越接近整体分布。收回到概率论，我发现容易写着写着就跑偏了😂😂😂。现在我们统计数据的情况是：符合伯努利分布。而这种知道分布的求能够和分布匹配的参数的方法概率论中有一个参数估计方法叫：<code>极大似然估计</code>。如果不懂看一下简短介绍：</p>
+<blockquote>
+<p>极大似然估计，通俗理解来说，就是利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值！<br>换句话说，极大似然估计提供了一种给定观察数据来评估模型参数的方法，即：“模型已定，参数未知”。</p>
+</blockquote>
+<p>参考自<a href="https://zhuanlan.zhihu.com/p/26614750" target="_blank" rel="external">@忆臻：一文搞懂极大似然估计</a></p>
+<p>依照上面的意思那很明显，我们是把 \( h_W(x_i) = P(y = 1|x_i;W)\) 那自然就有：</p>
+<p>$$<br>P(y_i|x_i;W) = {h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
+<p>这是单个 \(（x_i, y_i）\)的概率。如果把整个样本看做 \( n \) 次的独立重复实验呢？那发生的概率就是这个的乘积了。这里使用 \( X, Y \) 向量表示整个数据。即：</p>
+<p>$$<br>P(Y|X;W) = \prod_{i = 1}^{n}P(y_i|x_i; W) = \prod_{i = 1}^{n}{h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
+<p>可以看出这是一个关于 \( W \) 的函数，现在比较玄学的部分来了，我们认为，这个事件既然发生了，那么它发生的概率就应该是所有事件中概率最大的，如果不是那它凭什么发生？哈哈，就是这么讲道(xuan)理(xue)。最大值？那就好办了，直接求导？不行不行，太难了。。。高中最常用的把戏：乘变加，用对数。然后乘以 \( -\frac{1}{n} \) 就编程求最小值了。</p>
+<p>$$<br>loss(W) = -\frac{1}{n}log(P(Y|X;W)) = -\frac{1}{n}\sum_{i = 1}^{n}y_i <em> log(h_W(x_i)) + (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
+<h3 id="1-5-梯度下降求极值"><a href="#1-5-梯度下降求极值" class="headerlink" title="1.5 梯度下降求极值"></a>1.5 梯度下降求极值</h3><p>前面已经给出了损失函数，我们再次利用梯度下降算法更新权重。如果自己手写代码来实现，我们还是要求偏导的😂😂😂</p>
+<p>高数的东西，这里偷懒了，字有点难打就直接截图了，毕竟这不是什么难点：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/wuenda_2.png" alt=""></p>
+<p>那么更新函数就是：</p>
+<p>$$<br>w_j := w_j - \frac{\alpha}{n}\sum_{i=1}^{n}(h_W(x_i) - y_i)x_{i_j}<br>$$</p>
+<p>注意这里的 \( i, j \)，\( x_i \) 代表的是一个列向量，\( x_{i_j} \) 代表第 \( i \) 列第 \( j \) 个数字。其实仔细想想就可以发现，更新的 \( w_j \)就是一个数，对它求偏导的时候余出来就是和它相乘的那个 \( x_{i_j} \)。由于前面都是从单个点开始研究，为了好理解所以直接使用下标表示，但是在使用线性边界函数的时候要有一个矩阵的思想。这里就不细讲了，后面多元的就必须使用向量形式了。</p>
+<h3 id="1-6-手写代码"><a href="#1-6-手写代码" class="headerlink" title="1.6 手写代码"></a>1.6 手写代码</h3><p>好了，基本逻辑已经搞清楚了，就是和线性回归类似，只不过这里处理的是一个线性二分类问题，需要对原始数据处理成线性值然后把线性值映射到 \( sigmoid \) 函数的定义域上，根据 \( sigmoid \) 函数特征我们可以得出数据分类为正 \( (1) \) 的概率大小，然后进行评估。</p>
+<p>如果对公式还有什么不懂的话，参考这篇 <a href="http://blog.csdn.net/ligang_csdn/article/details/53838743" target="_blank" rel="external">机器学习–Logistic回归计算过程的推导</a> 里面讲解了如何向量化，如果你对线性代数不熟悉可以自己去看看这篇文章的讲解。下面我只讲解代码，就不对原理重复介绍了。</p>
+<p>需要的库和数据，这里为了获取更好的精度最好使用 <code>float64</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.animation <span class="keyword">as</span> animation</div><div class="line"></div><div class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</div><div class="line">y = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</div><div class="line"></div><div class="line">train_X = np.asarray(np.row_stack((np.ones(shape=(<span class="number">1</span>, len(x))), x)), dtype=np.float64)</div><div class="line">train_Y = np.asarray(y, dtype=np.float64)</div><div class="line">train_W = np.asarray([<span class="number">-1</span>, <span class="number">-1</span>], dtype=np.float64).reshape(<span class="number">1</span>, <span class="number">2</span>)</div></pre></td></tr></table></figure>
+<p>定义 \( sigmoid \) 和 \( loss \) 函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(X)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.power(np.e, -(X)))</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lossfunc</span><span class="params">(X, Y, W)</span>:</span></div><div class="line">    n = len(Y)</div><div class="line">    <span class="keyword">return</span> (<span class="number">-1</span> / n) * np.sum(Y * np.log(sigmoid(np.matmul(W, X))) + (<span class="number">1</span> - Y) * np.log((<span class="number">1</span> - sigmoid(np.matmul(W, X)))))</div></pre></td></tr></table></figure>
+<p>实现参数更新（梯度下降算法）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(X, Y, W, learningrate=<span class="number">0.001</span>, trainingtimes=<span class="number">500</span>)</span>:</span></div><div class="line">    n = len(Y)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(trainingtimes):</div><div class="line">        W = W - (learningrate / n) * np.sum((sigmoid(np.matmul(W, X)) - Y) * X, axis=<span class="number">1</span>)</div></pre></td></tr></table></figure>
+<p>这里的一个重点是把之前的分析向量化了，然后注意维度变化就很简单了。其中 \( axis=1 \) 是一个值得注意的点，它代表求某个维度的和。</p>
+<p>其实到这里整个算法就算是完成了。下面我们进行可视化，不会的可以参考我之前的文章 <a href="http://fitzeng.org/2018/02/08/MatplotlibGenerateGif/">Matplotlib 保存 GIF 动图</a>，下面给出效果和源代码：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/logisticregression.gif" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.animation <span class="keyword">as</span> animation</div><div class="line"></div><div class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</div><div class="line">y = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</div><div class="line"></div><div class="line">train_X = np.asarray(np.row_stack((np.ones(shape=(<span class="number">1</span>, len(x))), x)), dtype=np.float64)</div><div class="line">train_Y = np.asarray(y, dtype=np.float64)</div><div class="line">train_W = np.asarray([<span class="number">-1</span>, <span class="number">-1</span>], dtype=np.float64).reshape(<span class="number">1</span>, <span class="number">2</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(X)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.power(np.e, -(X)))</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lossfunc</span><span class="params">(X, Y, W)</span>:</span></div><div class="line">    n = len(Y)</div><div class="line">    <span class="keyword">return</span> (<span class="number">-1</span> / n) * np.sum(Y * np.log(sigmoid(np.matmul(W, X))) + (<span class="number">1</span> - Y) * np.log((<span class="number">1</span> - sigmoid(np.matmul(W, X)))))</div><div class="line"></div><div class="line"></div><div class="line">Training_Times = <span class="number">100000</span></div><div class="line">Learning_Rate = <span class="number">0.3</span></div><div class="line"></div><div class="line">loss_Trace = []</div><div class="line">w_Trace = []</div><div class="line">b_Trace = []</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(X, Y, W, learningrate=<span class="number">0.001</span>, trainingtimes=<span class="number">500</span>)</span>:</span></div><div class="line">    n = len(Y)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(trainingtimes):</div><div class="line">        W = W - (learningrate / n) * np.sum((sigmoid(np.matmul(W, X)) - Y) * X, axis=<span class="number">1</span>)</div><div class="line">        <span class="comment"># for GIF</span></div><div class="line">        <span class="keyword">if</span> <span class="number">0</span> == i % <span class="number">1000</span> <span class="keyword">or</span> (<span class="number">100</span> &gt; i <span class="keyword">and</span> <span class="number">0</span> == i % <span class="number">2</span>):</div><div class="line">            b_Trace.append(W[<span class="number">0</span>, <span class="number">0</span>])</div><div class="line">            w_Trace.append(W[<span class="number">0</span>, <span class="number">1</span>])</div><div class="line">            loss_Trace.append(lossfunc(X, Y, W))</div><div class="line">    <span class="keyword">return</span> W</div><div class="line"></div><div class="line"></div><div class="line">final_W = gradientDescent(train_X, train_Y, train_W, learningrate=Learning_Rate, trainingtimes=Training_Times)</div><div class="line"></div><div class="line">print(<span class="string">"Final Weight:"</span>, final_W)</div><div class="line">print(<span class="string">"Weight details trace: "</span>, np.asarray([b_Trace, w_Trace]))</div><div class="line">print(<span class="string">"Loss details trace: "</span>, loss_Trace)</div><div class="line"></div><div class="line">fig, ax = plt.subplots()</div><div class="line">ax.scatter(np.asarray(x), np.asarray(y))</div><div class="line">ax.set_title(<span class="string">r'$Fitting\ line$'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        ax.lines.pop(<span class="number">0</span>)</div><div class="line">    <span class="keyword">except</span> Exception:</div><div class="line">        <span class="keyword">pass</span></div><div class="line">    plot_X = np.linspace(<span class="number">-1</span>, <span class="number">12</span>, <span class="number">100</span>)</div><div class="line">    W = np.asarray([b_Trace[i], w_Trace[i]]).reshape(<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">    X = np.row_stack((np.ones(shape=(<span class="number">1</span>, len(plot_X))), plot_X))</div><div class="line">    plot_Y = sigmoid(np.matmul(W, X))</div><div class="line">    line = ax.plot(plot_X, plot_Y[<span class="number">0</span>], <span class="string">'r-'</span>, lw=<span class="number">1</span>)</div><div class="line">    ax.set_xlabel(<span class="string">r"$Cost\ %.6s$"</span> % loss_Trace[i])</div><div class="line">    <span class="keyword">return</span> line</div><div class="line"></div><div class="line"></div><div class="line">ani = animation.FuncAnimation(fig, update, frames=len(w_Trace), interval=<span class="number">100</span>)</div><div class="line">ani.save(<span class="string">'logisticregression.gif'</span>, writer=<span class="string">'imagemagick'</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<h2 id="2-多元分类"><a href="#2-多元分类" class="headerlink" title="2 多元分类"></a>2 多元分类</h2><p>先从三元分类开始了解，加入给了以下分布，要你求边界：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/multiClass3ToAll.png" alt=""></p>
+<p>比起前面的来就难多了，首先前面是线性分类的而这里很明显不是，其次这里又多出了一个变量。。。别急，对比一下三幅图你就清楚了。</p>
+<p><img src="/2018/02/16/MLLogisticRegression/multiClass3To1.png" alt=""><br><img src="/2018/02/16/MLLogisticRegression/multiClass3To2.png" alt=""><br><img src="/2018/02/16/MLLogisticRegression/multiClass3To3.png" alt=""></p>
+<p>这里我们就解决了多一个变量的问题，通过选取一个主变量为 \( 1 \)，其它的值就为 \( 0 \)，然后就可以进行二分。还有一个问题是如何选取参数？我们既然可以转换成二分问题了，那么对于每一次二分都只要选取 \( (W, X) \) 了。\( X \) 很明显有两个基本的 \( (X1, X2) \) 但是为了能过选取更加合适的边界，如果只是这两个特征的话是不够的，所以其它的 \( X1^2，X1*X2 \ldots \) 等等，看你要拟合成什么样的边界就选取什么样的特征，同理三维就选取一个能表达弯弯曲曲的平面的特征量。下面选取权重，也就是特征前前面的系数，如果特征选取好了，那么只要在此基础上加一个 \( bias \) 就好了。</p>
+<p>下面我们来举个小例子如何操作：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/circleGraph.png" alt=""></p>
+<p>很明显这里有一个包围趋势，所以理所当然想到圆。也就是说选取的 \( X: X1,\ X2,\ X1^2,\ X2^2 \) 那么\( sigmoid \)函数就可以定义为：</p>
+<p>$$<br>h_{(bias, w_1, w_2, w_3, w_4)}({x_1, x_2, x_1^2, x_2^2}) = \frac{1}{1 + e^{-{bias + w_1 <em> x_1 + w_2 </em> x_2 + w_3 <em> x_1^2 + w_4 </em> x_2^2}}}<br>$$</p>
+<p>至于解法就和上面类似了，把这些都抽象成向量，那么至于什么维度，有几个变量都没差了。需要记得的是，这里要跑的次数是分类的种数的大小，也就是把每一种都当做主角处理一次得到属于它把其它元素区分的分界线，预测是也要把所有模型跑一遍，哪个模型的概率高就取哪个作为分类预测的结果。</p>
+<p>这里就不详细介绍应用了，以后有机会补充代码实践，下面给出几篇参考博客：</p>
+<ul>
+<li><a href="http://blog.csdn.net/gamer_gyt/article/details/51236978" target="_blank" rel="external">《机器学习实战》Logistic回归算法（1）</a></li>
+<li><a href="http://blog.csdn.net/lookqlp/article/details/51161640" target="_blank" rel="external">逻辑回归梯度下降法详解</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/28775274" target="_blank" rel="external">深入机器学习系列3-逻辑回归</a></li>
+</ul>
+<h2 id="3-模型优化"><a href="#3-模型优化" class="headerlink" title="3 模型优化"></a>3 模型优化</h2><h3 id="3-1-算法方向"><a href="#3-1-算法方向" class="headerlink" title="3.1 算法方向"></a>3.1 算法方向</h3><p>求解最优化问题不只是只有梯度下降算法，还有其它能够收敛更快的方式。比如：共轭梯度法 <code>BFGS</code> (变尺度法) 和 <code>L-BFGS</code> (限制变尺度法) 等，不过我现在还没看过这些算法的具体实现，这里就立下 FLAG 了。不过一般我们使用这些算法都是调用现成的库，毕竟自己写的算法多多少少还是有缺陷的，</p>
+<h3 id="3-2-拟合度方向"><a href="#3-2-拟合度方向" class="headerlink" title="3.2 拟合度方向"></a>3.2 拟合度方向</h3><p>在之前的例子中，你会发现个选取好特征量之后，怎么选取迭代次数很重要。举个小例子：我们拟合一个符合二次函数分布的散点图，如果你选取的模型是 \( b + w*x \) 那怎么跑都跑不出理想结果，必须把 \( x^2 \) 这个特征项加上，这样就不会欠拟合。同样，如果你选取好了一个二次模型，但是迭代次数不够，也会导致欠拟合，讲道理如果模型预测和分布一致，那么迭代次数自然是越多越好。但但是，如果你不能确定，又加一个 \( x^3 \) 的特征量进去，本来是数据是符合二次函数的特征，如果训练次数控制得比较好，也可以训练出好模型，无非就是把 \( x^3 \) 的权重置零，如果训练次数控制不好，那么必将造成欠拟合（训练次数过少）或过拟合（训练次数过多），这里不是说损失函数值越小越少，而是说那拟合函数的趋势符合整体数据的趋势，从概率论的角度讲，就是我们抽取的是总体中的一个样本，由于获得全体数据不现实，所以只能使用样本估计整体，所以这里的估计的就应该是一个趋势。</p>
+<p>那么如何避免过拟合或欠拟合呢？我觉得可以从一下角度考虑：</p>
+<ul>
+<li>数据量（越多越好）</li>
+<li>特征量（最小能描述趋势原则）</li>
+<li>训练次数（朝着趋势行进方向训练次数越多越好）</li>
+</ul>
+<p>总之这里最最关键的是模型的准确度，如果一开始模型选错那怎么迭代也不会跑出好的效果。</p>
+<p>下面给出吴恩达老师的课件图，大家体会一下：</p>
+<p><img src="/2018/02/16/MLLogisticRegression/wuenda_3.png" alt=""></p>
+<p><img src="/2018/02/16/MLLogisticRegression/wuenda_4.png" alt=""></p>
+<p>可以看到，我们还有一种方式处理：<code>正则化</code></p>
+<p>我根据我自己的理解来大胆解释一下吧，如果你有自己的理解就可以不看了。。避免误导。正则化一般就是解决过拟合，也就是我们根本不能确定趋势，所以添加了很多多余的特征量，那么对于这个模型什么样的结果是我们可以接受的呢？如果那些多余特征量的权重接近 \( 0 \) 是不是就意味着我们也能得到较好的拟合效果，甚至和没有这些干扰特征是达到一样的效果。这里就是对那些特征量的系数进行处罚达到这个目的的。</p>
+<p>从上面的解释可以看出，我们不需要对 \( bias \) 进行惩罚，所以结果就是在损失函数后面加上 \( \sum_{i = 1}^{n}{w_i}^2 \)。当然这只是其中一种方式，你可以选取其可行的方式，主要目的是避免权重过大，拟合的曲线过于弯曲（因为求导之后，斜率和系数是正相关的）。这里的哲学思想就是在拟合结果能够接受的情况下，曲线越平滑，容错能力越高，样本越能够代表总体。</p>
+<p>这里就直接截图举例子了：</p>
+<ul>
+<li><p>正则化线性回归<br><img src="/2018/02/16/MLLogisticRegression/wuenda_5.png" alt=""></p>
+</li>
+<li><p>正则化逻辑回归</p>
+</li>
+</ul>
+<p><img src="/2018/02/16/MLLogisticRegression/wuenda_6.png" alt=""><br><img src="/2018/02/16/MLLogisticRegression/wuenda_7.png" alt=""></p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>经过一些细节的阅读，对整个过程的了解又加深了不少。动手实践才是最好的方式，之前以为自己公式看懂了就行了，然后这次写代码是把一个变量写在了括号里面，死活拟合不出效果。然后花了几个小时之后决心自己再推一遍公式并且重新敲一下公式代码（因为打印数据发现很诡异），后面就一遍过了。所以如果你也是刚刚开始学习，哪怕照着敲一遍，之后也要自己将思路整理成文字/代码形式，最好是能整理成博客，方便以后自己复习。</p>
+<p>还是很喜欢那就话：<code>花时间弄懂细节就是节省时间</code></p>
+<p>最后：Happy Year Of Dog ^_^ ! </p>
+<h2 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5 参考资料"></a>5 参考资料</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/26614750" target="_blank" rel="external">@忆臻：一文搞懂极大似然估计</a></li>
+<li><a href="http://blog.csdn.net/ligang_csdn/article/details/53838743" target="_blank" rel="external">机器学习–Logistic回归计算过程的推导</a></li>
+<li><a href="http://blog.csdn.net/gamer_gyt/article/details/51236978" target="_blank" rel="external">《机器学习实战》Logistic回归算法（1）</a></li>
+<li><a href="http://blog.csdn.net/lookqlp/article/details/51161640" target="_blank" rel="external">逻辑回归梯度下降法详解</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/28775274" target="_blank" rel="external">深入机器学习系列3-逻辑回归</a></li>
+<li><a href="https://chenrudan.github.io/blog/2016/01/09/logisticregression.html" target="_blank" rel="external">【机器学习算法系列之二】浅析Logistic Regression</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。然后这是这个系列的第二篇了，对于初学者来说，如果你没看过第一篇，推荐看看&lt;a href=&quot;http://fitzeng.org/2018/02/11/MLLinearRegression/&quot;&gt;机器学习基本算法之线性回归&lt;/a&gt;，里面提及到了很多基础的数学知识和一些的机器学习思维，对于理解这篇文章很有帮助，很多机器学习流程化的东西这里就不在具体介绍为什么这样做了，而是直接解释为什么在逻辑回归中需要使用这样的方式来实现，更加聚焦于逻辑回归实现本身，而非机器学习的流程理解。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;实验代码&lt;/a&gt;-&lt;a href=&quot;https://github.com/mk43/machine-learning/tree/master/reference&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;参考书籍&lt;/a&gt;-[参考博客详见最后]&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+      <category term="Python" scheme="http://fitzeng.org/tags/Python/"/>
+    
+      <category term="NumPy" scheme="http://fitzeng.org/tags/NumPy/"/>
+    
+      <category term="Matplotlib" scheme="http://fitzeng.org/tags/Matplotlib/"/>
+    
+      <category term="LogisticRegression" scheme="http://fitzeng.org/tags/LogisticRegression/"/>
+    
+  </entry>
   
   <entry>
     <title>leetcode 算法集锦（二）</title>
@@ -205,118 +358,6 @@
       <category term="Matplotlib" scheme="http://fitzeng.org/tags/Matplotlib/"/>
     
       <category term="LinearRegression" scheme="http://fitzeng.org/tags/LinearRegression/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>机器学习基本算法之逻辑回归</title>
-    <link href="http://fitzeng.org/2018/02/11/MLLogisticRegression/"/>
-    <id>http://fitzeng.org/2018/02/11/MLLogisticRegression/</id>
-    <published>2018-02-11T03:27:00.000Z</published>
-    <updated>2018-02-15T16:02:36.631Z</updated>
-    
-    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
-
-<a id="more"></a>
-<!-- 
-> 写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。然后这是这个系列的第二篇了，对于初学者来说，如果你没看过第一篇，推荐看看[机器学习基本算法之线性回归](http://fitzeng.org/2018/02/11/MLLinearRegression/)，里面提及到了很多基础的数学知识和一些的机器学习思维，对于理解这篇文章很有帮助，很多机器学习流程化的东西这里就不在具体介绍为什么这样做了，而是直接解释为什么在逻辑回归中需要使用这样的方式来实现，更加聚焦于逻辑回归实现本身，而非机器学习的流程理解。
-
-
-## 0 准备
-
-### 0.1 环境
-
-> Python: 3.5
-> 
-> TensorFlow: Anaconda3 envs
-> 
-> IDE: PyCharm 2017.3.3
-
-### 0.2 基本认识
-
-如果你看过前面的线性回归介绍，可以知道，线性回归是通过对一类呈线性分布的数据进行拟合，然后训练一个线性模型对数据进行预测。那么在逻辑回归中，可以暂时理解为处理分类问题。比如给出一个人的经纬度，要判断这个人在哪个国家，如果仅仅以线性回归的思维，我们很难根据经纬度去构造出一个很好的线性模型去预测地区，我们就需要知道的是国家分界线，而这些分界线的获得就是通过逻辑回归。
-
-## 1 二元逻辑回归
-
-### 1.1 提出拟合函数 `Sigmoid`
-
-如果你还没有太理解逻辑回归处理的问题和线性回归比的独特性，我们再来举个小例子(注意：为了简单，这里的数据都是特殊取值的)，来引出今天的主角：
-
-![](linear2LogisticreGressionGraph.png)
-
-对于上面这张图，很明显，怎么画直线也不好，总会产生较大的误差。而如果有一个函数能够表示：
-
-$$
-y=\begin{cases}
-1,\quad x > 5 \\\\
-0,\quad x \leq 5
-\end{cases}
-$$
-
-那么就完美符合当前的数据分布，直觉告诉我们有很大可能其对数据的预测能力也比较强。接下来，就是找一个 \\( S \\) 形函数来作为拟合函数。这里很明显我们的函数不是线性的。这里提出一个叫 \\( Sigmoid \\) 的函数：
-
-$$
-y = \frac{1}{1 + e^{-x}}
-$$
-
-![](linear2LogisticreGressionGraphAddSigmoid.png)
-
-从图像中可以看到，这个函数的完美符合我们心中的预期。
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</div><div class="line">y = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</div><div class="line"></div><div class="line">train_X = np.asarray(x)</div><div class="line">train_Y = np.asarray(y)</div><div class="line"></div><div class="line">fig = plt.figure()</div><div class="line">plt.xlim(<span class="number">-1</span>, <span class="number">12</span>)</div><div class="line">plt.ylim(<span class="number">-0.5</span>, <span class="number">1.5</span>)</div><div class="line">plt.scatter(train_X, train_Y)</div><div class="line"></div><div class="line">s_X = np.linspace(<span class="number">-2</span>, <span class="number">12</span>, <span class="number">100</span>)</div><div class="line">s_Y = <span class="number">1</span>/(<span class="number">1</span> + np.power(np.e, <span class="number">-6</span>*(s_X - <span class="number">5</span>)))</div><div class="line">plt.plot(s_X, s_Y)</div><div class="line">plt.savefig(<span class="string">"linear2LogisticreGressionGraphAddSigmoid.png"</span>)</div><div class="line"><span class="comment"># plt.savefig("linear2LogisticreGressionGraph.png")</span></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
-<h3 id="1-2-扩充分类"><a href="#1-2-扩充分类" class="headerlink" title="1.2 扩充分类"></a>1.2 扩充分类</h3><p>前面已经说了，为了更好体会逻辑回归，所以数据有点特殊和单一，下面我们再来看一组数据：</p>
-<p><img src="linear2LogisticreGressionGraphAddScatter.png" alt=""></p>
-<p>像这种有明显的聚拢效果的散点图，可以看做是一个分类问题，所以对于这里我们怎么利用前面提到的逻辑回归来处理类似于这种分类问题？</p>
-<p>这里思维要稍微转换一下，以前我们以 \( y \) 的值作为输出，这里不是了，这里需要预测的结果是给定 \( (x, y) \) 求出该点是红色的圆形还是蓝色的三角形？所以要找一个形如  \( g(x, y) \)<br>的函数来处理，前面的 \( Sigmoid\)函数可以帮我们分类，只要假设 \( 1 \) 和 \( 0 \) 各代表一种情况，那么得出 \( 1/0 \) 时就可以推断出 \( (x, y) \)现在的情况是红色的圆形还是蓝色的三角形，现在的情况是，如何将 \( g(x, y) \) 预处理的结果与 \( Sigmoid \) 函数联系起来。可能你已经想到了，将 \( g(x, y) \) 的值域当做 \( Sigmoid \) 的定义域。那么给定一个 \( (x,y) \) 我们就能得出一个在区间 \( [0, 1] \) 内的值。这下，函数就能够满足我们的要求了。</p>
-<p>模仿前面机器学习的思维，我们对于给定的输入统一用一个输入矩阵 \( X \) 表示 \( (x, y) \) 然后加入权重 \( W \)，则得出函数 \( g(W, X) \)，接下来我们要定义一个模型去区分这种分布？如果你看过代码就知道，在做数据的时候默认就是利用 \( x + y &gt; 7 \) 来分的类，所以自然取的是线性模型作为首选。至于怎么选模型我认为最简洁的表示往往就是最好的，下面看看吴恩达老师的例子体会一下这个过程。</p>
-<p><img src="wuenda_1.png" alt=""></p>
-<p>既然是线性，那么直接得出 \( g(W, X) = W^TX \) 这里提醒下加 \({}^T \) 是因为我们默认的向量都是列向量。 理解了这里那就好办了，综合我们的 \( Sigmoid \) 可以得出拟合函数：</p>
-<p>$$<br>h_W(X) = \frac{1}{1 + e^{-W^TX}}<br>$$</p>
-<h3 id="1-3-从直观感受推导损失函数"><a href="#1-3-从直观感受推导损失函数" class="headerlink" title="1.3 从直观感受推导损失函数"></a>1.3 从直观感受推导损失函数</h3><p>既然我们都已经把数据做了处理，所以对于输入是二元还是一元没差了，就是一个 \( h_W(X) \)而已。下面我们根据之前线性函数的例子，找一个适合描述误差的函数。看图：</p>
-<p><img src="linear2LogisticreGressionGraphAddSigmoid2.png" alt=""></p>
-<p>下面我们先只分析为 \( 1 \) 的点如何通过 \( h_W(x_1) &lt; h_W(x_2) &lt; h_W(x_3) \) 的关系找到一个函数来表达损失。首先可以肯定的是，要对 \( h_W(x_1) \) 的惩罚力度是最大的。因为从图中看出对它的预测最离谱，所以损失函数要是一个递减函数，然后继续分析损失函数是否对于 \( h_W(x_i) \) 的变化呈均匀变化，也就是这个递减函数的递减幅度是设么样的？很明显，\( h_W(x_i) \) 越靠近 \( 0 \)，它的惩罚力度应该和指数增长有点类似。越小一点点，惩罚力度立刻激增，这样对于最后损失函数收敛时的参数拟合结果比较符合大多数数据的情况，不会出现它极端的分类，因为对极端的数据处罚力度实在是太大了。好了，这个函数符合三个特点，<code>递减</code>、<code>导数绝对值递减</code>（递减幅度要减小）和定义域在 \( [0, 1] \)内的跨度必须大，最好是从正无穷到 \( 0 \) 因为如果函数值为 \( 0 \)我们就不要对这个点进行惩罚了，所以肯定是要有 \( 0 \) 这个函数值的。这时你可能想到了，对数函数正好满足情况。所以有如下结果：</p>
-<p>$$<br>loss(h_W(x_i), y_i) = -log(h_W(x_i))\quad if\ y_i = 1<br>$$</p>
-<p>这里就不贴函数图了，下面大家自己分析一下 \( y = 0 \) 的情况。自己实在想不出来再往下阅读吧，如果直接看缺少思考过程对自己的理解可能有点欠缺。就像很多书很多博客都是直接给公式，虽然勉强也能看懂，但是更多时候是自己记住，对于其中的思考过程没有一点自己的体会和心得。给个图大家自己猜猜：</p>
-<p><img src="linear2LogisticreGressionGraphAddSigmoid3.png" alt=""></p>
-<p>下面直接给出最后的结果：</p>
-<p>$$<br>loss(h_W(x_i), y_i) = -y_i <em> log(h_W(x_i)) - (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
-<h3 id="1-4-从概率论角度分析损失函数"><a href="#1-4-从概率论角度分析损失函数" class="headerlink" title="1.4 从概率论角度分析损失函数"></a>1.4 从概率论角度分析损失函数</h3><p>还记得前面说的逻辑回归可以看做是分类问题吗？而对于分类问题的预测我们可以看做概率来计算。所以函数 \( h_W(x_i) \) 可以看做，在 \( W \) 下，输入 \( x_i \) 取值为 \( 1 \) 的概率。而我们要做的就是求出一个 \( W \) 是的对于给定的 \( x_i \) 的概率尽可能和 \( y_i \) 符合。这时候你会发现，结果 \( y_i \) 服从伯努利分布，也就是随机变量 \( Y \)的取值只能是 \( 0/1 \)，在 \( h_W(x_i) \) 看做是取 \( 1 \) 的概率的情况下，当这个值大于 \( 0.5 \) 我们认为分类为 \( 1 \)。</p>
-<p>好了，把上面的东西都“忘掉”，接下来进入一个概率论的思维模式。假设这一个平面内有无数个点，而我们给出的数据只是一个抽样数据。但是我们不可能把所有的情况都列举出来，所以我们要做的就是通过给出的样本来估测整体分布。其实这也和机器学习需要大量样本训练有关，很明显数据量越大，偶然误差越小，样本的分布越接近整体分布。收回到概率论，我发现容易写着写着就跑偏了😂😂😂。现在我们统计数据的情况是：符合伯努利分布。而这种知道分布的求能够和分布匹配的参数的方法概率论中有一个参数估计方法叫：<code>极大似然估计</code>。如果不懂看一下简短介绍：</p>
-<blockquote>
-<p>极大似然估计，通俗理解来说，就是利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值！<br>换句话说，极大似然估计提供了一种给定观察数据来评估模型参数的方法，即：“模型已定，参数未知”。</p>
-</blockquote>
-<p>参考自<a href="https://zhuanlan.zhihu.com/p/26614750">@忆臻：一文搞懂极大似然估计</a></p>
-<p>依照上面的意思那很明显，我们是把 \( h_W(x_i) = P(y = 1|x_i;W)\) 那自然就有：</p>
-<p>$$<br>P(y_i|x_i;W) = {h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
-<p>这是单个 \(（x_i, y）\)的概率。如果把整个样本看做 \( n \) 次的独立重复实验呢？那发生的概率就是这个的乘积了。这里使用 \( X, Y \) 向量表示整个数据。即：</p>
-<p>$$<br>P(Y|X;W) = \prod_{i = 1}^{n}P(y_i|x_i; W) = \prod_{i = 1}^{n}{h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
-<p>可以看出这是一个关于 \( W \) 的函数，现在比较玄学的部分来了，我们认为，这个事件既然发生了，那么它发生的概率就应该是所有事件中概率最大的，如果不是那它凭什么发生？哈哈，就是这么讲道(xuan)理(xue)。最大值？那就好办了，直接求导？不行不行，太难了。。。高中最常用的把戏：乘变加，用对数。</p>
-<p>$$<br>loss(W) = -\frac{1}{n}log(P(Y|X;W)) = -\frac{1}{n}\sum_{i = 1}^{n}y_i <em> log(h_W(x_i)) + (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
-<h3 id="1-5-梯度下降求极值"><a href="#1-5-梯度下降求极值" class="headerlink" title="1.5 梯度下降求极值"></a>1.5 梯度下降求极值</h3><p>前面已经给出了损失函数，我们再次利用梯度下降算法更新权重。如果自己手写代码来实现，我们还是要求偏导的😂😂😂</p>
-<p>高数的东西，这里偷懒了，字有点难打就直接截图了，毕竟这不是什么难点：</p>
-<p><img src="wuenda_2.png" alt=""></p>
-<h2 id="2-多元逻辑回归"><a href="#2-多元逻辑回归" class="headerlink" title="2 多元逻辑回归"></a>2 多元逻辑回归</h2><h2 id="3-模型优化"><a href="#3-模型优化" class="headerlink" title="3 模型优化"></a>3 模型优化</h2><h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><h2 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5 参考资料"></a>5 参考资料</h2><p><a href="https://zhuanlan.zhihu.com/p/26614750">@忆臻：一文搞懂极大似然估计</a></p>
--->]]></content>
-    
-    <summary type="html">
-    
-      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
-    
-    </summary>
-    
-    
-      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
-    
-      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
-    
-      <category term="Python" scheme="http://fitzeng.org/tags/Python/"/>
-    
-      <category term="NumPy" scheme="http://fitzeng.org/tags/NumPy/"/>
-    
-      <category term="Matplotlib" scheme="http://fitzeng.org/tags/Matplotlib/"/>
-    
-      <category term="LogisticRegression" scheme="http://fitzeng.org/tags/LogisticRegression/"/>
     
   </entry>
   
@@ -1319,6 +1360,49 @@ $$
   </entry>
   
   <entry>
+    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
+    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
+    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
+    <published>2017-11-04T03:27:00.000Z</published>
+    <updated>2017-11-04T15:12:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
+<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
+<li>fixit.py</li>
+<li>fix.sh</li>
+<li>txt</li>
+</ul>
+<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
+<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
+<p>下面写 <code>fixit.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
+<p>最后执行 <code>./fix.sh</code>。</p>
+<p>然后就是等待执行结束了。</p>
+<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
+    
+      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
+    
+  </entry>
+  
+  <entry>
     <title>一个小白使用 devstack 部署 openstack 的心路历程</title>
     <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
     <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
@@ -1385,49 +1469,6 @@ $$
       <category term="devstack" scheme="http://fitzeng.org/tags/devstack/"/>
     
       <category term="openstack" scheme="http://fitzeng.org/tags/openstack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
-    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
-    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T15:12:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
-<li>fixit.py</li>
-<li>fix.sh</li>
-<li>txt</li>
-</ul>
-<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
-<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
-<p>下面写 <code>fixit.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
-<p>最后执行 <code>./fix.sh</code>。</p>
-<p>然后就是等待执行结束了。</p>
-<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
-    
-      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
     
   </entry>
   
