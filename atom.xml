@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-17T03:38:28.204Z</updated>
+  <updated>2018-02-19T03:17:09.831Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习基本算法之决策树</title>
+    <link href="http://fitzeng.org/2018/02/18/MLDecisionTree/"/>
+    <id>http://fitzeng.org/2018/02/18/MLDecisionTree/</id>
+    <published>2018-02-18T03:27:00.000Z</published>
+    <updated>2018-02-19T03:17:09.831Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。</p>
+<p>这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：</p>
+<ul>
+<li><a href="http://fitzeng.org/2018/02/11/MLLinearRegression/">机器学习基本算法之线性回归</a></li>
+<li><a href="http://fitzeng.org/2018/02/16/MLLogisticRegression/">机器学习基本算法之逻辑回归</a></li>
+</ul>
+<p><a href="https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression" target="_blank" rel="external">实验代码</a>-<a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">参考书籍</a>-[参考博客详见最后]</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="gt-TODO"><a href="#gt-TODO" class="headerlink" title="==&gt; TODO"></a>==&gt; TODO</h1><p>这个坑先留着，先介绍神经网络吧，我发现决策树虽然好理解但是和前面的线性回归逻辑回归有点联系不上，为了能够系统地体会机器学习的思考过程并且把前面的知识进行迁移，一步一步深入分析，所以决定上神经网络，为了不犯大错误，所以下一篇我会花点时间多多学习一下，更新可能会有点慢。决策树配合图文好理解但是用文字描述不好怎么写，等有时间我会争取把这篇写出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">## 0 基本介绍</div><div class="line"></div><div class="line">### 0.1 什么是决策树</div><div class="line"></div><div class="line">### 0.2 决策树能解决什么问题</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。&lt;/p&gt;
+&lt;p&gt;这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://fitzeng.org/2018/02/11/MLLinearRegression/&quot;&gt;机器学习基本算法之线性回归&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://fitzeng.org/2018/02/16/MLLogisticRegression/&quot;&gt;机器学习基本算法之逻辑回归&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;实验代码&lt;/a&gt;-&lt;a href=&quot;https://github.com/mk43/machine-learning/tree/master/reference&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;参考书籍&lt;/a&gt;-[参考博客详见最后]&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Math" scheme="http://fitzeng.org/tags/Math/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+      <category term="Python" scheme="http://fitzeng.org/tags/Python/"/>
+    
+      <category term="NumPy" scheme="http://fitzeng.org/tags/NumPy/"/>
+    
+      <category term="Matplotlib" scheme="http://fitzeng.org/tags/Matplotlib/"/>
+    
+      <category term="DecisionTree" scheme="http://fitzeng.org/tags/DecisionTree/"/>
+    
+  </entry>
   
   <entry>
     <title>机器学习基本算法之逻辑回归</title>
@@ -1360,49 +1414,6 @@
   </entry>
   
   <entry>
-    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
-    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
-    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T15:12:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
-<li>fixit.py</li>
-<li>fix.sh</li>
-<li>txt</li>
-</ul>
-<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
-<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
-<p>下面写 <code>fixit.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
-<p>最后执行 <code>./fix.sh</code>。</p>
-<p>然后就是等待执行结束了。</p>
-<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
-    
-      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
-    
-  </entry>
-  
-  <entry>
     <title>一个小白使用 devstack 部署 openstack 的心路历程</title>
     <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
     <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
@@ -1469,6 +1480,49 @@
       <category term="devstack" scheme="http://fitzeng.org/tags/devstack/"/>
     
       <category term="openstack" scheme="http://fitzeng.org/tags/openstack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
+    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
+    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
+    <published>2017-11-04T03:27:00.000Z</published>
+    <updated>2017-11-04T15:12:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
+<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
+<li>fixit.py</li>
+<li>fix.sh</li>
+<li>txt</li>
+</ul>
+<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
+<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
+<p>下面写 <code>fixit.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
+<p>最后执行 <code>./fix.sh</code>。</p>
+<p>然后就是等待执行结束了。</p>
+<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
+    
+      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
     
   </entry>
   
@@ -2807,33 +2861,6 @@ semaphore full = <span class="number">0</span>; <span class="comment">// 计数�
       <category term="C/C++" scheme="http://fitzeng.org/tags/C-C/"/>
     
       <category term="OS" scheme="http://fitzeng.org/tags/OS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Why Marvel ?</title>
-    <link href="http://fitzeng.org/2017/08/03/WhyMarvel/"/>
-    <id>http://fitzeng.org/2017/08/03/WhyMarvel/</id>
-    <published>2017-08-02T16:00:00.000Z</published>
-    <updated>2017-08-04T09:21:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote>
-<p>先给自己挖个坑, 记录一下从 12 - 17 这五年间的点点滴滴.很久之前就很想写写自己心中的 Marvel. 人总得有些爱好是与理想相关的, 不是吗?</p>
-</blockquote>
-<a id="more"></a>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;先给自己挖个坑, 记录一下从 12 - 17 这五年间的点点滴滴.很久之前就很想写写自己心中的 Marvel. 人总得有些爱好是与理想相关的, 不是吗?&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="Life" scheme="http://fitzeng.org/tags/Life/"/>
-    
-      <category term="Marvel" scheme="http://fitzeng.org/tags/Marvel/"/>
     
   </entry>
   

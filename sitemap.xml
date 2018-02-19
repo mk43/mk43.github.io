@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/02/18/MLDecisionTree/</loc>
+    
+    <lastmod>2018-02-19T03:17:09.831Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/02/16/MLLogisticRegression/</loc>
     
     <lastmod>2018-02-17T03:38:28.204Z</lastmod>
