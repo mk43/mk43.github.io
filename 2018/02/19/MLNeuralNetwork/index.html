@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>机器学习基本算法之决策树 | Fitzeng</title>
+  <title>机器学习基本算法之神经网络 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
-<meta name="keywords" content="Math,MachineLearning,Python,NumPy,Matplotlib,DecisionTree">
+  <meta name="description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了（跳票了一篇决策树😂😂😂），欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
+<meta name="keywords" content="Math,MachineLearning,Python,NumPy,Matplotlib,NeuralNetwork">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习基本算法之决策树">
-<meta property="og:url" content="http://fitzeng.org/2018/02/18/MLDecisionTree/index.html">
+<meta property="og:title" content="机器学习基本算法之神经网络">
+<meta property="og:url" content="http://fitzeng.org/2018/02/19/MLNeuralNetwork/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
-<meta property="og:updated_time" content="2018-02-19T03:17:09.831Z">
+<meta property="og:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了（跳票了一篇决策树😂😂😂），欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
+<meta property="og:updated_time" content="2018-02-19T12:45:13.686Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习基本算法之决策树">
-<meta name="twitter:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
+<meta name="twitter:title" content="机器学习基本算法之神经网络">
+<meta name="twitter:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了（跳票了一篇决策树😂😂😂），欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -142,20 +142,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-MLDecisionTree" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-MLNeuralNetwork" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      机器学习基本算法之决策树
+      机器学习基本算法之神经网络
     </h1>
   
 
         
-        <a href="/2018/02/18/MLDecisionTree/" class="archive-article-date">
-  	<time datetime="2018-02-18T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-18</time>
+        <a href="/2018/02/19/MLNeuralNetwork/" class="archive-article-date">
+  	<time datetime="2018-02-19T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-19</time>
 </a>
         
       </header>
@@ -166,7 +166,7 @@
 
 <blockquote>
 <p>写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。</p>
-<p>这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：</p>
+<p>这个系列已经有两篇前作了（跳票了一篇<a href="http://fitzeng.org/2018/02/18/MLDecisionTree/">决策树</a>😂😂😂），欢迎感兴趣的读者去阅读：</p>
 <ul>
 <li><a href="http://fitzeng.org/2018/02/11/MLLinearRegression/">机器学习基本算法之线性回归</a></li>
 <li><a href="http://fitzeng.org/2018/02/16/MLLogisticRegression/">机器学习基本算法之逻辑回归</a></li>
@@ -174,9 +174,8 @@
 <p><a href="https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression" target="_blank" rel="external">实验代码</a>-<a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">参考书籍</a>-[参考博客详见最后]</p>
 </blockquote>
 <a id="more"></a>
-<h1 id="gt-TODO"><a href="#gt-TODO" class="headerlink" title="==&gt; TODO"></a>==&gt; TODO</h1><p>这个坑先留着，先介绍神经网络吧，我发现决策树虽然好理解但是和前面的线性回归逻辑回归有点联系不上，为了能够系统地体会机器学习的思考过程并且把前面的知识进行迁移，一步一步深入分析，所以决定上神经网络，为了不犯大错误，所以下一篇我会花点时间多多学习一下，更新可能会有点慢。决策树配合图文好理解但是用文字描述不好怎么写，等有时间我会争取把这篇写出来。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">## 0 基本介绍</div><div class="line"></div><div class="line">### 0.1 什么是决策树</div><div class="line"></div><div class="line">### 0.2 决策树能解决什么问题</div></pre></td></tr></table></figure>
-
+<h1 id="gt-TODO"><a href="#gt-TODO" class="headerlink" title="==&gt; TODO"></a>==&gt; TODO</h1><h2 id="0-基本介绍"><a href="#0-基本介绍" class="headerlink" title="0 基本介绍"></a>0 基本介绍</h2><h3 id="0-1-为什么会产生神经网络"><a href="#0-1-为什么会产生神经网络" class="headerlink" title="0.1 为什么会产生神经网络"></a>0.1 为什么会产生神经网络</h3><p>至于历史上是如何的大家可以网上查阅，这里讲讲我对于神经网络产生的必然性的一些看法。先回到上一篇文章，可以看到，如果要找一个简单的能用现有函数规则描述的特征边界（比如直线，圆，椭圆，球面……），我们可以直接选取它的特征量，然后对这个模型进行训练，也就是说，对于某种问题有它的某种特定的模型进行就算，但是如果稍微复杂一点的呢？我们该如何做？回到我们对机器学习什么都不知道的时候，在开篇线性回归中，我们希望的是有这样一个黑盒，把数据输入进去，它能把结果给我反馈出来，我不需要知道这个黑盒内部的结构，也就是说，我并不需要去特定的规划如何构建特征量，而是直接原始数据输进去就好，输出结果符合我们的预期就代表这个模型可以为我们所用。那么，问题来了，我们的预期是怎么产什么的呢？我也不知道，但是我知道，如果给人一张图片，人能够识别这是猫还是狗，那这个人的思维过程不就是类似一个黑盒吗？虽然里面的运行机制肯定都是确定的。那我们是不是可以模仿这个过程，把类似于这种识别问题都通过这一条流水线处理下来，得出的结果应该是我们想要的，至于准确度，那就是之前说的小孩和大人的区别了，所以说后天习得（训练模型）是人成长的关键一步。</p>
+<h3 id="0-2-什么是神经网络"><a href="#0-2-什么是神经网络" class="headerlink" title="0.2 什么是神经网络"></a>0.2 什么是神经网络</h3><h3 id="0-3-神经网络能解决什么问题"><a href="#0-3-神经网络能解决什么问题" class="headerlink" title="0.3 神经网络能解决什么问题"></a>0.3 神经网络能解决什么问题</h3>
       
 
       
@@ -209,7 +208,7 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DecisionTree</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">NeuralNetwork</a>
         		</li>
       		
 		</ul>
@@ -265,7 +264,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/02/18/MLDecisionTree/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/02/19/MLNeuralNetwork/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -279,18 +278,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/02/19/MLNeuralNetwork/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          机器学习基本算法之神经网络
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/16/MLLogisticRegression/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">机器学习基本算法之逻辑回归</div>
+    <a href="/2018/02/18/MLDecisionTree/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">机器学习基本算法之决策树</div>
       <i class="icon-circle-right"></i>
     </a>
   
