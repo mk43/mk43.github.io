@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/16/MLLogisticRegression/wuenda_5.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/16/MLLogisticRegression/wuenda_6.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/16/MLLogisticRegression/wuenda_7.png">
-<meta property="og:updated_time" content="2018-02-21T02:28:55.689Z">
+<meta property="og:updated_time" content="2018-02-21T02:46:41.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习基本算法之逻辑回归">
 <meta name="twitter:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。然后这是这个系列的第二篇了，对于初学者来说，如果你没看过第一篇，推荐看看机器学习基本算法之线性回归，里面提及到了很多基础的数学知识和一些的机器学习思维，对于理解这篇文章很有帮助，很多机器学习流程化的东西这里就不在具体介绍为什么这样做了，而是直接解释为什么">
@@ -218,7 +218,7 @@
 <p>这里就不贴函数图了，下面大家自己分析一下 \( y = 0 \) 的情况。自己实在想不出来再往下阅读吧，如果直接看缺少思考过程对自己的理解可能有点欠缺。就像很多书很多博客都是直接给公式，虽然勉强也能看懂，但是更多时候是自己记住，对于其中的思考过程没有一点自己的体会和心得。给个图大家自己猜猜：</p>
 <p><img src="/2018/02/16/MLLogisticRegression/linear2LogisticreGressionGraphAddSigmoid3.png" alt=""></p>
 <p>下面直接给出最后的结果：</p>
-<p>$$<br>loss(h_W(x_i), y_i) = -y_i <em> log(h_W(x_i)) - (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
+<p>$$<br>loss(h_W(x_i), y_i) = - y_i * log(h_W(x_i)) - (1 - y_i) * log(1 - h_W(x_i))<br>$$</p>
 <h3 id="1-4-从概率论角度分析损失函数"><a href="#1-4-从概率论角度分析损失函数" class="headerlink" title="1.4 从概率论角度分析损失函数"></a>1.4 从概率论角度分析损失函数</h3><p>还记得前面说的逻辑回归可以看做是分类问题吗？而对于分类问题的预测我们可以看做概率来计算。所以函数 \( h_W(x_i) \) 可以看做，在 \( W \) 下，输入 \( x_i \) 取值为 \( 1 \) 的概率。而我们要做的就是求出一个 \( W \) 是的对于给定的 \( x_i \) 的概率尽可能和 \( y_i \) 符合。这时候你会发现，结果 \( y_i \) 服从伯努利分布，也就是随机变量 \( Y \)的取值只能是 \( 0/1 \)，在 \( h_W(x_i) \) 看做是取 \( 1 \) 的概率的情况下，当这个值大于 \( 0.5 \) 我们认为分类为 \( 1 \)。</p>
 <p>好了，把上面的东西都“忘掉”，接下来进入一个概率论的思维模式。假设这一个平面内有无数个点，而我们给出的数据只是一个抽样数据。但是我们不可能把所有的情况都列举出来，所以我们要做的就是通过给出的样本来估测整体分布。其实这也和机器学习需要大量样本训练有关，很明显数据量越大，偶然误差越小，样本的分布越接近整体分布。收回到概率论，我发现容易写着写着就跑偏了😂😂😂。现在我们统计数据的情况是：符合伯努利分布。而这种知道分布的求能够和分布匹配的参数的方法概率论中有一个参数估计方法叫：<code>极大似然估计</code>。如果不懂看一下简短介绍：</p>
 <blockquote>
@@ -230,7 +230,7 @@
 <p>这是单个 \(（x_i, y_i）\)的概率。如果把整个样本看做 \( n \) 次的独立重复实验呢？那发生的概率就是这个的乘积了。这里使用 \( X, Y \) 向量表示整个数据。即：</p>
 <p>$$<br>P(Y|X;W) = \prod_{i = 1}^{n}P(y_i|x_i; W) = \prod_{i = 1}^{n}{h_W(x_i)}^{y_i} * {(1 - h_W(x_i))}^{1 - y_i}<br>$$</p>
 <p>可以看出这是一个关于 \( W \) 的函数，现在比较玄学的部分来了，我们认为，这个事件既然发生了，那么它发生的概率就应该是所有事件中概率最大的，如果不是那它凭什么发生？哈哈，就是这么讲道(xuan)理(xue)。最大值？那就好办了，直接求导？不行不行，太难了。。。高中最常用的把戏：乘变加，用对数。然后乘以 \( -\frac{1}{n} \) 就编程求最小值了。</p>
-<p>$$<br>loss(W) = -\frac{1}{n}log(P(Y|X;W)) = -\frac{1}{n}\sum_{i = 1}^{n}y_i <em> log(h_W(x_i)) + (1 - y_i)</em>log(1 - h_W(x_i))<br>$$</p>
+<p>$$<br>loss(W) = - \frac{1}{n}log(P(Y|X;W)) = - \frac{1}{n} \sum_{i = 1}^{n}y_i * log(h_W(x_i)) + (1 - y_i) * log(1 - h_W(x_i))<br>$$</p>
 <h3 id="1-5-梯度下降求极值"><a href="#1-5-梯度下降求极值" class="headerlink" title="1.5 梯度下降求极值"></a>1.5 梯度下降求极值</h3><p>前面已经给出了损失函数，我们再次利用梯度下降算法更新权重。如果自己手写代码来实现，我们还是要求偏导的😂😂😂</p>
 <p>高数的东西，这里偷懒了，字有点难打就直接截图了，毕竟这不是什么难点：</p>
 <p><img src="/2018/02/16/MLLogisticRegression/wuenda_2.png" alt=""></p>
@@ -570,11 +570,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
