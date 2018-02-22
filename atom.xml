@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-20T15:35:22.390Z</updated>
+  <updated>2018-02-21T11:53:18.139Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/02/19/MLNeuralNetwork/"/>
     <id>http://fitzeng.org/2018/02/19/MLNeuralNetwork/</id>
     <published>2018-02-19T03:27:00.000Z</published>
-    <updated>2018-02-20T15:35:22.390Z</updated>
+    <updated>2018-02-21T11:53:18.139Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -34,8 +34,26 @@
 <p><a href="https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression" target="_blank" rel="external">实验代码</a>-<a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">参考书籍</a>-[参考博客详见最后]</p>
 </blockquote>
 <a id="more"></a>
-<h1 id="gt-TODO"><a href="#gt-TODO" class="headerlink" title="==&gt; TODO"></a>==&gt; TODO</h1><h2 id="0-基本介绍"><a href="#0-基本介绍" class="headerlink" title="0 基本介绍"></a>0 基本介绍</h2><h3 id="0-1-为什么会产生神经网络"><a href="#0-1-为什么会产生神经网络" class="headerlink" title="0.1 为什么会产生神经网络"></a>0.1 为什么会产生神经网络</h3><p>至于历史上是如何的大家可以网上查阅，这里讲讲我对于神经网络产生的必然性的一些看法。先回到上一篇文章，可以看到，如果要找一个简单的能用现有函数规则描述的特征边界（比如直线，圆，椭圆，球面……），我们可以直接选取它的特征量，然后对这个模型进行训练，也就是说，对于某种问题有它的某种特定的模型进行就算，但是如果稍微复杂一点的呢？我们该如何做？回到我们对机器学习什么都不知道的时候，在开篇线性回归中，我们希望的是有这样一个黑盒，把数据输入进去，它能把结果给我反馈出来，我不需要知道这个黑盒内部的结构，也就是说，我并不需要去特定的规划如何构建特征量，而是直接原始数据输进去就好，输出结果符合我们的预期就代表这个模型可以为我们所用。那么，问题来了，我们的预期是怎么产什么的呢？我也不知道，但是我知道，如果给人一张图片，人能够识别这是猫还是狗，那这个人的思维过程不就是类似一个黑盒吗？虽然里面的运行机制肯定都是确定的。那我们是不是可以模仿这个过程，把类似于这种识别问题都通过这一条流水线处理下来，得出的结果应该是我们想要的，至于准确度，那就是之前说的小孩和大人的区别了，所以说后天习得（训练模型）是人成长的关键一步。</p>
-<h3 id="0-2-什么是神经网络"><a href="#0-2-什么是神经网络" class="headerlink" title="0.2 什么是神经网络"></a>0.2 什么是神经网络</h3><h3 id="0-3-神经网络能解决什么问题"><a href="#0-3-神经网络能解决什么问题" class="headerlink" title="0.3 神经网络能解决什么问题"></a>0.3 神经网络能解决什么问题</h3>]]></content>
+<!--
+
+# ==> TODO
+
+## 0 基本介绍
+
+### 0.1 为什么会产生神经网络
+
+至于历史上是如何的大家可以网上查阅，这里讲讲我对于神经网络产生的必然性的一些看法。先回到上一篇文章，可以看到，如果要找一个简单的能用现有函数规则描述的特征边界（比如直线，圆，椭圆，球面……），我们可以直接选取它的特征量，然后对这个模型进行训练，也就是说，对于某种问题有它的某种特定的模型进行就算，但是如果稍微复杂一点的呢？我们该如何做？回到我们对机器学习什么都不知道的时候，在开篇线性回归中，我们希望的是有这样一个黑盒，把数据输入进去，它能把结果给我反馈出来，我不需要知道这个黑盒内部的结构，也就是说，我并不需要去特定的规划如何构建特征量，而是直接原始数据输进去就好，输出结果符合我们的预期就代表这个模型可以为我们所用。那么，问题来了，我们的预期是怎么产什么的呢？我也不知道，但是我知道，如果给人一张图片，人能够识别这是猫还是狗，那这个人的思维过程不就是类似一个黑盒吗？虽然里面的运行机制肯定都是确定的。那我们是不是可以模仿这个过程，把类似于这种识别问题都通过这一条流水线处理下来，得出的结果应该是我们想要的，至于准确度，那就是之前说的小孩和大人的区别了，所以说后天习得（训练模型）是人成长的关键一步。
+
+### 0.2 什么是神经网络
+
+### 0.3 神经网络能解决什么问题
+
+
+-->
+<h2 id="1-初识神经网络"><a href="#1-初识神经网络" class="headerlink" title="1 初识神经网络"></a>1 初识神经网络</h2><p>前面已经对从线性回归到逻辑回归时我们能处理问题的局限性进行分析，个人倾向于认为线性回归更多的是一种连续性的值预测，逻辑回归更多的是一种线性可分的类型划分。而对于非线性可分的问题我们就必须借助其它的手段了。</p>
+<h3 id="1-1-从逻辑运算看神经网络"><a href="#1-1-从逻辑运算看神经网络" class="headerlink" title="1.1 从逻辑运算看神经网络"></a>1.1 从逻辑运算看神经网络</h3><p>很多很多基础的例子教学就是从逻辑运算开始的。相信看了前面的一些对神经网络的介绍性文章，你对神经网络应该有一定的感知。</p>
+<p><img src="/2018/02/19/MLNeuralNetwork/1_1_01.png" alt=""><br><img src="/2018/02/19/MLNeuralNetwork/1_1_02.png" alt=""><br><img src="/2018/02/19/MLNeuralNetwork/1_1_03.png" alt=""></p>
+]]></content>
     
     <summary type="html">
     
@@ -127,7 +145,7 @@
     <link href="http://fitzeng.org/2018/02/16/MLLogisticRegression/"/>
     <id>http://fitzeng.org/2018/02/16/MLLogisticRegression/</id>
     <published>2018-02-16T03:27:00.000Z</published>
-    <updated>2018-02-21T02:46:41.689Z</updated>
+    <updated>2018-02-22T10:35:08.310Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -205,7 +223,7 @@
 <p>下面我们来举个小例子如何操作：</p>
 <p><img src="/2018/02/16/MLLogisticRegression/circleGraph.png" alt=""></p>
 <p>很明显这里有一个包围趋势，所以理所当然想到圆。也就是说选取的 \( X: X1,\ X2,\ X1^2,\ X2^2 \) 那么\( sigmoid \)函数就可以定义为：</p>
-<p>$$<br>h_{(bias, w_1, w_2, w_3, w_4)}({x_1, x_2, x_1^2, x_2^2}) = \frac{1}{1 + e^{-{bias + w_1 <em> x_1 + w_2 </em> x_2 + w_3 <em> x_1^2 + w_4 </em> x_2^2}}}<br>$$</p>
+<p>$$<br>h_{(bias, w_1, w_2, w_3, w_4)}({x_1, x_2, x_1^2, x_2^2}) = \frac{1}{1 + e^{-(bias + w_1 * x_1 + w_2 * x_2 + w_3 * x_1^2 + w_4 * x_2^2)}}<br>$$</p>
 <p>至于解法就和上面类似了，把这些都抽象成向量，那么至于什么维度，有几个变量都没差了。需要记得的是，这里要跑的次数是分类的种数的大小，也就是把每一种都当做主角处理一次得到属于它把其它元素区分的分界线，预测是也要把所有模型跑一遍，哪个模型的概率高就取哪个作为分类预测的结果。</p>
 <p>这里就不详细介绍应用了，以后有机会补充代码实践，下面给出几篇参考博客：</p>
 <ul>

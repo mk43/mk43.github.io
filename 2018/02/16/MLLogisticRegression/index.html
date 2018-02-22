@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/16/MLLogisticRegression/wuenda_5.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/16/MLLogisticRegression/wuenda_6.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/16/MLLogisticRegression/wuenda_7.png">
-<meta property="og:updated_time" content="2018-02-21T02:46:41.689Z">
+<meta property="og:updated_time" content="2018-02-22T10:35:08.310Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习基本算法之逻辑回归">
 <meta name="twitter:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。然后这是这个系列的第二篇了，对于初学者来说，如果你没看过第一篇，推荐看看机器学习基本算法之线性回归，里面提及到了很多基础的数学知识和一些的机器学习思维，对于理解这篇文章很有帮助，很多机器学习流程化的东西这里就不在具体介绍为什么这样做了，而是直接解释为什么">
@@ -257,7 +257,7 @@
 <p>下面我们来举个小例子如何操作：</p>
 <p><img src="/2018/02/16/MLLogisticRegression/circleGraph.png" alt=""></p>
 <p>很明显这里有一个包围趋势，所以理所当然想到圆。也就是说选取的 \( X: X1,\ X2,\ X1^2,\ X2^2 \) 那么\( sigmoid \)函数就可以定义为：</p>
-<p>$$<br>h_{(bias, w_1, w_2, w_3, w_4)}({x_1, x_2, x_1^2, x_2^2}) = \frac{1}{1 + e^{-{bias + w_1 <em> x_1 + w_2 </em> x_2 + w_3 <em> x_1^2 + w_4 </em> x_2^2}}}<br>$$</p>
+<p>$$<br>h_{(bias, w_1, w_2, w_3, w_4)}({x_1, x_2, x_1^2, x_2^2}) = \frac{1}{1 + e^{-(bias + w_1 * x_1 + w_2 * x_2 + w_3 * x_1^2 + w_4 * x_2^2)}}<br>$$</p>
 <p>至于解法就和上面类似了，把这些都抽象成向量，那么至于什么维度，有几个变量都没差了。需要记得的是，这里要跑的次数是分类的种数的大小，也就是把每一种都当做主角处理一次得到属于它把其它元素区分的分界线，预测是也要把所有模型跑一遍，哪个模型的概率高就取哪个作为分类预测的结果。</p>
 <p>这里就不详细介绍应用了，以后有机会补充代码实践，下面给出几篇参考博客：</p>
 <ul>
@@ -598,18 +598,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">MachineLearning</a>
               </li>
              
@@ -630,11 +618,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -642,7 +638,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+                <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -651,6 +647,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Marvel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
