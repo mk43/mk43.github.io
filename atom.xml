@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-02-21T11:53:18.139Z</updated>
+  <updated>2018-02-23T14:09:41.167Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/02/19/MLNeuralNetwork/"/>
     <id>http://fitzeng.org/2018/02/19/MLNeuralNetwork/</id>
     <published>2018-02-19T03:27:00.000Z</published>
-    <updated>2018-02-21T11:53:18.139Z</updated>
+    <updated>2018-02-23T14:09:41.167Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -48,12 +48,101 @@
 
 ### 0.3 神经网络能解决什么问题
 
+## 1 初识神经网络
 
--->
-<h2 id="1-初识神经网络"><a href="#1-初识神经网络" class="headerlink" title="1 初识神经网络"></a>1 初识神经网络</h2><p>前面已经对从线性回归到逻辑回归时我们能处理问题的局限性进行分析，个人倾向于认为线性回归更多的是一种连续性的值预测，逻辑回归更多的是一种线性可分的类型划分。而对于非线性可分的问题我们就必须借助其它的手段了。</p>
-<h3 id="1-1-从逻辑运算看神经网络"><a href="#1-1-从逻辑运算看神经网络" class="headerlink" title="1.1 从逻辑运算看神经网络"></a>1.1 从逻辑运算看神经网络</h3><p>很多很多基础的例子教学就是从逻辑运算开始的。相信看了前面的一些对神经网络的介绍性文章，你对神经网络应该有一定的感知。</p>
-<p><img src="/2018/02/19/MLNeuralNetwork/1_1_01.png" alt=""><br><img src="/2018/02/19/MLNeuralNetwork/1_1_02.png" alt=""><br><img src="/2018/02/19/MLNeuralNetwork/1_1_03.png" alt=""></p>
-]]></content>
+前面已经对从线性回归到逻辑回归时我们能处理问题的局限性进行分析，个人倾向于认为线性回归更多的是一种连续性的值预测，逻辑回归更多的是一种线性可分的类型划分。而对于非线性可分的问题我们就必须借助其它的手段了。
+
+### 1.1 从逻辑运算看神经网络
+
+很多很多基础的例子教学就是从逻辑运算开始的。相信看了前面的一些对神经网络的介绍性文章，你对神经网络应该有一定的感知。
+
+![](1_1_01.png)
+![](1_1_02.png)
+![](1_1_03.png)
+
+以上是与或非的图，红色圆圈代表正例（1），黑色三角代表反例（0）。下面我们来把这个转换成神经网络的图。
+
+![](1_1_04.png)
+
+根据真值表，由上面的权重构造的神经网络是能够实现与或非逻辑运算的。其实可以看出神经网络最简单的一种处理对象可以是线性可分的，也就是简单的做一次映射（激活）。
+
+下面我们来看下异或运算如何处理：
+
+![](1_1_05.png)
+
+通过观察你会发下这图是线性不可分的，也就是我们想要通过绘制前面的类似于与或非的操作的神经网络现在是绘制不出来的。因为这个分布不是线性可分，没办法通过一个 \\( W \\) 变换把 \\( X \\) 变成单调的，所以仅仅通过一次单调函数 \\( f \\) 的激活是不可能实现类的划分的。
+
+但是我们可以转变一下思路，既然与或非是线性可分的，那么我们尽力把当前的异或运算转化成与或非就解决了。
+
+$$
+A\ XOR\ B=(A\land \lnot B) \lor (\lnot A\land B)
+$$
+
+有了上面的公式就好办了，我们直接通过 \\( X \\) 构造两个神经元 \\( (A\land \lnot B), (\lnot A\land B) \\)，然后多这两个神经元进行激活，之后就把这两个神经元进行或操作，激活后所得到的结果就是 \\( A\ XOR\ B \\)。
+
+![](1_1_06.png)
+
+注意这里对于下标的规定我们不做约束，在下一节具体讲解的时候进行规范化介绍。
+
+既然看样子我们的神经网络可以进行异或操作了，那么我们写一段代码验证一下吧：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">x1 = np.asarray([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>])</div><div class="line">x2 = np.asarray([<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>])</div><div class="line">X = np.row_stack((np.ones(shape=(<span class="number">1</span>, <span class="number">4</span>)), x1, x2))</div><div class="line">print(<span class="string">"X:\n%s"</span> % X)</div><div class="line">y = np.asarray([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>])</div><div class="line">W1 = np.asarray([[<span class="number">-1</span>, <span class="number">2</span>, <span class="number">-2</span>],</div><div class="line">                 [<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">2</span>]])</div><div class="line">W2 = np.asarray([<span class="number">-1</span>, <span class="number">2</span>, <span class="number">2</span>])</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(input)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.power(np.e, <span class="number">-10</span> * (input)))</div><div class="line"></div><div class="line"></div><div class="line">np.set_printoptions(precision=<span class="number">6</span>, suppress=<span class="keyword">True</span>)</div><div class="line">z1 = np.matmul(W1, X)</div><div class="line">print(<span class="string">"W1*X = z1:\n%s"</span> % z1)</div><div class="line">a1 = np.row_stack((np.ones(shape=(<span class="number">1</span>, <span class="number">4</span>)), sigmoid(z1)))</div><div class="line">print(<span class="string">"sigmoid(z1) = a1:\n%s"</span> % a1)</div><div class="line">z2 = np.matmul(W2, a1)</div><div class="line">print(<span class="string">"W2*a1 = z2:\n%s"</span> % z2)</div><div class="line">a2 = sigmoid(z2)</div><div class="line">print(<span class="string">"------------------------"</span>)</div><div class="line">print(<span class="string">"prediction: %s"</span> % a2)</div><div class="line">print(<span class="string">"target: %s"</span> % y)</div><div class="line">print(<span class="string">"------------------------"</span>)</div><div class="line"></div><div class="line"><span class="comment"># output:</span></div><div class="line"><span class="comment"># X:</span></div><div class="line"><span class="comment"># [[1. 1. 1. 1.]</span></div><div class="line"><span class="comment">#  [0. 0. 1. 1.]</span></div><div class="line"><span class="comment">#  [0. 1. 0. 1.]]</span></div><div class="line"><span class="comment"># W1*X = z1:</span></div><div class="line"><span class="comment"># [[-1. -3.  1. -1.]</span></div><div class="line"><span class="comment">#  [-1.  1. -3. -1.]]</span></div><div class="line"><span class="comment"># sigmoid(z1) = a1:</span></div><div class="line"><span class="comment"># [[1.       1.       1.       1.      ]</span></div><div class="line"><span class="comment">#  [0.000045 0.       0.999955 0.000045]</span></div><div class="line"><span class="comment">#  [0.000045 0.999955 0.       0.000045]]</span></div><div class="line"><span class="comment"># W2*a1 = z2:</span></div><div class="line"><span class="comment"># [-0.999818  0.999909  0.999909 -0.999818]</span></div><div class="line"><span class="comment"># ------------------------</span></div><div class="line"><span class="comment"># prediction: [0.000045 0.999955 0.999955 0.000045]</span></div><div class="line"><span class="comment"># target: [0 1 1 0]</span></div><div class="line"><span class="comment"># ------------------------</span></div></pre></td></tr></table></figure>
+<p>可以看到，预测值和目标值一致。那么这里面到底发生了什么？</p>
+<p>一开始，我们的特征是 \( [x1; x2] \)。<br>然后经过第一层，激活之后的 \( a1 \) 就是我们转化后的特征 \( [a_1^{(1)}; a_2^{(1)}]=sigmoid(W_1X) \) 前面我们看到了 \( [x1; x2] \) 的图线性不可分，那么以 \( [a_1^{(1)}; a_2^{(1)}] \) 作为特征是否线性可分？看数据和图吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sigmoid(z1) = a1:</span></div><div class="line"><span class="comment"># [[1.       1.       1.       1.      ]</span></div><div class="line"><span class="comment">#  [0.000045 0.       0.999955 0.000045]</span></div><div class="line"><span class="comment">#  [0.000045 0.999955 0.       0.000045]]</span></div><div class="line"><span class="comment"># target: [0 1 1 0]</span></div></pre></td></tr></table></figure>
+<p><img src="1_1_07.png" alt=""></p>
+<p>咦？线性可分啦！然后就直接进行类似线性回归的方法直接求得结果，没必要在寻找其它的转换特征。</p>
+<p>那么这里神奇之处就在于矩阵 \( W_1 \)，它能把原来的特征转换成另一类特征，这里需要对矩阵理解比较深刻，我不太懂就不瞎说了。。。可以看看<a href="https://www.bilibili.com/video/av6731067/">【官方双语/合集】线性代数的本质 - 系列合集</a> PS: 说实话，我还是好久之前看了一点点，看来得抽点时间仔细看一遍，毕竟机器学习中充满着矩阵。</p>
+<p>所以，通过特征转换，可以把线性不可分的问题在另外的特征上线性可分。然后通过激活函数使数据在下一次输入时符合规范化，这就是神经网络的神奇之处。</p>
+<h2 id="2-训练神经网络"><a href="#2-训练神经网络" class="headerlink" title="2 训练神经网络"></a>2 训练神经网络</h2><p>前面为了对神经网络“威力”的了解，直接给出了 \( W \)。而我们训练数据就是为了找到合适的 \( W \) 去进行预测，所以接下来我们根据前面逻辑回归的机器学习分析方式对神经网络进行一一分析。</p>
+<h3 id="2-1-损失函数"><a href="#2-1-损失函数" class="headerlink" title="2.1 损失函数"></a>2.1 损失函数</h3><p>这里我们完全可以把这个模型定义为一个黑盒，只要看输出和我们的目标值是否匹配，那么这里的损失函数和逻辑回归就是基本一样了。</p>
+<p>理解可以作为黑盒理解，计算可就不行了，因为每一个参数都得提供确切的计算过程。接下来就开始吧：</p>
+<p><img src="2_1_01.png" alt=""></p>
+<p>先介绍一下命名：一般大写代表矩阵，上标代表层数，小写只带上标代表列向量，如果下标齐全代表某个数值。</p>
+<p><img src="2_1_02.png" alt=""></p>
+<p>\( W^{(i)} \)：第 \( i \) 个权重矩阵</p>
+<p>$$<br>W^{(1)} =<br>\begin{bmatrix}<br>w_{1,0}^{(1)} &amp; w_{1,1}^{(1)} &amp; \ldots \\<br>w_{2,0}^{(1)} &amp; w_{2,1}^{(1)} &amp; \ldots \\<br>\vdots &amp; \vdots &amp; \ddots<br>\end{bmatrix}<br>bias^{(i)} =<br>\begin{bmatrix}<br>w_{1,0}^{(i)} \\<br>w_{2,0}^{(i)} \\<br>\vdots<br>\end{bmatrix}<br>$$</p>
+<p>\( X^{(0)} \)：输入，并且添加一个恒为\( 1 \)的神经元，每一列代表一组数据</p>
+<p>$$<br>X^{(0)} =<br>\begin{bmatrix}<br>1 &amp; 1 &amp; 1 &amp; \ldots \\<br>x_{1}^{(1)} &amp; x_{1}^{(2)} &amp; x_{1}^{(3)} &amp;\ldots \\<br>x_{2}^{(1)} &amp; x_{2}^{(2)} &amp; x_{2}^{(3)} &amp; \ldots \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots<br>\end{bmatrix}<br>x^{(i)} =<br>\begin{bmatrix}<br>1 \\<br>x_{1}^{(i)} \\<br>x_{2}^{(i)} \\<br>\vdots<br>\end{bmatrix}<br>$$</p>
+<p>\( z^{(i)} \)：训练值，可以把 \( x \) 看做 \( a^{(0)} \)</p>
+<p>$$<br>W^{(1)}x =<br>\begin{bmatrix}<br>w_{1,0}^{(1)} &amp; w_{1,1}^{(1)} &amp; w_{1,2}^{(1)} \\<br>w_{2,0}^{(1)} &amp; w_{2,1}^{(1)} &amp; w_{2,2}^{(1)} \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>1 \\<br>x_{1} \\<br>x_{2}<br>\end{bmatrix}<br> =<br>\begin{bmatrix}<br>z_{1}^{(1)} \\<br>z_{2}^{(1)}<br>\end{bmatrix}<br> = z^{(1)} \\<br>W^{(i + 1)}a^{(i)} =<br>\begin{bmatrix}<br>w_{1,0}^{(i + 1)} &amp; w_{1,1}^{(i + 1)} &amp; w_{1,2}^{(i + 1)} \\<br>w_{2,0}^{(i + 1)} &amp; w_{2,1}^{(i + 1)} &amp; w_{2,2}^{(i + 1)} \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>1 \\<br>a_{1}^{(i)} \\<br>a_{2}^{(i)}<br>\end{bmatrix}<br> =<br>\begin{bmatrix}<br>z_{1}^{(i + 1)} \\<br>z_{2}^{(i + 1)}<br>\end{bmatrix}<br> = z^{(i + 1)}<br>$$</p>
+<p>\( a^{(i)} \)：激活值，注意在这里激活函数采用 \( f=sigmoid \)</p>
+<p>$$<br>a^{(i)} =<br>\begin{bmatrix}<br>1 \\<br>a_{1}^{(i)} \\<br>a_{2}^{(i)}<br>\end{bmatrix}<br> =<br>\begin{bmatrix}<br>1 \\<br>f(z_{1}^{(i)}) \\<br>f(z_{2}^{(i)})<br>\end{bmatrix}<br>$$</p>
+<p>那在之前那个异或的例子中，我们可以得出：</p>
+<p>$$<br>\begin{aligned}<br>z^{(1)} &amp;= W^{(1)}x \\<br>a^{(1)} &amp;= f(z^{(1)})\ (add\ a_{0}^{(i)}=1) \\<br>z^{(2)} &amp;= W^{(2)}a^{(1)} \\<br>a^{(2)} &amp;= f(z^{(2)}) \\<br>\end{aligned}<br>$$</p>
+<p>损失函数 \( J \)：</p>
+<p>$$<br>J(W) = - y <em> log(a^{(2)}) - (1 - y) </em> log(1 - a^{(2)})<br>$$</p>
+<p>我们对于一个输入 \( x_1, x_2 \) 的损失值是 \( J(W) \)。注意这里 \( W \) 看做是一个黑盒的 \( W \)，为了简单这里只采用一维数据</p>
+<h3 id="2-2-参数更新：反向传播算法"><a href="#2-2-参数更新：反向传播算法" class="headerlink" title="2.2 参数更新：反向传播算法"></a>2.2 参数更新：反向传播算法</h3><p>如果你之前从来没有接触过反向传播算法，可以这样思考：我们这里的目的是更新 \( W^{(i)} \)，而我们目前熟悉的最优化算法就只有梯度下降算法（PS：看来要去复习一遍数值计算了😂😂😂），那么自然就有：</p>
+<p>$$<br>W^{(i)} = W^{(i)} - \alpha\frac{\partial\ J}{\partial\ W^{(i)}}<br>$$</p>
+<p>那么</p>
+<p>$$<br>W^{(2)} = W^{(2)} - \alpha\frac{\partial\ J}{\partial\ W^{(2)}} \\<br>W^{(1)} = W^{(1)} - \alpha\frac{\partial\ J}{\partial\ W^{(1)}}<br>$$</p>
+<p>接下来要用到一大波矩阵求导的知识，这也是我准备最久的地方，因为要手写代码必需每一个细节都得知道，由于这里重点是机器学习，所以我会给出计算的推导过程，但是矩阵求导的原理大家就看参考资料吧。</p>
+<p><a href="https://en.wikipedia.org/wiki/Matrix_calculus">Matrix calculus</a>：主要是了解 <code>Numerator-layout notation</code> 、<code>Denominator-layout notation</code> 的表示方法和 <code>Scalar-by-matrix identities</code>，其它的也推荐瞟一瞟。<br><a href="https://zhuanlan.zhihu.com/p/24709748">矩阵求导术（上）</a><a href="https://zhuanlan.zhihu.com/p/24863977">矩阵求导术（下）</a>看看原理与实操。然后<a href="https://zhuanlan.zhihu.com/p/22473137">神经网络反向传播的数学原理</a>也可以看下，里面对逻辑推理部分可能不是很严谨，但是整体思路很适合阅读，对于我们来说可能不需要这么缜密的逻辑推理过程，不过我在下面会把计算过程列出来的，有兴趣的可以阅读。</p>
+<p>好了，到这里就当大家有一定求导基础了。这里的 \( \frac{\partial\ J}{\partial\ W^{(i)}} \) 很明显是一个 <code>scalar-by-matrix</code> 那么我们采用迹的形式求解。</p>
+<p>$$<br>\frac{\partial\ J}{\partial\ W^{(i)}} = \frac{\partial\ J}{\partial\ z^{(i)}}\frac{\partial\ z^{(i)}}{\partial\ W^{(i)}} \\<br>$$</p>
+<p>其中</p>
+<p>$$<br>\frac{\partial\ z^{(i)}}{\partial\ W^{(i)}} = {a^{(i - 1)}}^T \\<br>\frac{\partial\ J}{\partial\ z^{(i)}} = \frac{\partial\ J}{\partial\ z^{(i + 1)}}\frac{\partial\ z^{(i + 1)}}{\partial\ a^{(i)}}\frac{\partial\ a^{(i)}}{\partial\ z^{(i)}} = {W^{(i)}}^T\frac{\partial\ J}{\partial\ z^{(i + 1)}}.*f’(z^{(i)})<br>$$</p>
+<p>如果你已经知道计算，或者不需要认为不需要计算那么就可以直接跳过证明过程了。</p>
+<p>证明：<br>已知</p>
+<p>$$<br>\sum_{i,\ j}A_{ij}B_{ij} = tr(A^TB) \\<br>df = \sum_{i,\ j}\frac{\partial f}{\partial X_{ij}}dX_{ij} = tr(\frac{\partial f}{\partial X}^TdX) \\<br>tr(AB) = tr(BA) \\<br>tr(A^T(B .<em> C)) = tr((A .</em> B)^TC) \\<br>df(X) = f’(X) .* X<br>$$</p>
+<p>对以上公式的证明感兴趣的可以在网上查询，因为……因为我也只是感觉公式对（使用测试用例），严谨证明我也不太会😂😂😂</p>
+<p>那么对 \( z^{(i)} = W^{(i)}a^{(i - 1)} \) 微分：</p>
+<p>$$<br>\begin{aligned}<br>dz^{(i)} &amp; = dW^{(i)}a^{(i - 1)} \\<br>&amp; = tr(a^{(i - 1)}dW^{(i)}) \\<br>&amp; = tr(({a^{(i - 1)}}^T)^TdW^{(i)}) \\<br>&amp; \Rightarrow \frac{\partial\ z^{(i)}}{\partial\ W^{(i)}} = {a^{(i - 1)}}^T \\<br>\end{aligned}<br>$$</p>
+<p>很简单，第一个证明完成，接着证明第二个：</p>
+<p>$$<br>\begin{aligned}<br>dJ &amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^Tdz^{(i + 1)}) \\<br>&amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^TW^{(i)}da^{(i - 1)}) \\<br>&amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^TW^{(i)}f’(z^{(i)}) .<em> dz^{(i)}) \\<br>&amp; = tr([{W^{(i)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}}]^Tf’(z^{(i)}) .</em> dz^{(i)})  \\<br>&amp; = tr([{W^{(i)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}} .<em> f’(z^{(i)})]^T dz^{(i)})  \\<br>&amp; \Rightarrow \frac{\partial\ J}{\partial\ z^{(i)}} = {W^{(i)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}} .</em> f’(z^{(i)})<br>\end{aligned}<br>$$</p>
+<p>这就是所有证明过程了。其中只有 \( \frac{\partial\ J}{\partial\ z^{(i + 1)}} \) 是未知的，这个是由 \( J \)的定义决定的。</p>
+<p>由前面分析，我们采用的极大似然估计计算误差，所以：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial\ J}{\partial\ z^{(i + 1)}} &amp; = \frac{\partial\ J}{\partial\ a^{(i + 1)}}\frac{\partial\ a^{(i + 1)}}{\partial\ z^{(i + 1)}} \\<br>&amp; = \frac{\partial\ J}{\partial\ a^{(i + 1)}}f’(z^{(i + 1)}) \\<br>&amp; = \frac{\partial\ (- y <em> log(a^{(i + 1)}) - (1 - y) </em> log(1 - a^{(i + 1)}))}{\partial\ a^{(i + 1)}}f’(z^{(i + 1)}) \\<br>&amp; = \frac{k(1 - y(1+e^{-kz^{(i + 1)}}))}{e^{-kz^{(i + 1)}}}<br>\end{aligned}<br>$$</p>
+<p>其中 \( f(x) = \frac{1}{1 + e^{-kx}} \)，在调试代码时可以把 \( k \) 值调大，使得 \( sigmoid \) 函数更像阶跃函数，获得激活之后的值在 \( 0 \) 附近的邻域内的跨度更大，训练效果更好（正例更靠近 \( 1 \)，反例更靠近 \( 0 \)）。</p>
+<h3 id="2-3-代码实现"><a href="#2-3-代码实现" class="headerlink" title="2.3 代码实现"></a>2.3 代码实现</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.bilibili.com/video/av6731067/">【官方双语/合集】线性代数的本质 - 系列合集</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Matrix_calculus">Matrix calculus</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/24709748">矩阵求导术（上）</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/24863977">矩阵求导术（下）</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/22473137">神经网络反向传播的数学原理</a></li>
+</ul>
+-->]]></content>
     
     <summary type="html">
     
