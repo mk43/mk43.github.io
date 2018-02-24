@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/19/MLNeuralNetwork/1_1_07.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/19/MLNeuralNetwork/2_1_01.png">
 <meta property="og:image" content="http://fitzeng.org/2018/02/19/MLNeuralNetwork/2_1_02.png">
-<meta property="og:updated_time" content="2018-02-24T11:12:20.828Z">
+<meta property="og:updated_time" content="2018-02-24T11:24:48.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习基本算法之神经网络">
 <meta name="twitter:description" content="写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。 这个系列已经有两篇前作了（跳票了一篇决策树😂😂😂），欢迎感兴趣的读者去阅读：  机器学习基本算法之线性回归 机器学习基本算法之逻辑回归  实验代码-参考书籍-[参考博客详见最后]">
@@ -227,7 +227,7 @@
 <p>那在之前那个异或的例子中，我们可以得出：</p>
 <p>$$<br>\begin{aligned}<br>z^{(1)} &amp;= W^{(1)}x \\<br>a^{(1)} &amp;= f(z^{(1)})\ (add\ a_{0}^{(i)}=1) \\<br>z^{(2)} &amp;= W^{(2)}a^{(1)} \\<br>a^{(2)} &amp;= f(z^{(2)}) \\<br>\end{aligned}<br>$$</p>
 <p>损失函数 \( J \)：</p>
-<p>$$<br>J(W) = - y <em> log(a^{(2)}) - (1 - y) </em> log(1 - a^{(2)})<br>$$</p>
+<p>$$<br>J(W) = - y * log(a^{(2)}) - (1 - y) * log(1 - a^{(2)})<br>$$</p>
 <p>我们对于一个输入 \( x_1, x_2 \) 的损失值是 \( J(W) \)。注意这里 \( W \) 看做是一个黑盒的 \( W \)，为了简单这里只采用一维数据</p>
 <h3 id="2-2-参数更新：反向传播算法"><a href="#2-2-参数更新：反向传播算法" class="headerlink" title="2.2 参数更新：反向传播算法"></a>2.2 参数更新：反向传播算法</h3><p>如果你之前从来没有接触过反向传播算法，可以这样思考：我们这里的目的是更新 \( W^{(i)} \)，而我们目前熟悉的最优化算法就只有梯度下降算法（PS：看来要去复习一遍数值计算了😂😂😂），那么自然就有：</p>
 <p>$$<br>W^{(i)} = W^{(i)} - \alpha\frac{\partial\ J}{\partial\ W^{(i)}}<br>$$</p>
@@ -241,15 +241,15 @@
 <p>$$<br>\frac{\partial\ z^{(i)}}{\partial\ W^{(i)}} = {a^{(i - 1)}}^T \\<br>\frac{\partial\ J}{\partial\ z^{(i)}} = \frac{\partial\ J}{\partial\ z^{(i + 1)}}\frac{\partial\ z^{(i + 1)}}{\partial\ a^{(i)}}\frac{\partial\ a^{(i)}}{\partial\ z^{(i)}} = {W^{(i + 1)}}^T\frac{\partial\ J}{\partial\ z^{(i + 1)}}.*f’(z^{(i)})<br>$$</p>
 <p>如果你已经知道计算，或者不需要认为不需要计算那么就可以直接跳过证明过程了。</p>
 <p>证明：<br>已知</p>
-<p>$$<br>\sum_{i,\ j}A_{ij}B_{ij} = tr(A^TB) \\<br>df = \sum_{i,\ j}\frac{\partial f}{\partial X_{ij}}dX_{ij} = tr(\frac{\partial f}{\partial X}^TdX) \\<br>tr(AB) = tr(BA) \\<br>tr(A^T(B .<em> C)) = tr((A .</em> B)^TC) \\<br>df(X) = f’(X) .* X<br>$$</p>
+<p>$$<br>\sum_{i,\ j}A_{ij}B_{ij} = tr(A^TB) \\<br>df = \sum_{i,\ j}\frac{\partial f}{\partial X_{ij}}dX_{ij} = tr(\frac{\partial f}{\partial X}^TdX) \\<br>tr(AB) = tr(BA) \\<br>tr(A^T(B .* C)) = tr((A .* B)^TC) \\<br>df(X) = f’(X) .* X<br>$$</p>
 <p>对以上公式的证明感兴趣的可以在网上查询，因为……因为我也只是感觉公式对（使用测试用例），严谨证明我也不太会😂😂😂</p>
 <p>那么对 \( z^{(i)} = W^{(i)}a^{(i - 1)} \) 微分：</p>
 <p>$$<br>\begin{aligned}<br>dz^{(i)} &amp; = dW^{(i)}a^{(i - 1)} \\<br>&amp; = tr(a^{(i - 1)}dW^{(i)}) \\<br>&amp; = tr(({a^{(i - 1)}}^T)^TdW^{(i)}) \\<br>&amp; \Rightarrow \frac{\partial\ z^{(i)}}{\partial\ W^{(i)}} = {a^{(i - 1)}}^T \\<br>\end{aligned}<br>$$</p>
 <p>很简单，第一个证明完成，接着证明第二个：</p>
-<p>$$<br>\begin{aligned}<br>dJ &amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^Tdz^{(i + 1)}) \\<br>&amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^TW^{(i + 1)}da^{(i)}) \\<br>&amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^TW^{(i + 1)}f’(z^{(i)}) .<em> dz^{(i)}) \\<br>&amp; = tr([{W^{(i + 1)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}}]^Tf’(z^{(i)}) .</em> dz^{(i)})  \\<br>&amp; = tr([{W^{(i + 1)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}} .<em> f’(z^{(i)})]^T dz^{(i)})  \\<br>&amp; \Rightarrow \frac{\partial\ J}{\partial\ z^{(i)}} = {W^{(i + 1)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}} .</em> f’(z^{(i)})<br>\end{aligned}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>dJ &amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^Tdz^{(i + 1)}) \\<br>&amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^TW^{(i + 1)}da^{(i)}) \\<br>&amp; = tr({\frac{\partial\ J}{\partial\ z^{(i + 1)}}}^TW^{(i + 1)}f’(z^{(i)}) .* dz^{(i)}) \\<br>&amp; = tr([{W^{(i + 1)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}}]^Tf’(z^{(i)}) .* dz^{(i)})  \\<br>&amp; = tr([{W^{(i + 1)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}} .* f’(z^{(i)})]^T dz^{(i)})  \\<br>&amp; \Rightarrow \frac{\partial\ J}{\partial\ z^{(i)}} = {W^{(i + 1)}}^T{\frac{\partial\ J}{\partial\ z^{(i + 1)}}} .* f’(z^{(i)})<br>\end{aligned}<br>$$</p>
 <p>这就是所有证明过程了。其中只有 \( \frac{\partial\ J}{\partial\ z^{(i + 1)}} \) 是未知的，这个是由 \( J \)的定义决定的。</p>
 <p>由前面分析，我们采用的极大似然估计计算误差，所以：</p>
-<p>$$<br>\begin{aligned}<br>\frac{\partial\ J}{\partial\ z^{(i + 1)}} &amp; = \frac{\partial\ J}{\partial\ a^{(i + 1)}}\frac{\partial\ a^{(i + 1)}}{\partial\ z^{(i + 1)}} \\<br>&amp; = \frac{\partial\ J}{\partial\ a^{(i + 1)}}f’(z^{(i + 1)}) \\<br>&amp; = \frac{\partial\ (- y <em> log(a^{(i + 1)}) - (1 - y) </em> log(1 - a^{(i + 1)}))}{\partial\ a^{(i + 1)}}f’(z^{(i + 1)}) \\<br>&amp; = \frac{k(1 - y(1+e^{-kz^{(i + 1)}}))}{e^{-kz^{(i + 1)}}}<br>\end{aligned}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial\ J}{\partial\ z^{(i + 1)}} &amp; = \frac{\partial\ J}{\partial\ a^{(i + 1)}}\frac{\partial\ a^{(i + 1)}}{\partial\ z^{(i + 1)}} \\<br>&amp; = \frac{\partial\ J}{\partial\ a^{(i + 1)}}f’(z^{(i + 1)}) \\<br>&amp; = \frac{\partial\ (- y * log(a^{(i + 1)}) - (1 - y) * log(1 - a^{(i + 1)}))}{\partial\ a^{(i + 1)}}f’(z^{(i + 1)}) \\<br>&amp; = \frac{k(1 - y(1+e^{-kz^{(i + 1)}}))}{e^{-kz^{(i + 1)}}}<br>\end{aligned}<br>$$</p>
 <p>其中 \( f(x) = \frac{1}{1 + e^{-kx}} \)，在调试代码时可以把 \( k \) 值调得合适大，使得 \( sigmoid \) 函数更像阶跃函数，获得激活之后的值在 \( 0 \) 附近的邻域内的跨度更大，训练效果更好（正例更靠近 \( 1 \)，反例更靠近 \( 0 \)）。然后这里的推理偷懒了直接使用前面博文的“维数相容原理”，因为这个看起来还是比较简单的。</p>
 <h2 id="3-代码实现"><a href="#3-代码实现" class="headerlink" title="3 代码实现"></a>3 代码实现</h2><p>这里我会用手写代码实现和使用 \( TensorFlow \)实现两种方式。</p>
 <h3 id="3-1-手写代码实现"><a href="#3-1-手写代码实现" class="headerlink" title="3.1 手写代码实现"></a>3.1 手写代码实现</h3><p>这里我按照写代码的思路介绍吧，因为一开始不熟悉直接挑一块代码讲根本不知道为什么要这么做，没有一个循序渐进的概念。</p>
@@ -556,11 +556,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -584,6 +584,18 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">MachineLearning</a>
               </li>
              
@@ -604,15 +616,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
+                <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -620,11 +624,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
+                <a href="javascript:void(0)" class="js-tag color4">NeuralNetwork</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">NeuralNetwork</a>
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -633,10 +637,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Marvel</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -672,15 +672,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">ProbabilityTheory</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
