@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/02/25/MLTBackpropagation/</loc>
+    
+    <lastmod>2018-02-25T08:56:39.034Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/02/19/MLNeuralNetwork/</loc>
     
-    <lastmod>2018-02-24T11:24:48.353Z</lastmod>
+    <lastmod>2018-02-24T11:40:26.946Z</lastmod>
     
   </url>
   
