@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img06.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img07.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img08.gif">
-<meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img9.gif">
+<meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img09.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img10.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img11.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img12.gif">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img17.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img18.gif">
 <meta property="og:image" content="http://fitzeng.org/2018/02/25/MLTBackpropagation/img19.gif">
-<meta property="og:updated_time" content="2018-02-25T08:56:39.034Z">
+<meta property="og:updated_time" content="2018-02-25T09:05:10.704Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用反向传播算法训练多层神经网络的原理【译】">
 <meta name="twitter:description" content="写在前面：之前写了一篇机器学习基本算法之神经网络里面涉及了一个重要算法，今天看到一篇关于这个算法的图示解释，所以打算翻译一下作为以后学习的一个参考。这是一篇关于反向传播算法的译文，译自 Principles of training multi-layer neural network using backpropagation。里面通过通俗易懂的图示方式介绍了神经网络中的前向和后向传播的整个">
@@ -202,7 +202,7 @@
 <p>在接下来的算法步骤中，把网络输出信号 \( y \) 和在训练数据集中的期望输出值（目标）比较。它们之间的差称为输出层神经元的误差信号 \( d \)。</p>
 <p><img src="/2018/02/25/MLTBackpropagation/img08.gif" alt=""></p>
 <p>直接计算内部神经元的误差信号是不可能的，因为这些神经元的输出值是不知道的。多年来，训练多层神经网络的方法不为人所知。只有在。只有在八十年代中期，反向传播算法才被制定出来。这个思想是把误差信号 \( d \) （在单层中所计算的）往回传到各个神经元，输出神经元视为输入。</p>
-<p><img src="/2018/02/25/MLTBackpropagation/img9.gif" alt=""><br><img src="/2018/02/25/MLTBackpropagation/img10.gif" alt=""></p>
+<p><img src="/2018/02/25/MLTBackpropagation/img09.gif" alt=""><br><img src="/2018/02/25/MLTBackpropagation/img10.gif" alt=""></p>
 <p>权重系数 \( w_{mn} \) 用来传播误差时和它在计算输出值是类似。只有这个数据流的方向是改变的（信号一个接一个地从输出传播到输入）。这个技术引用于所有的网络层，如果传播误差来自于它们添加的少数几个神经元。看下面例子：</p>
 <p><img src="/2018/02/25/MLTBackpropagation/img11.gif" alt=""><br><img src="/2018/02/25/MLTBackpropagation/img12.gif" alt=""><br><img src="/2018/02/25/MLTBackpropagation/img13.gif" alt=""></p>
 <p>当每一个神经元的误差信号被计算，每一个神经元的权重系数可能被修改。在下面公式，\( \frac{df(e)}{de} \) 代表神经元激活函数的导数（权重被修改）。</p>
@@ -520,15 +520,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">NeuralNetwork</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -537,10 +541,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Marvel</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -576,11 +576,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
