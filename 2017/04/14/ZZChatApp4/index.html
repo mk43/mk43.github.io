@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://fitzeng.org/2017/04/14/ZZChatApp4/showlogininout.png">
 <meta property="og:image" content="http://fitzeng.org/2017/04/14/ZZChatApp4/telnet.png">
 <meta property="og:image" content="http://fitzeng.org/2017/04/14/ZZChatApp4/chatmsglog.png">
-<meta property="og:updated_time" content="2017-07-01T10:10:32.000Z">
+<meta property="og:updated_time" content="2018-03-02T11:55:55.719Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实现一个类似QQ的社交聊天工具-4">
 <meta name="twitter:description" content="GitHub 实现一个类似QQ的社交聊天工具-4准备做好【ZZChatApp3】中的内容并且下载了实现一个类似QQ的社交聊天工具-1中的资料就可以开始下面的了环境自己尝试是否能配好，下面只是给出一些提示和建议。Xampp + Java EE 实现目标这里已经实现基本的通讯了。由于最近特别忙，所以打算写两篇的网络编程总结成一篇，细节应该都会提到，只是不会太详细。希望大家多利用身边的网络资源。基本在网">
@@ -271,7 +271,7 @@
 <p>由于日后扩展可能不只是文本信息，所以在对聊天信息的处理上我们直接再建一个类。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReceiveChatMsg</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">delChatMsg</span><span class="params">(String msg)</span> </span>&#123;</div><div class="line">        String sendName = <span class="keyword">null</span>;</div><div class="line">        String content = <span class="keyword">null</span>;</div><div class="line">        String avatarID = <span class="keyword">null</span>;</div><div class="line">        String fileType = <span class="keyword">null</span>;</div><div class="line">        String group = <span class="keyword">null</span>;</div><div class="line">        ServerManager.getServerManager().setMessage(<span class="keyword">null</span>);</div><div class="line">        String p = <span class="string">"\\[GETCHATMSG\\]:\\[(.*), (.*), (.*), (.*), (.*)\\]"</span>;</div><div class="line">        Pattern pattern = Pattern.compile(p);</div><div class="line">        Matcher matcher = pattern.matcher(msg);</div><div class="line">        <span class="keyword">if</span> (matcher.find()) &#123;</div><div class="line">            sendName = matcher.group(<span class="number">1</span>);</div><div class="line">            content = matcher.group(<span class="number">2</span>);</div><div class="line">            avatarID = matcher.group(<span class="number">3</span>);</div><div class="line">            fileType = matcher.group(<span class="number">4</span>);</div><div class="line">            group = matcher.group(<span class="number">5</span>);</div><div class="line"></div><div class="line">            ChatMsg chatMsg = <span class="keyword">new</span> ChatMsg();</div><div class="line">            chatMsg.setMyInfo(<span class="keyword">false</span>);</div><div class="line">            chatMsg.setContent(content);</div><div class="line">            chatMsg.setChatObj(sendName);</div><div class="line">            chatMsg.setUsername(ServerManager.getServerManager().getUsername());</div><div class="line">            chatMsg.setGroup(group);</div><div class="line"></div><div class="line">            chatMsg.setIconID(Integer.parseInt(avatarID));</div><div class="line"></div><div class="line">            AtyChatRoom.chatMsgList.add(chatMsg);</div><div class="line">            ChatMsg.chatMsgList.add(chatMsg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>细节就不多说了，注意区分同一个对象发信息给你是通过群还是私人。</p>
-<p>还有就是当聊天窗口关闭后在再次打开聊天信息怎么加载？大家自己想想。不同可以看代码或者留言。</p>
+<p>还有就是当聊天窗口关闭后在再次打开聊天信息怎么加载？大家自己想想。不懂可以看代码或者留言。</p>
 <p>下面看下服务器的数据转发代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dealChatMsg</span><span class="params">(String msg)</span> </span>&#123;</div><div class="line">    String chatObj = <span class="keyword">null</span>;</div><div class="line">    String content = <span class="keyword">null</span>;</div><div class="line">    String avatarID = <span class="keyword">null</span>;</div><div class="line">    String msgType = <span class="keyword">null</span>;</div><div class="line">    String p = <span class="string">"\\[CHATMSG\\]:\\[(.*), (.*), (.*), (.*)\\]"</span>;</div><div class="line">    Pattern pattern = Pattern.compile(p);</div><div class="line">    Matcher matcher = pattern.matcher(msg);</div><div class="line">    <span class="keyword">if</span> (matcher.find()) &#123;</div><div class="line">        chatObj = matcher.group(<span class="number">1</span>);</div><div class="line">        content = matcher.group(<span class="number">2</span>);</div><div class="line">        avatarID = matcher.group(<span class="number">3</span>);</div><div class="line">        msgType = matcher.group(<span class="number">4</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    String out = <span class="keyword">null</span>;</div><div class="line">    String sqlGroup = <span class="string">"SELECT * FROM GROUPS WHERE groupName = '"</span> + chatObj+ <span class="string">"';"</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Statement statement = connection.createStatement();</div><div class="line">        ResultSet resultSet = statement.executeQuery(sqlGroup);</div><div class="line">        <span class="comment">// gruop chat</span></div><div class="line">        <span class="keyword">if</span> (resultSet.next()) &#123;</div><div class="line">            <span class="comment">// find all group members to send msg</span></div><div class="line">            String sql = <span class="string">"SELECT groupMemberName FROM GROUPINFO WHERE groupName = '"</span> + chatObj + <span class="string">"';"</span>;</div><div class="line">            resultSet = statement.executeQuery(sql);</div><div class="line">            <span class="keyword">while</span> (resultSet.next()) &#123;                  </div><div class="line">                <span class="comment">// if user is online , then send.</span></div><div class="line">                <span class="keyword">for</span> (SocketMsg SocketMsg : ChatManager.getChatManager().socketList) &#123;</div><div class="line">                    <span class="keyword">if</span> (SocketMsg.getUsername().equals(resultSet.getString(<span class="number">1</span>)) &amp;&amp; !SocketMsg.getUsername().equals(username)) &#123;</div><div class="line">                        out = <span class="string">"[GETCHATMSG]:["</span> + username + <span class="string">", "</span> + content + <span class="string">", "</span> + avatarID + <span class="string">", Text, "</span> + chatObj + <span class="string">"]"</span>;</div><div class="line">                        SocketMsg.getChatSocket().sendMsg(out);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        <span class="comment">// private chat</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">for</span> (SocketMsg socketManager : ChatManager.getChatManager().socketList) &#123;</div><div class="line">                <span class="keyword">if</span> (socketManager.getUsername().equals(chatObj)) &#123;</div><div class="line">                    out = <span class="string">"[GETCHATMSG]:["</span> + username + <span class="string">", "</span> + content + <span class="string">", "</span> + avatarID + <span class="string">", Text,  ]"</span>;</div><div class="line">                    socketManager.getChatSocket().sendMsg(out);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        out = <span class="string">"[ACKCHATMSG]:[1]"</span>;</div><div class="line">        sendMsg(out);</div><div class="line">    &#125; <span class="keyword">catch</span> (SQLException e) &#123;</div><div class="line">        out = <span class="string">"[ACKCHATMSG]:[0]"</span>;</div><div class="line">        sendMsg(out);</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><img src="/2017/04/14/ZZChatApp4/chatmsglog.png" alt=""></p>
@@ -533,11 +533,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -561,18 +561,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">MachineLearning</a>
               </li>
              
@@ -590,6 +578,18 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DecisionTree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -649,15 +649,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">ProbabilityTheory</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
