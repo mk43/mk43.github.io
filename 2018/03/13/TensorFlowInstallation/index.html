@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>Archives: 2017/12 | Fitzeng</title>
+  <title>TensorFlow 安装 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="hey, everyone">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fitzeng">
-<meta property="og:url" content="http://fitzeng.org/archives/2017/12/index.html">
+  <meta name="description" content="出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。">
+<meta name="keywords" content="MachineLearning,TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 安装">
+<meta property="og:url" content="http://fitzeng.org/2018/03/13/TensorFlowInstallation/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="hey, everyone">
+<meta property="og:description" content="出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。">
+<meta property="og:updated_time" content="2018-03-14T01:22:34.301Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fitzeng">
-<meta name="twitter:description" content="hey, everyone">
+<meta name="twitter:title" content="TensorFlow 安装">
+<meta name="twitter:description" content="出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -140,68 +142,396 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-TensorFlowInstallation" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/12/16/GitNote/" class="archive-article-date">
-  	<time datetime="2017-12-16T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/16/GitNote/">GitNote</a>
+    <h1 class="article-title" itemprop="name">
+      TensorFlow 安装
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/03/13/TensorFlowInstallation/" class="archive-article-date">
+  	<time datetime="2018-03-13T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。</p>
+</blockquote>
+<a id="more"></a>
+<p>注：TensorFlow 目前所支持的语言有 C、Go、Java、Python。这里将以 Python 3.X 作为示范语言。</p>
+<h2 id="1-MacOS-X"><a href="#1-MacOS-X" class="headerlink" title="1 MacOS X"></a>1 MacOS X</h2><p>在 MacOS X 上，官方介绍了四种安装方式，需要注意的是 1.2 版本之后的 TensorFlow 不再提供 GPU 支持。</p>
+<h3 id="1-1-通过虚拟环境安装"><a href="#1-1-通过虚拟环境安装" class="headerlink" title="1.1 通过虚拟环境安装"></a>1.1 通过虚拟环境安装</h3><p>这是一种官方建议的安装方式，虚拟环境是独立于主机上的其他环境，可以进行纯粹的机器学习方面知识的学习。</p>
+<ol>
+<li>开启终端。</li>
+<li><p>安装 pip 包管理工具和 Virtualenv。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo easy_install pip</div><div class="line">pip install --upgrade virtualenv</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建虚拟环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv --system-site-packages -p python3</div></pre></td></tr></table></figure>
+</li>
+<li><p>激活虚拟环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> targetDirectory</div><div class="line"><span class="built_in">source</span> ./bin/activate</div></pre></td></tr></table></figure>
+<p> 如果看到 <code>(targetDirectory)$</code> 说明激活成功。</p>
+</li>
+<li><p>确认安装的 pip 版本高于 8.1。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(targetDirectory)$ easy_install -U pip</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 依赖包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(targetDirectory)$ pip3 install --upgrade tensorflow</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果第六步安装失败可以通过 tfBinaryURL 下载安装。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.6.0-py3-none-any.whl</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>环境安装好后可以使用 <code>import tensorflow</code> 进行检测环境是否可用。使用命令 <code>deactivate</code> 退出虚拟环境，使用 <code>rm -r ~/tensorflow</code> 删除虚拟环境。</p>
+<h3 id="1-2-通过-pip-安装"><a href="#1-2-通过-pip-安装" class="headerlink" title="1.2 通过 pip 安装"></a>1.2 通过 pip 安装</h3><p>这种方式安装要求 Python 3.3+。</p>
+<ol>
+<li><p>安装初始包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo easy_install --upgrade pip</div><div class="line">sudo easy_install --upgrade six</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install tensorflow</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 相关包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.6.0-py3-none-any.whl</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里卸载环境直接使用 <code>pip3 uninstall tensorflow</code>。</p>
+<h3 id="1-3-通过-Docker-安装"><a href="#1-3-通过-Docker-安装" class="headerlink" title="1.3 通过 Docker 安装"></a>1.3 通过 Docker 安装</h3><p>使用 Docker 安装的前提是主机已经好了 Docker。</p>
+<ol>
+<li><p>启动 Docker 容器。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it -p hostPort:containerPort TensorFlowImage</div></pre></td></tr></table></figure>
+<p> 其中镜像可以使用 DockerHub 提供的 <code>gcr.io/tensorflow/tensorflow</code>。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker run -it gcr.io/tensorflow/tensorflow bash</div><div class="line">docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow</div></pre></td></tr></table></figure>
+<p> 第一种启动直接进入容器的 Bash 交互界面，第二种进行了端口映射，可以在主机的交互界面进行操作。</p>
+</li>
+</ol>
+<p>由于 Docker 本就是将环境打包共享的工具，所以只需要一条命令就可以把前辈配好的环境下载下来直接使用了。</p>
+<h3 id="1-4-通过-Anaconda-安装"><a href="#1-4-通过-Anaconda-安装" class="headerlink" title="1.4 通过 Anaconda 安装"></a>1.4 通过 Anaconda 安装</h3><p>Anaconda 是非官方支持的，但是在社区的努力下能过在 Anaconda 下使用 TensorFlow 进行机器学习。</p>
+<ol>
+<li>安装 Anaconda。<br> 官网给出了安装包，只需要下载对应操作系统的对应版本就可以。</li>
+<li><p>创建 TensorFlow 环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n tensorflow pip python=3.X</div></pre></td></tr></table></figure>
+<p> 如果 <code>conda</code> 不能使用可以自行手动配置环境变量。</p>
+</li>
+<li><p>激活 conda 环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> activate tensorflow</div><div class="line">(targetDirectory)$</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 相关包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.6.0-py3-none-any.whl</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="1-5-环境验证"><a href="#1-5-环境验证" class="headerlink" title="1.5 环境验证"></a>1.5 环境验证</h3><ol>
+<li>进入终端工具，激活虚拟环境。使用 Docker 直接运行 <code>docker run -it gcr.io/tensorflow/tensorflow bash</code>。</li>
+<li>进入 Python 交互环境。</li>
+<li><p>编写验证程序。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">import tensorflow as tf</div><div class="line">hello = tf.constant(<span class="string">'Hello, TensorFlow!'</span>)</div><div class="line">sess = tf.Session()</div><div class="line"><span class="built_in">print</span>(sess.run(hello))</div></pre></td></tr></table></figure>
+<p> 如果输出 <code>Hello, TensorFlow!</code> 则说明环境配置成功。</p>
+</li>
+</ol>
+<h2 id="2-Ubuntu"><a href="#2-Ubuntu" class="headerlink" title="2 Ubuntu"></a>2 Ubuntu</h2><p>这里官方是直接使用 Ubuntu 作为示例，对于其它 Linux 发行版都可以参考在 Ubuntu 上的安装过程。在 Ubuntu 上提供了 CPU 和 GPU 两个版本，这里统一使用 CPU 版本，下文不再重述。</p>
+<h3 id="2-1-通过虚拟环境安装"><a href="#2-1-通过虚拟环境安装" class="headerlink" title="2.1 通过虚拟环境安装"></a>2.1 通过虚拟环境安装</h3><p>这种方式和 MacOS X 差不多，只是命令有些差异。</p>
+<ol>
+<li>开启终端。</li>
+<li><p>安装 pip 包管理工具和 Virtualenv。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python3-pip python3-dev python-virtualenv</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建虚拟环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv --system-site-packages -p python3 targetDirectory</div></pre></td></tr></table></figure>
+<p> 默认 <code>targetDirectory</code> 为 <code>targetDirectory</code></p>
+</li>
+<li><p>激活虚拟环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> ~/tensorflow/bin/activate</div></pre></td></tr></table></figure>
+<p> 如果看到 <code>(tensorflow)$</code> 说明激活成功。</p>
+</li>
+<li><p>确认安装的 pip 版本高于 8.1。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(targetDirectory)$ easy_install -U pip</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 依赖包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(targetDirectory)$ pip3 install --upgrade tensorflow</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果第六步安装失败可以通过 tfBinaryURL 下载安装。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.6.0-cp34-cp34m-linux_x86_64.whl</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>环境安装好后可以使用 <code>import tensorflow</code> 进行检测环境是否可用。使用命令 <code>deactivate</code> 退出虚拟环境，使用 <code>rm -r ~/tensorflow</code> 删除虚拟环境。</p>
+<h3 id="2-2-通过-pip-安装"><a href="#2-2-通过-pip-安装" class="headerlink" title="2.2 通过 pip 安装"></a>2.2 通过 pip 安装</h3><p>这种方式安装要求 Python 3.3+。</p>
+<ol>
+<li><p>安装初始包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python3-pip python3-dev</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install tensorflow</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 相关包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.6.0-cp34-cp34m-linux_x86_64.whl</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里卸载环境直接使用 <code>pip3 uninstall tensorflow</code>。</p>
+<h3 id="2-3-通过-Docker-安装"><a href="#2-3-通过-Docker-安装" class="headerlink" title="2.3 通过 Docker 安装"></a>2.3 通过 Docker 安装</h3><p>使用 Docker 安装的前提是主机已经好了 Docker。</p>
+<ol>
+<li><p>启动 Docker 容器。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it -p hostPort:containerPort TensorFlowCPUImage</div></pre></td></tr></table></figure>
+<p> 其中镜像可以使用 DockerHub 提供的 <code>gcr.io/tensorflow/tensorflow</code>。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker run -it gcr.io/tensorflow/tensorflow bash</div><div class="line">docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里基本和 MacOS X 步骤差不多，这也是使用 Docker 的优势。</p>
+<h3 id="2-4-通过-Anaconda-安装"><a href="#2-4-通过-Anaconda-安装" class="headerlink" title="2.4 通过 Anaconda 安装"></a>2.4 通过 Anaconda 安装</h3><ol>
+<li>安装 Anaconda。<br> 下载官网给出了安装包进行安装。</li>
+<li><p>创建 TensorFlow 环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n tensorflow pip python=3.X</div></pre></td></tr></table></figure>
+<p> 如果 <code>conda</code> 不能使用可以自行手动配置环境变量。</p>
+</li>
+<li><p>激活 conda 环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> activate tensorflow</div><div class="line">(targetDirectory)$</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 相关包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.6.0-cp34-cp34m-linux_x86_64.whl</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="2-5-环境验证"><a href="#2-5-环境验证" class="headerlink" title="2.5 环境验证"></a>2.5 环境验证</h3><p>请参考 MacOS X 上的验证方式，这里不赘述。</p>
+<h2 id="3-Windows"><a href="#3-Windows" class="headerlink" title="3 Windows"></a>3 Windows</h2><p>在 Windows 上安装有以下几种方式：</p>
+<h3 id="3-1-通过-pip-安装"><a href="#3-1-通过-pip-安装" class="headerlink" title="3.1 通过 pip 安装"></a>3.1 通过 pip 安装</h3><p>这种方式安装要求 Python 3.3+。</p>
+<ol>
+<li>安装初始包。<br> TensorFlow 在 Windows 上 只支持 Python 3.5.X 64-bit 和 Python 3.6.X 64-bit。所以需要选择其一进行安装。</li>
+<li>安装 TensorFlow。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install --upgrade tensorflow</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="3-2-通过-Anaconda-安装"><a href="#3-2-通过-Anaconda-安装" class="headerlink" title="3.2 通过 Anaconda 安装"></a>3.2 通过 Anaconda 安装</h3><ol>
+<li>安装 Anaconda。<br> 下载官网给出了安装包进行安装。</li>
+<li><p>创建 TensorFlow 环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n tensorflow pip python=3.5</div></pre></td></tr></table></figure>
+<p> 如果 <code>conda</code> 不能使用可以自行手动配置环境变量。</p>
+</li>
+<li><p>激活 conda 环境。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">activate tensorflow</div><div class="line">(targetDirectory)$</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 TensorFlow 相关包。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install --ignore-installed --upgrade tensorflow</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="3-3-环境验证"><a href="#3-3-环境验证" class="headerlink" title="3.3 环境验证"></a>3.3 环境验证</h3><p>请参考 MacOS X 上的验证方式，这里不赘述。</p>
+<h2 id="4-从源码构建"><a href="#4-从源码构建" class="headerlink" title="4 从源码构建"></a>4 从源码构建</h2><p>官方提供了源码和二进制文件，并且给出了详细的步骤去编译安装，这里给出最新源码配置的参考信息：</p>
+<h3 id="4-1-Linux"><a href="#4-1-Linux" class="headerlink" title="4.1 Linux"></a>4.1 Linux</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Version</th>
+<th style="text-align:center">CPU/GPU</th>
+<th style="text-align:center">Python Version</th>
+<th style="text-align:center">Compiler</th>
+<th style="text-align:center">Build Tools</th>
+<th style="text-align:center">cuDNN</th>
+<th style="text-align:center">CUDA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">tensorflow-1.6.0</td>
+<td style="text-align:center">CPU</td>
+<td style="text-align:center">2.7, 3.3-3.6</td>
+<td style="text-align:center">GCC 4.8</td>
+<td style="text-align:center">Bazel 0.9.0</td>
+<td style="text-align:center">N/A</td>
+<td style="text-align:center">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center">tensorflow_gpu-1.6.0</td>
+<td style="text-align:center">GPU</td>
+<td style="text-align:center">2.7, 3.3-3.6</td>
+<td style="text-align:center">GCC 4.8</td>
+<td style="text-align:center">Bazel 0.9.0</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-2-Mac"><a href="#4-2-Mac" class="headerlink" title="4.2 Mac"></a>4.2 Mac</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Version</th>
+<th style="text-align:center">CPU/GPU</th>
+<th style="text-align:center">Python Version</th>
+<th style="text-align:center">Compiler</th>
+<th style="text-align:center">Build Tools</th>
+<th style="text-align:center">cuDNN</th>
+<th style="text-align:center">CUDA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">tensorflow-1.6.0</td>
+<td style="text-align:center">CPU</td>
+<td style="text-align:center">2.7, 3.3-3.6</td>
+<td style="text-align:center">Clang from xcode</td>
+<td style="text-align:center">Bazel 0.8.1</td>
+<td style="text-align:center">N/A</td>
+<td style="text-align:center">N/A</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-3-Windows"><a href="#4-3-Windows" class="headerlink" title="4.3 Windows"></a>4.3 Windows</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">Version</th>
+<th style="text-align:center">CPU/GPU</th>
+<th style="text-align:center">Python Version</th>
+<th style="text-align:center">Compiler</th>
+<th style="text-align:center">Build Tools</th>
+<th style="text-align:center">cuDNN</th>
+<th style="text-align:center">CUDA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">tensorflow-1.6.0</td>
+<td style="text-align:center">CPU</td>
+<td style="text-align:center">3.5-3.6</td>
+<td style="text-align:center">MSVC 2015 update 3</td>
+<td style="text-align:center">Cmake v3.6.3</td>
+<td style="text-align:center">N/A</td>
+<td style="text-align:center">N/A</td>
+</tr>
+<tr>
+<td style="text-align:center">tensorflow_gpu-1.6.0</td>
+<td style="text-align:center">GPU</td>
+<td style="text-align:center">3.5-3.6</td>
+<td style="text-align:center">MSVC 2015 update 3</td>
+<td style="text-align:center">Cmake v3.6.3</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">9</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">GitHub</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tool</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">TensorFlow</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/03/13/TensorFlowInstallation/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/02/25/MLTBackpropagation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用反向传播算法训练多层神经网络的原理【译】</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
   
 
-    
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'fitzeng-org'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
 
 
           </div>
@@ -224,8 +554,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
