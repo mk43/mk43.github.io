@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-19T08:59:58.165Z</updated>
+  <updated>2018-03-19T09:06:51.144Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://fitzeng.org/2018/03/19/GPTFIntroduction/"/>
     <id>http://fitzeng.org/2018/03/19/GPTFIntroduction/</id>
     <published>2018-03-19T03:27:00.000Z</published>
-    <updated>2018-03-19T08:59:58.165Z</updated>
+    <updated>2018-03-19T09:06:51.144Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
-<p>此文的行文风格参考<a href=""></a>，以主线为主，不会介绍细枝末节。</p>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="1-张量"><a href="#1-张量" class="headerlink" title="1 张量"></a>1 张量</h2>]]></content>
@@ -31,7 +31,7 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;此文的行文风格参考&lt;a href=&quot;&quot;&gt;&lt;/a&gt;，以主线为主，不会介绍细枝末节。&lt;/p&gt;
+&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
@@ -48,10 +48,10 @@
     <link href="http://fitzeng.org/2018/03/13/GPTFInstallation/"/>
     <id>http://fitzeng.org/2018/03/13/GPTFInstallation/</id>
     <published>2018-03-13T03:27:00.000Z</published>
-    <updated>2018-03-14T01:22:34.301Z</updated>
+    <updated>2018-03-19T09:07:30.023Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
-<p>出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。</p>
+<p>写在前面：出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。</p>
 </blockquote>
 <a id="more"></a>
 <p>注：TensorFlow 目前所支持的语言有 C、Go、Java、Python。这里将以 Python 3.X 作为示范语言。</p>
@@ -304,7 +304,7 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。&lt;/p&gt;
+&lt;p&gt;写在前面：出于某些目的，此文的行文风格将以主线为主，不会介绍细枝末节。此系列主要围绕 TensorFlow 官网介绍进行叙述性实践介绍。&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
