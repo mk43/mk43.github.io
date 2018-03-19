@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/03/19/GPTFIntroduction/</loc>
+    
+    <lastmod>2018-03-19T08:59:58.165Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/02/19/MLNeuralNetwork/</loc>
     
     <lastmod>2018-03-14T01:40:32.541Z</lastmod>
@@ -9,7 +16,7 @@
   </url>
   
   <url>
-    <loc>http://fitzeng.org/2018/03/13/TensorFlowInstallation/</loc>
+    <loc>http://fitzeng.org/2018/03/13/GPTFInstallation/</loc>
     
     <lastmod>2018-03-14T01:22:34.301Z</lastmod>
     
