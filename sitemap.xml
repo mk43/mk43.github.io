@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://fitzeng.org/2018/03/13/GPTFInstallation/</loc>
+    <loc>http://fitzeng.org/2018/03/20/GPTFLAPITensor/</loc>
     
-    <lastmod>2018-03-19T09:07:30.023Z</lastmod>
+    <lastmod>2018-03-20T10:11:16.853Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://fitzeng.org/2018/03/19/GPTFIntroduction/</loc>
+    <loc>http://fitzeng.org/2018/03/19/GPTFLAPIIntroduction/</loc>
     
-    <lastmod>2018-03-19T09:06:51.144Z</lastmod>
+    <lastmod>2018-03-20T08:25:50.013Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fitzeng.org/2018/03/13/GPTFInstallation/</loc>
+    
+    <lastmod>2018-03-19T09:07:30.023Z</lastmod>
     
   </url>
   

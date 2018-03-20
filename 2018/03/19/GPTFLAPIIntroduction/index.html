@@ -6,17 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>Tag: Formula | Fitzeng</title>
+  <title>TensorFlow 初级 API 之简介篇 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="hey, everyone">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fitzeng">
-<meta property="og:url" content="http://fitzeng.org/tags/Formula/index.html">
+  <meta name="description" content="写在前面：此文的行文风格参考此文，主线为主，不会过多介绍细枝末节。">
+<meta name="keywords" content="TensorFlow,MachineLearning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 初级 API 之简介篇">
+<meta property="og:url" content="http://fitzeng.org/2018/03/19/GPTFLAPIIntroduction/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="hey, everyone">
+<meta property="og:description" content="写在前面：此文的行文风格参考此文，主线为主，不会过多介绍细枝末节。">
+<meta property="og:image" content="http://fitzeng.org/2018/03/19/GPTFLAPIIntroduction/TensorBoardAddOp.png">
+<meta property="og:updated_time" content="2018-03-20T08:25:50.013Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fitzeng">
-<meta name="twitter:description" content="hey, everyone">
+<meta name="twitter:title" content="TensorFlow 初级 API 之简介篇">
+<meta name="twitter:description" content="写在前面：此文的行文风格参考此文，主线为主，不会过多介绍细枝末节。">
+<meta name="twitter:image" content="http://fitzeng.org/2018/03/19/GPTFLAPIIntroduction/TensorBoardAddOp.png">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -140,72 +144,211 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-GPTFLAPIIntroduction" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/23/LaTexFormula/" class="archive-article-date">
-  	<time datetime="2018-01-23T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/23/LaTexFormula/">MarkDown 插入数学公式实验大集合</a>
+    <h1 class="article-title" itemprop="name">
+      TensorFlow 初级 API 之简介篇
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/03/19/GPTFLAPIIntroduction/" class="archive-article-date">
+  	<time datetime="2018-03-19T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1 基本介绍"></a>1 基本介绍</h2><p>TensorFlow 初级 API 是学习了解这个框架的核心内容。通过这些基础的 API 可以自行控制数据流图和运行时内容。</p>
+<h2 id="2-准备"><a href="#2-准备" class="headerlink" title="2 准备"></a>2 准备</h2><p>在一切安装工作都就绪的情况下，直接将 TensorFlow 包导入就可以使用了，为了方便数据的处理，可以使用 numpy 作为辅助工具。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import tensorflow as tf</div><div class="line">import numpy as np</div></pre></td></tr></table></figure>
+<h2 id="2-数据模型"><a href="#2-数据模型" class="headerlink" title="2 数据模型"></a>2 数据模型</h2><p>TensorFlow 的核心数据单元就是 Tensor，可译为<code>张量</code>。可以简单理解为它是由大量数字按照某种排列组成的数组。秩是维数，形状是每一维的元素个数。为了方便可以直接使用 numpy 数组进行操作。</p>
+<h2 id="3-核心流程"><a href="#3-核心流程" class="headerlink" title="3 核心流程"></a>3 核心流程</h2><p>TensorFlow 的核心编程思想有两个步骤：</p>
+<ol>
+<li>构建图</li>
+<li>计算图</li>
+</ol>
+<h3 id="3-1-图"><a href="#3-1-图" class="headerlink" title="3.1 图"></a>3.1 图</h3><p>图是由一连串数据操作组成的。里面包含了两个基本元素：点和边。点代表操作，可以是数据输入输出，也可以是数学操作，例如四则运算等；边代表数据流向。下面给出一个小示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">x = tf.constant(1)</div><div class="line">y = tf.constant(1)</div><div class="line">sum = x + y</div><div class="line">print(&quot;x:&quot;, x, &quot;\ny:&quot;, y, &quot;\nsum:&quot;, sum)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># x: Tensor(&quot;Const:0&quot;, shape=(), dtype=int32) </div><div class="line"># y: Tensor(&quot;Const_1:0&quot;, shape=(), dtype=int32) </div><div class="line"># sum: Tensor(&quot;add:0&quot;, shape=(), dtype=int32)</div></pre></td></tr></table></figure>
+<p>从输出可以看出，在构建图的时候并不会把数据填充进去。</p>
+<h3 id="3-2-TensorBoard"><a href="#3-2-TensorBoard" class="headerlink" title="3.2 TensorBoard"></a>3.2 TensorBoard</h3><p>TensorFlow 提供了一个供机器学习者将数据可视化的工具：TensorBoard。可以通过以下示例进行可视化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">writer = tf.summary.FileWriter(&apos;./logs&apos;)</div><div class="line">writer.add_graph(tf.get_default_graph())</div></pre></td></tr></table></figure>
+<p>在 <code>./logs</code> 目录下会生成一个命名为 <code>events.out.tfevents.1521526975.zzj</code> 的文件。格式为<code>events.out.tfevents.{timestamp}.{hostname}</code>，在终端中执行命令<code>tensorboard --logdir ./logs</code>。打开 TensorBoard（默认开启的是本地 6006 端口），可以看到下图面板。</p>
+<p><img src="/2018/03/19/GPTFLAPIIntroduction/TensorBoardAddOp.png" alt=""></p>
+<h3 id="3-3-会话"><a href="#3-3-会话" class="headerlink" title="3.3 会话"></a>3.3 会话</h3><p>会话（Session）是对数据流图运行时的一个封装，如果把图理解为一个文件，那么会话就是执行这个文件。</p>
+<p>创建会话</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sess = tf.Session()</div><div class="line">print(sess.run(&#123;&apos;x, y&apos;: (x, y), &apos;sum&apos;: sum&#125;))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># &#123;&apos;x, y&apos;: (1, 1), &apos;sum&apos;: 2&#125;</div></pre></td></tr></table></figure>
+<p>会话对象通过执行 <code>run()</code> 操作来计算图中的节点的值。</p>
+<h3 id="3-3-运行时赋值"><a href="#3-3-运行时赋值" class="headerlink" title="3.3 运行时赋值"></a>3.3 运行时赋值</h3><p>前面的操作都是提前准备好数据然后构建图进行计算，TensorFlow 还提供了一种更加强的功能：运行时赋值。通过占位符的形式构建图，在运算之前不消耗大量资源，开启会话时把需要的数据填充进去，这种策略和张量不保存具体值的设计形式息息相关。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">feedx = tf.placeholder(tf.float32)</div><div class="line">feedy = tf.placeholder(tf.float32)</div><div class="line">feedsum = feedx + feedy</div><div class="line">sess = tf.Session()</div><div class="line">print(sess.run(feedsum, feed_dict=&#123;feedx: 1, feedy: 1.23&#125;))</div><div class="line">print(sess.run(feedsum, feed_dict=&#123;feedx: [1, 1], feedy: [1, 2]&#125;))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># 2.23</div><div class="line"># [2. 3.]</div></pre></td></tr></table></figure>
+<p>值得一提的是，对于这种设计，在开启会话前只检查图的合理性，也就是数据流的维数是否符合数学规范。开启会话后，如果没有给输入节点输入初始值的话会直接抛出异常。</p>
+<h3 id="4-数据集"><a href="#4-数据集" class="headerlink" title="4 数据集"></a>4 数据集</h3><p>在前面提到的填充操作不太符合用户友好的设计理念，因为每一条数据都需要用户自己去维护。但是 TensorFlow 的设计团队提供了一个数据集的类，里面有很多数据批处理的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">datasets = [</div><div class="line">    [0, 4, ],</div><div class="line">    [1, 5, ],</div><div class="line">    [2, 6, ],</div><div class="line">    [3, 7, ],</div><div class="line">]</div><div class="line">slices = tf.data.Dataset.from_tensor_slices(datasets)</div><div class="line">next_item = slices.make_one_shot_iterator().get_next()</div><div class="line">with tf.Session() as sess:</div><div class="line">    while True:</div><div class="line">        try:</div><div class="line">            print(sess.run(next_item))</div><div class="line">        except tf.errors.OutOfRangeError:</div><div class="line">            break</div><div class="line"></div><div class="line"># Output:</div><div class="line"># [0 4]</div><div class="line"># [1 5]</div><div class="line"># [2 6]</div><div class="line"># [3 7]</div></pre></td></tr></table></figure>
+<p>其核心思想就是将原始数据包装成 <code>Dataset</code>，然后通过内置的迭代器对数据进行读取。</p>
+<h2 id="5-分层"><a href="#5-分层" class="headerlink" title="5 分层"></a>5 分层</h2><p>在复杂模型计算的时候，参数控制就显得尤为重要了，规范化图是一种必要手段。TensorFlow 提供了一种分层机制，可以在某一个或者某一些计算节点对数据进行统一操作，比如修改参数，激活值等等，同时也方便对模型运行状态的检测。</p>
+<h3 id="5-1-创建一个-Dense-层"><a href="#5-1-创建一个-Dense-层" class="headerlink" title="5.1 创建一个 Dense 层"></a>5.1 创建一个 <code>Dense</code> 层</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x = tf.placeholder(tf.float32, shape=[None, 3])</div><div class="line">linear_model = tf.layers.Dense(units=1)</div><div class="line">y = linear_model(x)</div></pre></td></tr></table></figure>
+<h3 id="5-2-初始化"><a href="#5-2-初始化" class="headerlink" title="5.2 初始化"></a>5.2 初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with tf.Session() as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div></pre></td></tr></table></figure>
+<p>注意这里初始话的是全局变量。</p>
+<h3 id="5-3-执行"><a href="#5-3-执行" class="headerlink" title="5.3 执行"></a>5.3 执行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print(sess.run(y, &#123;x: [[1, 2, 3],[4, 5, 6]]&#125;))</div></pre></td></tr></table></figure>
+<h2 id="6-特征列"><a href="#6-特征列" class="headerlink" title="6 特征列"></a>6 特征列</h2><p>特征列将原本的非数字化的特征提取成数字化的特征。最典型的一种特征提取就是采用独热（one-hot）编码表示的分类。</p>
+<p>数据特征处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">features = &#123;&apos;sales&apos;: [[5], [10], [8], [10]], </div><div class="line">			&apos;department&apos;: [&apos;sports&apos;, &apos;sports&apos;, &apos;gardening&apos;, &apos;mathematics&apos;]&#125;</div><div class="line">department_column = tf.feature_column.categorical_column_with_vocabulary_list(</div><div class="line">						&apos;department&apos;, [&apos;sports&apos;, &apos;gardening&apos;, &apos;mathematics&apos;])</div><div class="line">department_column = tf.feature_column.indicator_column(department_column)</div><div class="line">columns = [tf.feature_column.numeric_column(&apos;sales&apos;), department_column]</div><div class="line">inputs = tf.feature_column.input_layer(features, columns)</div></pre></td></tr></table></figure>
+<p>初始化操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var_init = tf.global_variables_initializer()</div><div class="line">table_init = tf.tables_initializer()</div><div class="line">sess = tf.Session()</div><div class="line">sess.run((var_init, table_init))</div></pre></td></tr></table></figure>
+<p>抽象化的数字特征</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">print(sess.run(inputs))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># [[ 1.  0.  0.  5.]</div><div class="line">#  [ 1.  0.  0. 10.]</div><div class="line">#  [ 0.  1.  0.  8.]</div><div class="line">#  [ 0.  0.  1. 10.]]</div></pre></td></tr></table></figure>
+<h2 id="7-训练"><a href="#7-训练" class="headerlink" title="7 训练"></a>7 训练</h2><p>在熟悉基本操作之后，通过一个线性规划的小例子来了解机器学习的训练过程。</p>
+<h3 id="7-1-准备数据"><a href="#7-1-准备数据" class="headerlink" title="7.1 准备数据"></a>7.1 准备数据</h3><p>准备符合线性拟合条件的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">x = tf.constant([[1], [2], [3], [4]], dtype=tf.float32)</div><div class="line">y_true = tf.constant([[0], [-1], [-2], [-3]], dtype=tf.float32)</div></pre></td></tr></table></figure>
+<h3 id="7-2-定义模型"><a href="#7-2-定义模型" class="headerlink" title="7.2 定义模型"></a>7.2 定义模型</h3><p>定义一个单一输入的线性模型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">linear_model = tf.layers.Dense(units=1)</div><div class="line"></div><div class="line">y_pred = linear_model(x)</div></pre></td></tr></table></figure>
+<h3 id="7-3-损失函数"><a href="#7-3-损失函数" class="headerlink" title="7.3 损失函数"></a>7.3 损失函数</h3><p>在训练过程中，我们需要对模型进行评估，选取损失函数对模型预测至关重要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">loss = tf.losses.mean_squared_error(labels=y_true, predictions=y_pred)</div></pre></td></tr></table></figure>
+<h3 id="7-4-训练"><a href="#7-4-训练" class="headerlink" title="7.4 训练"></a>7.4 训练</h3><p>训练是一个对模型参数更新迭代的过程，为了模型评估效果最优，需要时刻观测模型参数并进行相应的调参设置。</p>
+<p>选取优化函数和步长：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">optimizer = tf.train.GradientDescentOptimizer(0.01)</div><div class="line">train = optimizer.minimize(loss)</div></pre></td></tr></table></figure>
+<p>迭代训练：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">sess = tf.Session()</div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line"></div><div class="line">for i in range(100):</div><div class="line">    _, loss_value = sess.run((train, loss))</div><div class="line">    if i % 10 is 0:</div><div class="line">        print(loss_value)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># 0.23138471</div><div class="line"># 0.14980102</div><div class="line"># 0.1393195</div><div class="line"># 0.13116479</div><div class="line"># 0.12352913</div><div class="line"># 0.11633903</div><div class="line"># 0.1095675</div><div class="line"># 0.103190124</div><div class="line"># 0.0971839</div><div class="line"># 0.09152731</div></pre></td></tr></table></figure>
+<p>损失函数值在一步一步缩小，说明我们选取的参数是比较合理的。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Math</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">TensorFlow</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">MarkDown</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Formula</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">LaTeX</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/03/19/GPTFLAPIIntroduction/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/03/20/GPTFLAPITensor/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          TensorFlow 初级 API 之 Tensor 篇
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/03/13/GPTFInstallation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TensorFlow 安装</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
   
 
-    
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'fitzeng-org'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
 
 
           </div>
@@ -228,9 +371,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",

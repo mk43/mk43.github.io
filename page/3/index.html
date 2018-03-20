@@ -142,6 +142,72 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-handler" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/11/handler/">Handler 机制再了解</a>
+    </h1>
+  
+
+        
+        <a href="/2017/09/11/handler/" class="archive-article-date">
+  	<time datetime="2017-09-11T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这里主要是先了解整个消息传递的过程，知道这样做的好处和必要性。而不是直接介绍里面的几个关键类，然后介绍这个机制，这样容易头晕。而且网络上已经有很多这样的文章了，那些作者所站的高度对于我这种初学者来说有点高，我理解起来是比较稀里糊涂的，所以这里从一个问题出发，一步一步跟踪代码，这里只是搞清楚 handler 是怎么跨线程收发消息的，具体实现细节还是参考网上的那些大神的 Blog 比较权威。<br>PS. 本来是想分章节书写，谁知道这一套军体拳打下来收不住了，所以下面基本是以一种很流畅的过程解释而不是很跳跃，细心看应该会对理解 Handler 机制有所收获。</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2017/09/11/handler/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/11/handler/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-pptAndDev" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -884,88 +950,6 @@
 
 
   
-    <article id="post-AndroidBlogCollection" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/08/AndroidBlogCollection/">Android Blog Collection</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/08/AndroidBlogCollection/" class="archive-article-date">
-  	<time datetime="2017-07-08T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>this repo aims to collect some high quality basic knowledge Android Blog.  Just like source code analysis or something.</p>
-<p>这个仓库致力于收集我在学习 Android 开发过程所遇到的高质量的基础知识文章. 类似于源码分析之类的, 可以帮大家加深对基础原理的理解.</p>
-</blockquote>
-<h2 id="0-Start"><a href="#0-Start" class="headerlink" title="0. Start"></a>0. Start</h2><h3 id="gt-前言"><a href="#gt-前言" class="headerlink" title="&gt; 前言"></a>&gt; 前言</h3><blockquote>
-<p>现在网络上有太多的知识可供学习, 但是作为一个自学者, 是好事也是坏事, 好事指不用担心没资源, 坏事是指对学习效率,理解程度和知识体系搭建都不太好.网上的文章不全是高质量的, 而且很多都是重复的碎片化知识,大家写的都差不多.所以为了自己的系统学习, 建议买书, 碰到哪个模块不懂再找大牛的 Blog 加深理解. </p>
-<p>所以可以看到我推荐的基本都是成一个小体系的系列文章, 可以帮助我们形成一个好的”学习思维树”. 而不是一大堆”散叶”. 而其他文章主要是作为自己加深理解, 对某个知识点深入学习的参考.</p>
-<p>首先可以肯定像我这种刚刚入门的在写文章的高度和视野都不如大牛. 而对于基础的知识,特别是涉及源码解析, 只要以一份资料为主就可以了. 最多加一两份做参考. 所以, 基本这种类型的文章, 我会收藏整理在这篇文章里并且永久更新. 同时自己也会利用课余时间把自己的实践项目以一个入门的学习者的视角解析, 相信这样对初学的开发者是比较友好的.如果你和我也一样处在这个阶段, 欢迎关注这篇文章.</p>
-<p>这里永久更新这类基础知识解读. <a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a> 和 <a href="http://fitzeng.org">Blog</a> 永久更新练习项目. 如果对你有帮助欢迎 Star ^_^;</p>
-</blockquote>
-<h3 id="gt-更新"><a href="#gt-更新" class="headerlink" title="&gt; 更新"></a>&gt; 更新</h3><ul>
-<li>v3 : <a href="https://github.com/mk43" target="_blank" rel="external">敬请期待…</a></li>
-<li>v2 : 添加 <code>JVM</code> <code>设计模式</code> <code>常用框架</code> <code>计算机基础</code> 四大模块优质 Blog 收集</li>
-<li>v1 : 以 Android View 基础知识为主的 Blog 收集.</li>
-</ul>
-        
-          <a class="article-more-a" href="/2017/07/08/AndroidBlogCollection/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Collection</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/08/AndroidBlogCollection/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1116,6 +1100,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
@@ -1128,7 +1116,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1148,23 +1144,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
+                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1212,11 +1196,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -142,20 +142,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-GPTFIntroduction" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GPTFLAPITensor" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/19/GPTFIntroduction/">TensorFlow 初级 API 之简介篇</a>
+      <a class="article-title" href="/2018/03/20/GPTFLAPITensor/">TensorFlow 初级 API 之 Tensor 篇</a>
     </h1>
   
 
         
-        <a href="/2018/03/19/GPTFIntroduction/" class="archive-article-date">
-  	<time datetime="2018-03-19T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-19</time>
+        <a href="/2018/03/20/GPTFLAPITensor/" class="archive-article-date">
+  	<time datetime="2018-03-20T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
 </a>
         
       </header>
@@ -166,7 +166,7 @@
 <p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
 </blockquote>
         
-          <a class="article-more-a" href="/2018/03/19/GPTFIntroduction/#more">more >></a>
+          <a class="article-more-a" href="/2018/03/20/GPTFLAPITensor/#more">more >></a>
         
       
 
@@ -194,7 +194,77 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/19/GPTFIntroduction/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/20/GPTFLAPITensor/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-GPTFLAPIIntroduction" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/19/GPTFLAPIIntroduction/">TensorFlow 初级 API 之简介篇</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/19/GPTFLAPIIntroduction/" class="archive-article-date">
+  	<time datetime="2018-03-19T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/19/GPTFLAPIIntroduction/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">TensorFlow</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/19/GPTFLAPIIntroduction/">展开全文 >></a>
         </p>
       
 
@@ -885,90 +955,6 @@
 
 
   
-    <article id="post-MatplotlibDraw" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/07/MatplotlibDraw/">Matplotlib 基本操作</a>
-    </h1>
-  
-
-        
-        <a href="/2018/02/07/MatplotlibDraw/" class="archive-article-date">
-  	<time datetime="2018-02-07T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
-<blockquote>
-<p>写在前面：这篇主要为了自己的学习，先理一下基础概念，然后记录下来，下次使用起来就方便了。学这个的主要目的是为了可视化机器学习的学习过程。网络上的资料太多了，每次写的时候去查算起来也是挺花费时间的。所以还是花点时间直接整理记录好了。这里推荐<a href="https://morvanzhou.github.io/tutorials/data-manipulation/plt/" target="_blank" rel="external">morvan：markdown + 视频</a> 和 <a href="https://matplotlib.org/tutorials/index.html" target="_blank" rel="external">官方文档</a>。当然，此文还参考了好多网上的其它文章，再此一并感谢，并且参考资料中给出链接。所有代码整理到<a href="https://github.com/mk43/python-practice/tree/master/matplotlib" target="_blank" rel="external">GitHub</a>。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2018/02/07/MatplotlibDraw/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Math</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NumPy</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Matplotlib</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/07/MatplotlibDraw/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1119,6 +1105,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
@@ -1131,7 +1121,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tips</a>
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1151,23 +1149,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
+                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">LogisticRegression</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">LinearRegression</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1215,11 +1201,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
