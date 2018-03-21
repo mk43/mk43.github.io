@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-21T03:32:08.517Z</updated>
+  <updated>2018-03-21T03:40:03.821Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/03/21/AlgoGCD/"/>
     <id>http://fitzeng.org/2018/03/21/AlgoGCD/</id>
     <published>2018-03-21T03:27:00.000Z</published>
-    <updated>2018-03-21T03:32:08.517Z</updated>
+    <updated>2018-03-21T03:40:03.821Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -33,15 +33,17 @@
 <p>首先我们给定两个数 \( a, b \) 并且约定 \( a \ge b &gt; 0\)：</p>
 <p>如果 \( a\%b = 0 \)，则 \( gcd(a, b) = b \) <br><br>如果 \( a\%b \neq 0 \)，则设 \( a = n*b + m \) <br><br>根据辗转相除法，我们可以得出 \( gcd(a, b) = gcd(b, a\%b) \)<br>疑问就在这里，等式为什么成立？我们拆分为两个子问题：</p>
 <p>Q1: \( gcd(a, b) \) 是 \( (b, a\%b) \) 的一个公约数，其中 \( a\%b = m \)。</p>
-<p>因为:<br>$$<br>a = k_1 <em> gcd(a, b) \\<br>b = k_2 </em> gcd(a, b)<br>$$</p>
-<p>所以：<br>$$<br>a\%b = m = a - n <em> b = (k_1 - n </em> k_2)gcd(a, b)<br>$$</p>
+<p>因为:</p>
+<p>$$<br>a = k_1 * gcd(a, b) \\<br>b = k_2 * gcd(a, b)<br>$$</p>
+<p>所以：</p>
+<p>$$<br>a\%b = m = a - n * b = (k_1 - n * k_2) * gcd(a, b)<br>$$</p>
 <p>由于 \( (k_1 - n * k_2) \) 是正整数，所以 \( gcd(a, b) \) 是 \( (b, a\%b) \) 的一个公约数。</p>
 <p>Q2: 如何证明 \( gcd(a, b) \) 就是 \( gcd(b, a\%b) \)，换就话说如何证明是“最大”公约数？</p>
 <p>我们来重新审视一下条件：</p>
-<p>$$<br>\begin{aligned}<br>b &amp;= k_2 <em> gcd(a, b) \\<br>a\%b = m = a - n </em> b &amp;= (k_1 - n <em> k_2) </em> gcd(a, b)<br>\end{aligned}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>b &amp;= k_2 * gcd(a, b) \\<br>a\%b = m = a - n * b &amp;= (k_1 - n * k_2) * gcd(a, b)<br>\end{aligned}<br>$$</p>
 <p>要想证明 \( gcd(a, b) \) 是 \( gcd(b, a\%b) \)，也就是说证明 \( k_2, (k_1 - n <em> k_2) \) 互质，即 \( gcd(k_2, k_1 - n </em> k_2) = 1 \)。</p>
 <p>由于 \( n \) 是正整数，不好直接证明，那么我们取特殊的当 \( n = 1 \) 时到底是否成立？即 \( gcd(k_2, k_1 - k_2) = 1 \)。如果你对数论有点了解可能立马就知道 \( gcd(num1, num2) = gcd(num1, num1 - num2) \)，又因为 \( gcd(k_1, k_2) = 1 \) 所以得证；如果你不知道也没关系，我们可以证明，毕竟我们就是来搞懂一个个细节的。</p>
-<p>因为：<br>$$<br>a = k_1 <em> gcd(a, b) \\<br>b = k_2 </em> gcd(a, b)<br>$$</p>
+<p>因为：<br>$$<br>a = k_1 * gcd(a, b) \\<br>b = k_2 * gcd(a, b)<br>$$</p>
 <p>所以：<br>$$<br>gcd(k_1, k_2) = 1<br>$$</p>
 <p>在 \( k_1, k_2 \) 互质的情况下，\( k_1 - k_2 \) 不可能含有数值为 \( k_1 \) 或 \( k_2 \) 因子。 否则 \( gcd(k_1, k_2) \neq 1 \)。</p>
 <p>所以结论 \( gcd(k_2, k_1 - k_2) = 1 \) 得证。<br>继续使用这个结论可以得出：</p>
