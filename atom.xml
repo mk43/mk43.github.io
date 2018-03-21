@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-21T03:42:16.975Z</updated>
+  <updated>2018-03-21T09:05:22.952Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,94 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TensorFlow 初级 API 之 Variable 篇</title>
+    <link href="http://fitzeng.org/2018/03/22/GPTFLAPIVariable/"/>
+    <id>http://fitzeng.org/2018/03/22/GPTFLAPIVariable/</id>
+    <published>2018-03-22T03:27:00.000Z</published>
+    <updated>2018-03-21T09:05:22.952Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+<a id="more"></a>
+<p>顾名思义，tf.Variable 对象可以通过一些操作去改变值，它是数据共享，状态持久化的最好方式。</p>
+<h2 id="1-创建变量"><a href="#1-创建变量" class="headerlink" title="1 创建变量"></a>1 创建变量</h2><p>tf.get_variable 是最好的方式，因为这种形式会强制必须给出 name 参数。这样的好处是如果为这个 name 的对象存在，那么可以重用这个对象，实现数据的统一。同时在各种检查点，导出模型时会保留这个命名。创建变量的简单实例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">my_variable = tf.get_variable(&quot;my_variable&quot;, [1, 2, 3])</div></pre></td></tr></table></figure>
+<p>这个变量默认类型是 tf.float32，默认通过函数 tf.glorot_uniform_initializer 进行随机初始化。当然也可以在创建的时候就显示指定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">my_int_variable = tf.get_variable(&quot;my_int_variable&quot;, [1, 2, 3], dtype=tf.int32,</div><div class="line">  initializer=tf.zeros_initializer)</div></pre></td></tr></table></figure>
+<p>TensorFlow 提供了很多方便的初始构造器，比如可以使用具体的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">other_variable = tf.get_variable(&quot;other_variable&quot;, dtype=tf.int32,</div><div class="line">  initializer=tf.constant([23, 42]))</div></pre></td></tr></table></figure>
+<p>这里要注意的一点是：既然给定了初始 tf.Tensor 对象，就没必要手动指定 shape 参数了，TensorFlow 会自行使用该对象的 shape 进行初始化。</p>
+<h3 id="1-1-变量集合"><a href="#1-1-变量集合" class="headerlink" title="1.1 变量集合"></a>1.1 变量集合</h3><p>有时候，局部程序可能会创建一个变量，这时就需要提供一个能够访问到全局变量的功能。TensorFlow 提供了集合进行处理，默认可以在以下两个集合中获取：</p>
+<p>tf.GraphKeys.GLOBAL_VARIABLES # 跨设备共享<br>tf.GraphKeys.TRAINABLE_VARIABLES # 只计算梯度的变量</p>
+<p>如果变量不想用于训练，可以使用 tf.GraphKeys.LOCAL_VARIABLES 集合：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">my_local = tf.get_variable(&quot;my_local&quot;, shape=(), collections=[tf.GraphKeys.LOCAL_VARIABLES])</div></pre></td></tr></table></figure>
+<p>或者指定 trainable=False ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">my_non_trainable = tf.get_variable(&quot;my_non_trainable&quot;, shape=(), trainable=False)</div></pre></td></tr></table></figure>
+<p>此外，也可以自定义集合，任何确定的字符串都可以作为集合名，而且没必要显示创建。创建变量后直接通过调用 tf.add_to_collection 添加变量即可。下例给出了将一个 my_local 对象放进名为 my_collection_name 的集合中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.add_to_collection(&quot;my_collection_name&quot;, my_local)</div></pre></td></tr></table></figure>
+<p>取回变量可以参考下例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.get_collection(&quot;my_collection_name&quot;)</div></pre></td></tr></table></figure>
+<h3 id="1-2-设备选择"><a href="#1-2-设备选择" class="headerlink" title="1.2 设备选择"></a>1.2 设备选择</h3><p>就像其它的 TensorFlow 操作，变量同样可以放置在某个特定设备上。下例创建了一个放置在 GPU 上的变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with tf.device(&quot;/device:GPU:1&quot;):</div><div class="line">	var = tf.get_variable(&quot;var&quot;, [1])</div></pre></td></tr></table></figure>
+<p>对于变量来说，选择一个合适的设备显得尤为重要。如果把变量放在 workers 上而不是参数服务上，会严重减慢训练速度。更坏的情况是，每个 worker 都只独立处理自己的变量参数拷贝。为了避免以上问题，tf.train.replica_device_setter 会自动将变量放置在参数服务器上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cluster = &#123;</div><div class="line">    &quot;ps&quot;: [&quot;ps0:2222&quot;, &quot;ps1:2222&quot;],</div><div class="line">    &quot;worker&quot;: [&quot;worker0:2222&quot;, &quot;worker1:2222&quot;, &quot;worker2:2222&quot;]&#125;</div><div class="line">with tf.device(tf.train.replica_device_setter(cluster=cluster)):</div><div class="line">    var = tf.get_variable(&quot;var&quot;, shape=[20, 20])</div></pre></td></tr></table></figure>
+<h2 id="2-初始化变量"><a href="#2-初始化变量" class="headerlink" title="2 初始化变量"></a>2 初始化变量</h2><p>在变量使用之前，需要进行初始化。如果使用初级 API（即自己创建图和会话）必须显示地进行初始化，而高级 API 往往已经将初始化内置了。可以使用 tf.global_variables_initializer() 返回一个 tf.GraphKeys.GLOBAL_VARIABLES 集合：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.run(tf.global_variables_initializer())</div></pre></td></tr></table></figure>
+<p>手动初始化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.run(my_variable.initializer)</div></pre></td></tr></table></figure>
+<p>查找未被初始化的变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print(session.run(tf.report_uninitialized_variables()))</div></pre></td></tr></table></figure>
+<p>注意：tf.global_variables_initializer 默认不指定初始化顺序。如果初始化的变量之间有相互依赖关系，最好使用 variable.initialized_value() 代替那个依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">x = tf.get_variable(&quot;x&quot;, shape=(), initializer=tf.zeros_initializer())</div><div class="line">y = tf.get_variable(&quot;y&quot;, initializer=x.initialized_value() + 1)</div></pre></td></tr></table></figure>
+<h2 id="3-使用变量"><a href="#3-使用变量" class="headerlink" title="3 使用变量"></a>3 使用变量</h2><p>使用变量和其它张量类似：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">x = tf.get_variable(&quot;v&quot;, shape=(), initializer=tf.zeros_initializer())</div><div class="line">y = x + 1</div></pre></td></tr></table></figure>
+<p>给变量赋值可以使用 assign，assign_add：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">x = tf.get_variable(&quot;x&quot;, shape=(), initializer=tf.zeros_initializer())</div><div class="line">assignment = x.assign_add(1)</div><div class="line">with tf.Session() as sess:</div><div class="line">    tf.global_variables_initializer().run()</div><div class="line">    for i in range(5):</div><div class="line">        print(sess.run(assignment))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># 1.0</div><div class="line"># 2.0</div><div class="line"># 3.0</div><div class="line"># 4.0</div><div class="line"># 5.0</div></pre></td></tr></table></figure>
+<p>大多数的优化器都有着有效的类似于梯度下降算法的数值更新手段，详情可以参考 tf.train.Optimizer 类。</p>
+<p>由于变量的可变性，要获取某一时间点的值可以使用 tf.Variable.read_value ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">x = tf.get_variable(&quot;x&quot;, shape=(), initializer=tf.zeros_initializer())</div><div class="line">assignment = x.assign_add(1)</div><div class="line">with tf.control_dependencies([assignment]):</div><div class="line">    y = x.read_value()</div><div class="line">    with tf.Session() as sess:</div><div class="line">        tf.global_variables_initializer().run()</div><div class="line">        for i in range(5):</div><div class="line">            print(&quot;x = &quot;, sess.run(x), &quot;y = &quot;, sess.run(y))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># x =  1.0 y =  2.0</div><div class="line"># x =  2.0 y =  3.0</div><div class="line"># x =  3.0 y =  4.0</div><div class="line"># x =  4.0 y =  5.0</div><div class="line"># x =  5.0 y =  6.0</div></pre></td></tr></table></figure>
+<h2 id="4-共享变量"><a href="#4-共享变量" class="headerlink" title="4 共享变量"></a>4 共享变量</h2><p>TensorFlow 提供了两种方法去共享变量：</p>
+<ul>
+<li>显示传递对象</li>
+<li>使用 tf.variable_scope 隐示包装对象</li>
+</ul>
+<p>尽管显示的传递对象代码更加清晰，但是对于编写函数使用隐示的更加方便。tf.layer，tf.metrics 和一些其它工具类下的函数大多使用这种方式实现。</p>
+<p>变量作用域在使用隐示创建和使用变量时允许重用，同时也支持分层易懂的命名方式。</p>
+<p>下面通过创建一个 convolutional / relu 层来说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def conv_relu(input, kernel_shape, bias_shape):</div><div class="line">    weights = tf.get_variable(&quot;weights&quot;, kernel_shape, initializer=tf.random_normal_initializer())</div><div class="line">    biases = tf.get_variable(&quot;biases&quot;, bias_shape, initializer=tf.constant_initializer(0.0))</div><div class="line">    conv = tf.nn.conv2d(input, weights, strides=[1, 1, 1, 1], padding=&apos;SAME&apos;)</div><div class="line">    return tf.nn.relu(conv + biases)</div></pre></td></tr></table></figure>
+<p>这个函数使用 weights 和 biases 作为名字，定义很清晰，但是在实际模型中，往往会创建很多个卷积层，重复调用的话是无效的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">input1 = tf.random_normal([1,10,10,32])</div><div class="line">input2 = tf.random_normal([1,20,20,32])</div><div class="line">x = conv_relu(input1, kernel_shape=[5, 5, 32, 32], bias_shape=[32])</div><div class="line">x = conv_relu(x, kernel_shape=[5, 5, 32, 32], bias_shape = [32])  # 失败</div></pre></td></tr></table></figure>
+<p>由于前面重用时定义不清晰，这是通过变量作用域可以解决：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def my_image_filter(input_images):</div><div class="line">    with tf.variable_scope(&quot;conv1&quot;):</div><div class="line">        relu1 = conv_relu(input_images, [5, 5, 32, 32], [32])</div><div class="line">    with tf.variable_scope(&quot;conv2&quot;):</div><div class="line">        return conv_relu(relu1, [5, 5, 32, 32], [32])</div></pre></td></tr></table></figure>
+<p>如果真的想变量共享，可以创建相同命名的作用于，并且标识 reuse=True ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with tf.variable_scope(&quot;model&quot;):</div><div class="line">    output1 = my_image_filter(input1)</div><div class="line">with tf.variable_scope(&quot;model&quot;, reuse=True):</div><div class="line">    output2 = my_image_filter(input2)</div></pre></td></tr></table></figure>
+<p>也可以使用 scope.reuse_variables() 来开启重用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with tf.variable_scope(&quot;model&quot;) as scope:</div><div class="line">    output1 = my_image_filter(input1)</div><div class="line">    scope.reuse_variables()</div><div class="line">    output2 = my_image_filter(input2)</div></pre></td></tr></table></figure>
+<p>看起来使用一个确切的字符串命名作用于有点危险，也可以用基于另一个变量作用于的方式处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with tf.variable_scope(&quot;model&quot;) as scope:</div><div class="line">    output1 = my_image_filter(input1)</div><div class="line">with tf.variable_scope(scope, reuse=True):</div><div class="line">    output2 = my_image_filter(input2)</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+  </entry>
   
   <entry>
     <title>辗转相除法证明了解一下</title>
@@ -2217,6 +2305,49 @@
   </entry>
   
   <entry>
+    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
+    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
+    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
+    <published>2017-11-04T03:27:00.000Z</published>
+    <updated>2017-11-04T15:12:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
+<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
+<li>fixit.py</li>
+<li>fix.sh</li>
+<li>txt</li>
+</ul>
+<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
+<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
+<p>下面写 <code>fixit.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
+<p>最后执行 <code>./fix.sh</code>。</p>
+<p>然后就是等待执行结束了。</p>
+<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
+    
+      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
+    
+  </entry>
+  
+  <entry>
     <title>一个小白使用 devstack 部署 openstack 的心路历程</title>
     <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
     <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
@@ -2283,111 +2414,6 @@
       <category term="devstack" scheme="http://fitzeng.org/tags/devstack/"/>
     
       <category term="openstack" scheme="http://fitzeng.org/tags/openstack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
-    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
-    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T15:12:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
-<li>fixit.py</li>
-<li>fix.sh</li>
-<li>txt</li>
-</ul>
-<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
-<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
-<p>下面写 <code>fixit.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
-<p>最后执行 <code>./fix.sh</code>。</p>
-<p>然后就是等待执行结束了。</p>
-<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
-    
-      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Restart</title>
-    <link href="http://fitzeng.org/2017/09/22/restart/"/>
-    <id>http://fitzeng.org/2017/09/22/restart/</id>
-    <published>2017-09-22T03:27:00.000Z</published>
-    <updated>2017-09-23T14:55:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><blockquote>
-<p>我的求职生活是从今年的 04-16 找实习开始到 09-22 拿到优招(秋招) Offer结束，中间共经历过了三家公司面试，面试经验不足，而且最近的面试已距现在两个多月了，细节记不清了，所以这不太算是面经，只是我个人对我自己找工作这小半年的总结以及我对找工作这件事的认识。首先说明我不是大神，只能从平静叙述整个找工作的过程，希望你能从中体会到一点什么就很满意了，在此先祝大家找工作顺利！</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-面试过程"><a href="#1-面试过程" class="headerlink" title="1. 面试过程"></a>1. 面试过程</h2><blockquote>
-<p>自己要介绍自己在三家公司的面试过程，不涉及面试题目什么的，纯属叙述整个心理过程。不过后面我会补充一些资料和我参考的一些其他面试者的面经。</p>
-</blockquote>
-<p>下面我根据邮件理一下时间线：</p>
-<h4 id="第一家公司（腾讯）实习-跪"><a href="#第一家公司（腾讯）实习-跪" class="headerlink" title="第一家公司（腾讯）实习-跪"></a>第一家公司（腾讯）实习-跪</h4><p><code>一面：04-16</code><br>大概记忆就是啥都问，读过我以前文章的都知道，我以前是写 Android 的，但是他问了 Linux，C/C++，操作系统，JVM，设计模式，算法，Andriod，还有一些小智力测试题。目前我只能记清这些知识点，这个过程是一开始问了十多分钟项目，再问问 Android 基础(答得很烂)，再问 JVM(也很烂😭)，接着就给我一张纸上面两道题手写代码，面试官就喝水去了，然后我没意识到有两面题，只做了第一面的两道告诉面试官我做好了，他过来了，我跟他讲解代码（因为字迹实在难看清😂），在他的引导下慢慢把第二题进行优化。接着就是问问计算机基础的一些知识。面了有将近一个小时，这是我第一次面试，流了一身的汗。<br>我对面试结果是很不乐观的，因为我是在 04-1X 才知道这是已经接近实习招聘尾声。基本上大多数公司的内推什么的都弄完了，而我也是后知后觉，04-14 晚上做简历，因为听说腾讯 04-15 截止投递实习简历，到 04-15 早上，我做完简历就投了。可能是里面有一些学长学姐吧，当天下午就收到内推通知并告知完善简历，接着晚上就收到通知明天去面试。整个感觉很惊喜，但是其实后来跪了之后想想其实是自己没有做好准备，根本不知道准备实习人家从三月份就开始找了，所以有信息来源很重要。本来以为一面要挂的结果第二天晚上就通知过了并且过一天第二面。</p>
-<p><code>二面：04-18</code><br>这一面很崩，后来才知道可能是压力面。说实话，第一面能过之后我已经放松了很多。二面内容和 Android 一毛钱关系都没有。同样一开始聊聊项目，然后桌子上有一堆大概十厘米厚的 A4 纸，拿一张，口述一道题然后写代码，这里提醒下大家如果遇到这种情况，最好在动笔前问清楚问题条件，比如我一动笔写了一点然后问他字符串是以什么形式存储的，然后他回答了 char *，接着给我感觉有点不太舒服，气氛很严肃，但是我又问了一个问题：是写伪代码还是？结果崩了，他立马说，都这时候了还写什么伪代码！好，我默默的划掉，又写了一段代码，由于混在一起，我就把代码又抄了一遍，但是有些语句一开始抄漏所以出现了两句代码在一行的情况。。。他看了边叹气边说：“这些的什么，乱七八糟的，缩进XXXXXXXXX”，然后我弱弱地说要不我再抄一遍把格式调调？结果他说还调什么调，浪费我时间！😂😂😂😂😂😂把我吓坏了，然后弱弱的给他讲解了代码，由于代码写的还不错，这里他没揪我的小辫子。然后他又说给你来一道博弈题？？？我黑人问号，我面的是 Android 吗？口述完题目后，他看到了我有点高兴，问我是不是看过类似的题目？我诚实的回答是。结果他说给你出道简单一点的题？？？？？念完题目之后我一脸懵逼，结果最后我对题目的看法和面试官不符，然后挂了。总结就是：抱歉，我不会演戏。。。当时想如果我稍微冷静一点，把博弈题拿下应该这面能过吧，但是没有如果。。。</p>
-<h4 id="第二家公司（华为）1-实习-跪"><a href="#第二家公司（华为）1-实习-跪" class="headerlink" title="第二家公司（华为）1. 实习-跪"></a>第二家公司（华为）1. 实习-跪</h4><p><code>技术面：05-13</code><br>由于面试官不是做 Android，给我感觉连 Java 相关都不是，所以全程在聊天，什么你家在哪里？为什么不读研？你能接受加班吗？之类的。。。。大概二十多分钟，结束得很轻松。</p>
-<p><code>综合面：05-13</code><br>由于技术面没问技术，所以这面大概就是和前面问的问题差多，时间也是差不多，感觉很水。。。</p>
-<p>补充：前面都是同一天面完，感觉很诡异，不太像面试。。。回到学校后，过几天面试状态就是录用排序中。算是面试过了，然后一两周过后有同班的同学收到实习 offer，而我没消息。直到听说实习 offer 都发完了我才知道我挂了。所以说华为的面试通过和 offer 还有一段资源池的距离。后来一个学长 hr 来到学校找同学谈话，这时我被告知技术面给了个 B+。。。这个对我后面影响挺大的，然后综合面是 OK 的。所以面试时算过，本来也可以给 offer 但是没有岗位，只招一个 Android 实习的 🙂。但是这时候我还可以用这个安慰自己，不是你差，是市场需求，这是没办法的事。后续的是就是学长跟我谈了谈人生规划啊，然后推荐我参加优招。后面就是优招的故事了；</p>
-<h4 id="第三家公司（阿里）实习-跪"><a href="#第三家公司（阿里）实习-跪" class="headerlink" title="第三家公司（阿里）实习-跪"></a>第三家公司（阿里）实习-跪</h4><p><code>一面：05-20</code><br>阿里是在线面试，给我的感觉是面过最难的，问得我无从回答，因为我基本没有项目经验，什么说说你在开发中碰到印象最深刻的问题是什么？遇到网上怎么也查不到答案的问题怎么办？还有你对 RN（当时只知道有个 RN 开发，并不清楚是什么） 开发怎么看？反正我答不上来，所以直接毙了。后面他问我有什么问题问他，我问他他对我面试感觉怎么样？他说我基础不行，然后我又问了要怎么学习？他说 Java 要学好，反射注解什么的。总之就是基础要扎实。。。</p>
-<h4 id="第二家公司（华为）2-优招-过"><a href="#第二家公司（华为）2-优招-过" class="headerlink" title="第二家公司（华为）2. 优招-过"></a>第二家公司（华为）2. 优招-过</h4><p><code>补技术面：07-14</code><br>由于前面的实习面试给了个 B+，所以这次要补一个技术面。面试官也不是做 Android 的，不过是和 Java 相关的，所以基本就是问我 Java 了。也是开始聊聊项目和生活，然后问问 Java 内存泄漏，GC，接着考考算法，一道迷宫的题目，说下用深度优先和广度优先遍历的实现思想，进而问如果要找出一条最少步骤的路走出迷宫怎么办？基本都答上来了，最后他说我问你一个 Java 问题，我以为会很难。结果他说被 final 关键字修饰的类会怎么样？我迟疑了一下，说了答案。。。然后面试就结束了。给我的感觉应该是能过的。</p>
-<p><code>BOSS 面：07-14</code><br>等了好久，最后排队排不上上午的了，然后发了餐券去吃了个饭回来面试。面试过程和实习面试时差不多，但是那个面试官的级别感觉挺高的，白头发特别多，估计 50+ 吧，最后加了个群，面试结束了。感觉没什么感觉，当时面试的研究生特别多，所以我感觉可能要 GG。</p>
-<p>等了两个多月后，等到 09-21 发来的签约短信，09-22 以白菜价签了三方。是自己满意的城市加上整个暑假都在学校，09 月份投了十多家公司和做了 7-8份笔试题，心太累实在是不想等了。。。签的过程中有个更改城市的小插曲，hr 很好，忙到晚上 7 点多才结束，在这表示感谢。还有一个小插曲是当天有一个腾讯的面试，这是我的收到的第一个秋招面试，由于签了华为的三方，所以也没有去面了，准确说，其实我没有秋招，除了投了十几分简历和做了几次笔试。</p>
-<h2 id="2-面试准备"><a href="#2-面试准备" class="headerlink" title="2. 面试准备"></a>2. 面试准备</h2><blockquote>
-<p>这里主要叙述我的暑假和九月上旬这个面试准备过程和自己对面是准备的看法。</p>
-</blockquote>
-<p>说实话，没有实习 offer 对我算是有点打击的。所以我就打算暑假不回家好好复习基础知识，我觉得对于一个本科生来说，基础扎实才是你的优势，对于这里可能每个人看法不一，对于每个方向可能有差距吧，这里我只是平静地表达我的观点。</p>
-<p>所以我基本放下 Android 了，只是挑热点面试问题过过。说下我做过的努力：</p>
-<p>1.<a href="https://juejin.im/post/598454dcf265da3e26095dca" target="_blank" rel="external">重拾数据结构</a><br>2.<a href="https://juejin.im/post/59a7b8c9f265da24777a07da" target="_blank" rel="external">重拾操作系统</a><br>3.<a href="https://juejin.im/post/59ad4cd56fb9a02477075780" target="_blank" rel="external">重读 JVM</a><br>4.<a href="http://fitzeng.org/2017/07/08/AndroidBlogCollection/">Android Blog Collection</a><br>5.<a href="http://fitzeng.org/2017/09/11/handler/">Handler 机制再了解</a></p>
-<p>以上是以 Blog 形式进行了总结的，还有部分书籍没有总结的。</p>
-<p><img src="/2017/09/22/restart/books.png" alt=""></p>
-<p>里面的看了有 30% 吧，都是采取不重要的粗读重要的精读模式。电子版下载 <a href="http://pan.baidu.com/s/1o7LcZCe" target="_blank" rel="external">链接 : http://pan.baidu.com/s/1o7LcZCe</a> 密码 : 0p0c 。希望大家有条件去支持纸质书吧，我对知识创造者还是很尊重的，因为自己发现写 Blog 每个礼拜一篇都写不来，但是对于部分学习计算机的人来说，书确实有点多，也要花很多钱，所以取舍之下就是有条件的现在支持原作者，没条件的以后有条件了再支持。好像偏题了。。。</p>
-<p>期间看过 Android 开发艺术探索，Android 群英传，Android 进阶之光。之前还看过 编程之美，编程珠玑，编程之法，都没有自己敲代码实现，所以处于有思路但不能写代码实现的状态。然后就是一些专业课课本了。对于读书这件事我觉得没有必要为一个知识点死磕，我一般就是往后翻，基本两天跳着‘看’完一本书。时间固定的情况下宁愿跳着多看几遍，也不追求一遍仔细看完。因为你面临的结果就是记不住，没有重点的重复刺激下知识网络建立不起来。往往阅读到后面，前面的疑问就会迎刃而解。</p>
-<p>然后说说岗位吧，以后我可能就不会再写和 Android 相关的文章了，签的工作是云计算所以打算学学 Python 和 OpenStack 之类的，从新开始接触一个新的领域。所以如果你不是对一个岗位持有非做不可的态度，其实我觉得那就不要太在意那些花哨的东西，注重基础的积累。比如之前面试有问我学过什么框架吗？我说没学过，然后这个话题就跳过了。当然学过加分，没学过我觉得不减分吧，毕竟应届生。但是一个 Java 基础的语言特性答不上来那就有点说不过去了。而且框架的精髓在读源码之后转化为自己的理解从而应用在自己代码中，而不是会使用框架，这种价值不大。如果你是大神，基础扎实，那这些就是你的进阶，你的加分项，本质不一样。就像试卷的必答题答完了肯定是去答选做题，但是有些人连必答题都没做完就跟着别人翻卷子是不是有点。。。总之就是注重语言本身，而不是语言衍生品。</p>
-<p>接着说说面经，这是很好的东西，但是也是很不好的东西，看你的认知。有人对面经的态度是题库，觉得看完记着我面试就能过了，同一个问题，不同的人说相同的答案面试官也能知道哪个厉害哪个水。大家可以试试对一个自己不理解的技术问题尝试解释会怎样？你一迟疑，面试官就会反问你，最后只有一个字崩！而且那些面经提供的答案往往是符合作者的思考思路，不一定对你适用。所以我对面经的态度是类似于考纲，至于考纲和题库的区别留给读者思考吧。</p>
-<p>然后我面试准备过程中参考的好的‘考纲’</p>
-<ol>
-<li><a href="http://www.jianshu.com/p/f661953ba032" target="_blank" rel="external">[干货，阅后进BAT不是梦] 面试心得与总结—BAT、网易、蘑菇街</a></li>
-<li>自己动手丰衣足食，前面一篇是我认为的好面经，可以作为查找参考。</li>
-</ol>
-<h2 id="3-最后"><a href="#3-最后" class="headerlink" title="3. 最后"></a>3. 最后</h2><p>如果你觉得对你有帮助就点下赞吧，让更多的人看到，希望能帮到更多的人。这是我第一篇求赞的文章，因为确实想和大家分享我的想法。谢谢。</p>
-<p>再如果你有相同或者不同的意见，欢迎评论区留言大家互相讨论呀~</p>
-<p>然后国际惯例：<a href="http://fitzeng.org/">GitHub </a> &amp;&amp; <a href="https://github.com/mk43" target="_blank" rel="external"> Blog</a> 欢迎来观光 ^_^</p>
-<p>多谢阅读！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0. 前言&quot;&gt;&lt;/a&gt;0. 前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;我的求职生活是从今年的 04-16 找实习开始到 09-22 拿到优招(秋招) Offer结束，中间共经历过了三家公司面试，面试经验不足，而且最近的面试已距现在两个多月了，细节记不清了，所以这不太算是面经，只是我个人对我自己找工作这小半年的总结以及我对找工作这件事的认识。首先说明我不是大神，只能从平静叙述整个找工作的过程，希望你能从中体会到一点什么就很满意了，在此先祝大家找工作顺利！&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="Life" scheme="http://fitzeng.org/tags/Life/"/>
-    
-      <category term="Job" scheme="http://fitzeng.org/tags/Job/"/>
     
   </entry>
   
