@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/03/22/GPTFLAPIGraph/</loc>
+    
+    <lastmod>2018-03-22T03:18:19.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fitzeng.org/2018/03/21/GPTFLAPISession/</loc>
+    
+    <lastmod>2018-03-21T09:08:02.754Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/03/22/GPTFLAPIVariable/</loc>
     
-    <lastmod>2018-03-21T09:05:22.952Z</lastmod>
+    <lastmod>2018-03-21T09:05:55.259Z</lastmod>
     
   </url>
   

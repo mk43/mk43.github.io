@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-21T09:05:22.952Z</updated>
+  <updated>2018-03-21T09:05:55.259Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/03/22/GPTFLAPIVariable/"/>
     <id>http://fitzeng.org/2018/03/22/GPTFLAPIVariable/</id>
     <published>2018-03-22T03:27:00.000Z</published>
-    <updated>2018-03-21T09:05:22.952Z</updated>
+    <updated>2018-03-21T09:05:55.259Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -100,6 +100,73 @@
       <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
     
       <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TensorFlow 初级 API 之 Variable 篇</title>
+    <link href="http://fitzeng.org/2018/03/22/GPTFLAPIGraph/"/>
+    <id>http://fitzeng.org/2018/03/22/GPTFLAPIGraph/</id>
+    <published>2018-03-22T03:27:00.000Z</published>
+    <updated>2018-03-22T03:18:19.597Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+<a id="more"></a>
+<p>TensorFlow 使用数据流图进行计算，在使用初级 API 进行编程的时候，需要自己手动构建图。 </p>
+<h2 id="1-为什么要使用数据流图？"><a href="#1-为什么要使用数据流图？" class="headerlink" title="1 为什么要使用数据流图？"></a>1 为什么要使用数据流图？</h2><p><img src="/2018/03/22/GPTFLAPIGraph/tensors_flowing.gif" alt=""></p>
+<p>数据流图是常用的并行计算模型，节点代表计算单元，边代表数据流。在 TensorFlow 中使用数据流的优点有并行性好，可以实现分布式，可以使用汇编加速，可移植性好。</p>
+<h2 id="2-什么是-tf-Graph？"><a href="#2-什么是-tf-Graph？" class="headerlink" title="2 什么是 tf.Graph？"></a>2 什么是 tf.Graph？</h2><p>tf.Graph 包含两个重要信息：</p>
+<ul>
+<li>图结构：通过一些操作节点和边组成，构建整个计算流程。</li>
+<li>图集合：TensorFlow 提供的一种图的元数据集合，用于管理图对象，设计思想和 tf.Variable 类似。</li>
+</ul>
+<h2 id="3-构建图"><a href="#3-构建图" class="headerlink" title="3 构建图"></a>3 构建图</h2><p>TensorFlow 提供了一个默认图，所以直接在默认图上通过节点（tf.Operation）和边（tf.Tensor）构建而不显示指定是可行的。另外通过工具提供的 API 创建新图也是可行的，下面给出示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">g1 = tf.Graph()</div><div class="line">with g1.as_default():</div><div class="line">    var = tf.get_variable(&quot;var&quot;, initializer=tf.zeros(shape=[2, 2]))</div><div class="line"></div><div class="line">g2 = tf.Graph()</div><div class="line">with g2.as_default():</div><div class="line">    var = tf.get_variable(&quot;var&quot;, initializer=tf.ones(shape=[1, 2]))</div><div class="line"></div><div class="line">with tf.Session(graph=g1) as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    with tf.variable_scope(&quot;&quot;, reuse=True):</div><div class="line">        print(sess.run(tf.get_variable(&quot;var&quot;)))</div><div class="line"></div><div class="line">with tf.Session(graph=g2) as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    with tf.variable_scope(&quot;&quot;, reuse=True):</div><div class="line">        print(sess.run(tf.get_variable(&quot;var&quot;)))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># [[0. 0.]</div><div class="line">#  [0. 0.]]</div><div class="line"># [[1. 1.]]</div></pre></td></tr></table></figure>
+<h2 id="4-给操作命名"><a href="#4-给操作命名" class="headerlink" title="4 给操作命名"></a>4 给操作命名</h2><p>有前面示例中两个相同变量可以猜测，图可以作为一个命名空间，不同图之间的数据可以不受干扰。TensorFlow 提供了两种命名操作供使用：</p>
+<p>其一是在创建操作节点返回张量时，如果给定可选参数 name 为 my_name 的话，返回张量将命名为 my_name:0，如果在前面已经创建了命名为该 name 的节点，则节点命名将依次为 my_name_1:0，my_name_2:0 ……</p>
+<p>第二种方式是直接使用 tf.name_scope 函数创建命名空间。并且每一级之间使用 “/” 隔开，命名冲突同样通过追加 “_1”，“_2” …… 解决。下面看一个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">c_0 = tf.constant(0, name=&quot;c&quot;)</div><div class="line">c_1 = tf.constant(1, name=&quot;c&quot;)</div><div class="line">with tf.name_scope(&quot;outer&quot;):</div><div class="line">    c_2 = tf.constant(2, name=&quot;c&quot;)</div><div class="line">    with tf.name_scope(&quot;inner&quot;):</div><div class="line">        c_3 = tf.constant(3, name=&quot;c&quot;)</div><div class="line">    c_4 = tf.constant(4, name=&quot;c&quot;)</div><div class="line">    with tf.name_scope(&quot;inner&quot;):</div><div class="line">        c_5 = tf.constant(5, name=&quot;c&quot;)</div><div class="line"></div><div class="line">print(c_0)</div><div class="line">print(c_1)</div><div class="line">print(c_2)</div><div class="line">print(c_3)</div><div class="line">print(c_4)</div><div class="line">print(c_5)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># Tensor(&quot;c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;c_1:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/inner/c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/c_1:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/inner_1/c:0&quot;, shape=(), dtype=int32)</div></pre></td></tr></table></figure>
+<h2 id="5-在不同的设备上进行操作"><a href="#5-在不同的设备上进行操作" class="headerlink" title="5 在不同的设备上进行操作"></a>5 在不同的设备上进行操作</h2><p>TensorFlow 提供了一种描述方式，使得在多设备上运行程序成为可能。可以使用以下命令来指定某个特定设备：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/job:&lt;JOB_NAME&gt;/task:&lt;TASK_INDEX&gt;/device:&lt;DEVICE_TYPE&gt;:&lt;DEVICE_INDEX&gt;</div></pre></td></tr></table></figure>
+<p>注意上面的参数有些是可选的，如果只是在单机上混用 CPU 和 GPU，可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">weights = tf.random_normal(...)</div><div class="line">with tf.device(&quot;/device:CPU:0&quot;):</div><div class="line">    img = tf.decode_jpeg(tf.read_file(&quot;img.jpg&quot;))</div><div class="line">with tf.device(&quot;/device:GPU:0&quot;):</div><div class="line">    result = tf.matmul(weights, img)</div></pre></td></tr></table></figure>
+<p>如果是进行程序部署的话要指定任务名字和 ID：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">with tf.device(&quot;/job:ps/task:0&quot;):</div><div class="line">    weights_1 = tf.Variable(tf.truncated_normal([784, 100]))</div><div class="line">    biases_1 = tf.Variable(tf.zeroes([100]))</div><div class="line">with tf.device(&quot;/job:ps/task:1&quot;):</div><div class="line">    weights_2 = tf.Variable(tf.truncated_normal([100, 10]))</div><div class="line">    biases_2 = tf.Variable(tf.zeroes([10]))</div><div class="line">with tf.device(&quot;/job:worker&quot;):</div><div class="line">    layer_1 = tf.matmul(train_batch, weights_1) + biases_1</div><div class="line">    layer_2 = tf.matmul(train_batch, weights_2) + biases_2</div></pre></td></tr></table></figure>
+<h2 id="6-类张量对象"><a href="#6-类张量对象" class="headerlink" title="6 类张量对象"></a>6 类张量对象</h2><p>许多 TensorFlow 操作都使用一个或者更多张量作为参数。为了方便引入类张量对象来代替张量。常见的有 tf.Tensor，tf.Variable，numpy.ndarray，list，Scalar Python types（bool, float, int, str），另外，也可以通过 tf.register_tensor_conversion_function 自行注册类张量类型。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://fitzeng.org/2018/03/21/GPTFLAPISession/"/>
+    <id>http://fitzeng.org/2018/03/21/GPTFLAPISession/</id>
+    <published>2018-03-21T09:08:02.754Z</published>
+    <updated>2018-03-21T09:08:02.754Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
     
   </entry>
   
@@ -2301,119 +2368,6 @@
       <category term="GitHub" scheme="http://fitzeng.org/tags/GitHub/"/>
     
       <category term="Tool" scheme="http://fitzeng.org/tags/Tool/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>完美解决 Linux 的【dpkg： warning： files list file for package &#39;XXXXXXX&#39; missing, assuming package has no files currently installed】Bug</title>
-    <link href="http://fitzeng.org/2017/11/04/linuxDpkgBug/"/>
-    <id>http://fitzeng.org/2017/11/04/linuxDpkgBug/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T15:12:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>估计是之前动了或者损坏了 <code>/var/lib/dpkg/info</code> 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1.解决方法"></a>1.解决方法</h2><h3 id="1-1-创建一下三个文件"><a href="#1-1-创建一下三个文件" class="headerlink" title="1.1 创建一下三个文件"></a>1.1 创建一下三个文件</h3><ul>
-<li>fixit.py</li>
-<li>fix.sh</li>
-<li>txt</li>
-</ul>
-<h3 id="1-2-填写内容"><a href="#1-2-填写内容" class="headerlink" title="1.2 填写内容"></a>1.2 填写内容</h3><p>先来最简单的 <code>fix.sh</code>，不用填写内容，是空文件。</p>
-<p>接着就写 <code>txt</code>，直接把错误日志复制进去，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dpkg: warning: files list file for package &apos;libodbc1:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;dh-autoreconf&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;erlang-webtool&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libhtml-template-perl&apos; missing; assuming package has no files currently installed</div><div class="line">.......</div><div class="line">dpkg: warning: files list file for package &apos;libvirt-dev:amd64&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;autopoint&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libconfig-general-perl&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;ubuntu-cloud-keyring&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;tgt&apos; missing; assuming package has no files currently installed</div><div class="line">dpkg: warning: files list file for package &apos;libfdt1:amd64&apos; missing; assuming package has no files currently installed</div></pre></td></tr></table></figure>
-<p>下面写 <code>fixit.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">__author__ = &apos;Fitzeng&apos;</div><div class="line"></div><div class="line">import re</div><div class="line"></div><div class="line">def main():</div><div class="line">    fix = open(&apos;fix.sh&apos;, &apos;w+&apos;)</div><div class="line">    for line in open(&quot;txt&quot;):</div><div class="line">        pkg = re.match(re.compile(&apos;&apos;&apos;dpkg: warning: files list file for package &apos;(.+)&apos; &apos;&apos;&apos;), line)</div><div class="line">        if pkg:</div><div class="line">            cmd = &quot;sudo apt-get install --reinstall &quot; + pkg.group(1)</div><div class="line">            fix.write(cmd + &apos;\n&apos;)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h3 id="1-3-执行命令"><a href="#1-3-执行命令" class="headerlink" title="1.3 执行命令"></a>1.3 执行命令</h3><p>如果权限不够可以直接先 <code>chmod 777 *</code>，然后执行 <code>python fixit.py</code>，这时 <code>fix.sh</code> 就变成下面的样子了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install --reinstall libodbc1:amd64</div><div class="line">sudo apt-get install --reinstall dh-autoreconf</div><div class="line">sudo apt-get install --reinstall erlang-webtool</div><div class="line">sudo apt-get install --reinstall libhtml-template-perl</div><div class="line">sudo apt-get install --reinstall erlang-base</div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">sudo apt-get install --reinstall qemu-system-misc</div><div class="line">sudo apt-get install --reinstall libvirt-dev:amd64</div><div class="line">sudo apt-get install --reinstall autopoint</div><div class="line">sudo apt-get install --reinstall libconfig-general-perl</div><div class="line">sudo apt-get install --reinstall ubuntu-cloud-keyring</div><div class="line">sudo apt-get install --reinstall tgt</div><div class="line">sudo apt-get install --reinstall libfdt1:amd64</div></pre></td></tr></table></figure>
-<p>最后执行 <code>./fix.sh</code>。</p>
-<p>然后就是等待执行结束了。</p>
-<p>效果如下，一行一行 <code>dpkg: warning:</code> 在减少。<br><img src="/2017/11/04/linuxDpkgBug/debuging.png" alt=""><br><img src="/2017/11/04/linuxDpkgBug/debuging1.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;估计是之前动了或者损坏了 &lt;code&gt;/var/lib/dpkg/info&lt;/code&gt; 里面的文件，每次执行 apt 类的命令总是输出一大段东西，在网上找了很多资料，有解决方案，但是不全。。。很多都是失败的。最后我发现 reinstall 可以解决，所以打算写个脚本执行文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="http://fitzeng.org/tags/linux/"/>
-    
-      <category term="dpkg" scheme="http://fitzeng.org/tags/dpkg/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一个小白使用 devstack 部署 openstack 的心路历程</title>
-    <link href="http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/"/>
-    <id>http://fitzeng.org/2017/11/04/deployOpenstackByDevstack/</id>
-    <published>2017-11-04T03:27:00.000Z</published>
-    <updated>2017-11-04T04:57:37.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><blockquote>
-<p>作为一个想要入门云计算的人来说，大多数人的第一步就是学习 openstack，而学习 openstack 的人面临的第一步就是第一个‘难题’，使用自动化部署工具 devstack 部署 openstack 环境。第一次接触这个东西，花了两天多时间在 Ubuntu Server 和 Ubuntu Desktop 的 16.04 版本上成功部署。有很多人说 Desktop 版有很多坑，亲测问题确实比 Server 版多，但都是可解决的。其中最对初学者不友好的就是网络问题，下面会介绍为什么。所以如果你自己买了国外的 VPS 那就好办了，因为有个骚操作要用到，如果你网速好可能你遇不到这些问题就可以忽略。</p>
-<p>下面会分两个部分介绍，都会将 Server 和 Desktop 上的部署过程描述一遍。<br>教程推荐 <a href="https://docs.openstack.org/devstack/latest/" target="_blank" rel="external">官方的 Doc</a>和<a href="https://zhuanlan.zhihu.com/p/28996062" target="_blank" rel="external">避坑指南</a><br>教程这个东西对于初学者不宜太多，容易乱，只要有一个正确的执行框架就好。碰到其他 bug 直接 Google 就好。</p>
-</blockquote>
-<a id="more"></a>
-<p>然后介绍下我的环境吧</p>
-<ul>
-<li>Mac 10.12.6</li>
-<li>VirtualBox 5.1.28</li>
-<li>Ubuntu Server 16.04 4G+20G (临时测试 devstack，听说坑少)</li>
-<li>Ubuntu Desktop 16.04 4G+80G (平时使用)</li>
-<li>VPS(最好有) (由于是乞丐版，不适合直接部署和平时学习)</li>
-</ul>
-<h2 id="1-Ubuntu-Server-版"><a href="#1-Ubuntu-Server-版" class="headerlink" title="1.Ubuntu Server 版"></a>1.Ubuntu Server 版</h2><h3 id="安装-Ubuntu-Server"><a href="#安装-Ubuntu-Server" class="headerlink" title="安装 Ubuntu Server"></a>安装 Ubuntu Server</h3><p>首先肯定是要在 Virtual Box 安装 Ubuntu Server 了，这一步略过。相信你已经是接触过一段时间虚拟机的人了，但是一点注意，竟可能分多一点内存和硬盘。由于我不打算日后再这 Server 版使用，所以我的配置是 4G + 20G</p>
-<h3 id="SSH-登录虚拟机"><a href="#SSH-登录虚拟机" class="headerlink" title="SSH 登录虚拟机"></a>SSH 登录虚拟机</h3><p>当你创建完成之后面临的一个问题就是那个界面太丑了。。。所以如果可以在宿主机上操作就好了，SSH 正好满足你。<br>至于 SSH 不通使用不了的自己查查资料吧，这里我主要介绍网卡配置，我使用了两个网卡：<br>第一个：<br><img src="/2017/11/04/deployOpenstackByDevstack/wk1.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/wk1port.png" alt=""><br>做端口映射，将主机的 2222 映射到虚拟机的 22，这条是为了以后使用 SSH。<br>第二个：<br><img src="/2017/11/04/deployOpenstackByDevstack/wk2.png" alt=""><br>配完之后再在全局配置中设置你所选中的网卡启用 DHCP。对于网卡各种连接模式不熟的可以查查资料了解一下。</p>
-<p>然后连接就是直接在主机下使用  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 2222 fitzeng@127.0.0.1</div></pre></td></tr></table></figure>
-<p>fitzeng 改成你的用户名。<br>如果你出现各种问题连不上可以注意一下两点：<br>1.防火墙<br>2.把 <code>~/.ssh</code> 文件夹下的 <code>known_hosts</code> 文件删了再重连</p>
-<h3 id="开始部署"><a href="#开始部署" class="headerlink" title="开始部署"></a>开始部署</h3><blockquote>
-<p>这里的主教程以官方提供的为准，并且那些注意点我会更新。</p>
-</blockquote>
-<p>部署的脚本要求是拥有 root 权限的非 root 用户。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo useradd -s /bin/bash -d /opt/stack -m stack</div><div class="line"></div><div class="line">echo &quot;stack ALL=(ALL) NOPASSWD: ALL&quot; | sudo tee /etc/sudoers.d/stack</div><div class="line">sudo su - stack</div><div class="line"></div><div class="line">cd /opt/stack</div><div class="line">git clone https://git.openstack.org/openstack-dev/devstack</div><div class="line">cd devstack</div></pre></td></tr></table></figure>
-<p>如果上面 clone 太慢或者 clone 不下来的话可以试试 github 的源。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/openstack-dev/devstack.git</div></pre></td></tr></table></figure>
-<p>然后就是添加配置了，如果不懂推荐直接使用官方页面介绍的。或者使用以下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp samples/local.conf ./</div><div class="line">vim local.conf</div></pre></td></tr></table></figure>
-<p>如果你幸运，讲道理最后执行 <code>./stack.sh</code> 直接一路到底。。。但是还有很多坑正在等待着我们。<br>但但是有一个很好的是他的 Log 和报错十分清新，很快可以定位问题所在，有时候直接搜 Log 都会出现解决方法。<br>如果脚本直接退出提示没有 HOST_IP。那么直接在 <code>local.conf</code> 后面添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">HOST_IP=x.x.x.x</div><div class="line">GIT_BASE=https://github.com</div></pre></td></tr></table></figure>
-<p>HOST_IP具体是什么在你的虚拟机上 ifconfig 查看。然后推荐把 git 源换成 github 的。<br>这里你可以检测一下你的源有没有问题 <code>apt-get update</code> 有的话直接把有问题的源在 <code>/etc/apt/sources.list.d/</code> 目录下移除，移除前建议备份一下。然后推荐 <code>apt-get upgrade</code> 一下，Python 版本保持默认的 2.7.X 就好，如果出现什么和 Python 3.4 不匹配的 Log 直接忽略。如果你换成 3.4 很多库会出问题。如果你是 Python 3.X，可以把 <code>/user/bin/</code> 下的 Python2.X 链接到该目录下的 Python 文件。这时执行 <code>python -V</code> 就能看到结果了。</p>
-<p>但但但是，上面只是解决了有形的 Bug，还有就是无形的 Bug，你将面临网络问题，如果你想顺畅点可以直接更换源。<br>修改 pip 源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mkdir ~/.pip</div><div class="line">vim ~/.pip/pip.conf</div><div class="line"></div><div class="line">填入：</div><div class="line">[global]</div><div class="line">trusted-host=mirrors.aliyun.com</div><div class="line">index-url=http://mirrors.aliyun.com/pypi/simple</div></pre></td></tr></table></figure>
-<p>修改 sources.list：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</div><div class="line">sudo vim /etc/apt/sources.list</div><div class="line"></div><div class="line">填入：</div><div class="line"># deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted</div><div class="line">deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial universe</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties</div><div class="line">deb http://archive.canonical.com/ubuntu xenial partner</div><div class="line">deb-src http://archive.canonical.com/ubuntu xenial partner</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse</div></pre></td></tr></table></figure>
-<p>都改成 aliyun 的。到这时候如果你的网络没什么问题，可能会出点环境小问题，dkpg 和各种包等之类的问题，一搜网上基本都有解决方案。</p>
-<p>但但但是，如果你的网速下载某些包不超 10Kb/s 那就要用骚操作了。。。因为会一直卡着，网一断又得重新开始，先 unstack，clean 再 stack，十分不友好。出现问题大多是在下载某个 git 仓库和某些包的时候。尤其是 <code>nova</code> <code>horizon</code> 之类的，大小到了 300+M。</p>
-<p>这里介绍一个方法：<br>思路是先 SSH 上你的国外 VPS，下载你的 git 仓库或其他文件。然后再 SCP 到你的虚拟机上。主要是这样不会中断，而且无形中就可以是多线程操作，开几个终端 SCP 好几个文件。<br>看看速度对比效果吧，<br>虚拟机上下载：<br><img src="/2017/11/04/deployOpenstackByDevstack/horizon2.png" alt=""><br>VPS 上下载：<br><img src="/2017/11/04/deployOpenstackByDevstack/horizon.png" alt=""><br>之后自己 SCP 就好了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo scp -P 10800 -r root@xx.xx.xx.xx:/fitzeng/horizon /etc/stack/</div></pre></td></tr></table></figure>
-<p>-r 是 cp 文件夹，然后端口，IP 填你自己的后面跟目录。这里可能也有点慢，但是比之前的好而且稳定。</p>
-<p><img src="/2017/11/04/deployOpenstackByDevstack/nova.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/cirros.png" alt=""><br>这一切操作都源于友好的 log 机制，看上面的图片我们可以知道下载地址和存放目录，所以，知道这些手段就多了起来。<br>网速够快也可以直接在本地 clone。<br><img src="/2017/11/04/deployOpenstackByDevstack/nova2.png" alt=""></p>
-<p>有了这些操作基本就意味着你解决了网络问题，借助 google 基本可以解决其他库和环境的问题。<br>成功图上传一波：<br><img src="/2017/11/04/deployOpenstackByDevstack/finish.png" alt=""></p>
-<h2 id="2-Ubuntu-Desktop-版"><a href="#2-Ubuntu-Desktop-版" class="headerlink" title="2.Ubuntu Desktop 版"></a>2.Ubuntu Desktop 版</h2><p>基本步骤是和前面一致的，出的问题可能就是你之前在 Ubuntu 上装过各种软件(我装的 Sogou 输入法，里面的 fcitx 源影响了速度，甚至有时候直接卡这不动)，更改了软件源或者做过其它的工具更改，按照前面的配置亲测可行。如果你之前在 Ubuntu Server 版上装过，直接把文件 SCP 过来，如果虚拟机之间不能通讯，可以先 SCP 到宿主机，再从宿主机通过文件共享的方式共享到 Ubuntu Desktop。<br>然后运行就可以了，有了前面的基础就很简单了。</p>
-<p>那就看直接看结果吧：<br><img src="/2017/11/04/deployOpenstackByDevstack/d1.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/d2.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/d3.png" alt=""><br><img src="/2017/11/04/deployOpenstackByDevstack/d4.png" alt=""></p>
-<h2 id="3-后记"><a href="#3-后记" class="headerlink" title="3.后记"></a>3.后记</h2><p>说实话，这不太算技术文章，纯属个人记录。本来不太想写，但是感觉国内环境对开发者有点不友好，如果这篇文章能对初学者有部分帮助我就满意了，能够使初学者继续学习下去。然后这是部署完之后写的，部署的过程远不如写的这么轻松，但是我现在有信心去解决部署过程中碰到的问题，这才是重点。希望你也是。每个人的环境都不一样，出现的问题也不可能一样，所以如果你照上面做了还没有解决可以留言大家一起讨论。</p>
-<p>最后：<br>多谢阅读<br>祝大家一遍过 ^_^</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;作为一个想要入门云计算的人来说，大多数人的第一步就是学习 openstack，而学习 openstack 的人面临的第一步就是第一个‘难题’，使用自动化部署工具 devstack 部署 openstack 环境。第一次接触这个东西，花了两天多时间在 Ubuntu Server 和 Ubuntu Desktop 的 16.04 版本上成功部署。有很多人说 Desktop 版有很多坑，亲测问题确实比 Server 版多，但都是可解决的。其中最对初学者不友好的就是网络问题，下面会介绍为什么。所以如果你自己买了国外的 VPS 那就好办了，因为有个骚操作要用到，如果你网速好可能你遇不到这些问题就可以忽略。&lt;/p&gt;
-&lt;p&gt;下面会分两个部分介绍，都会将 Server 和 Desktop 上的部署过程描述一遍。&lt;br&gt;教程推荐 &lt;a href=&quot;https://docs.openstack.org/devstack/latest/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方的 Doc&lt;/a&gt;和&lt;a href=&quot;https://zhuanlan.zhihu.com/p/28996062&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;避坑指南&lt;/a&gt;&lt;br&gt;教程这个东西对于初学者不宜太多，容易乱，只要有一个正确的执行框架就好。碰到其他 bug 直接 Google 就好。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="devstack" scheme="http://fitzeng.org/tags/devstack/"/>
-    
-      <category term="openstack" scheme="http://fitzeng.org/tags/openstack/"/>
     
   </entry>
   
