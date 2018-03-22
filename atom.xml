@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-21T09:05:55.259Z</updated>
+  <updated>2018-03-22T03:33:59.224Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,38 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TensorFlow 初级 API 之 Session 篇</title>
+    <link href="http://fitzeng.org/2018/03/23/GPTFLAPISession/"/>
+    <id>http://fitzeng.org/2018/03/23/GPTFLAPISession/</id>
+    <published>2018-03-23T03:27:00.000Z</published>
+    <updated>2018-03-22T03:33:59.224Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+<a id="more"></a>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+  </entry>
   
   <entry>
     <title>TensorFlow 初级 API 之 Variable 篇</title>
@@ -104,11 +136,11 @@
   </entry>
   
   <entry>
-    <title>TensorFlow 初级 API 之 Variable 篇</title>
+    <title>TensorFlow 初级 API 之 Graph 篇</title>
     <link href="http://fitzeng.org/2018/03/22/GPTFLAPIGraph/"/>
     <id>http://fitzeng.org/2018/03/22/GPTFLAPIGraph/</id>
     <published>2018-03-22T03:27:00.000Z</published>
-    <updated>2018-03-22T03:18:19.597Z</updated>
+    <updated>2018-03-22T03:34:01.189Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -153,20 +185,6 @@
       <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
     
       <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://fitzeng.org/2018/03/21/GPTFLAPISession/"/>
-    <id>http://fitzeng.org/2018/03/21/GPTFLAPISession/</id>
-    <published>2018-03-21T09:08:02.754Z</published>
-    <updated>2018-03-21T09:08:02.754Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
     
   </entry>
   
