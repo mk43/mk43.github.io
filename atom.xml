@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-22T03:33:59.224Z</updated>
+  <updated>2018-03-22T03:36:42.811Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/03/23/GPTFLAPISession/"/>
     <id>http://fitzeng.org/2018/03/23/GPTFLAPISession/</id>
     <published>2018-03-23T03:27:00.000Z</published>
-    <updated>2018-03-22T03:33:59.224Z</updated>
+    <updated>2018-03-22T03:36:42.811Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -28,6 +28,59 @@
 <p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
 </blockquote>
 <a id="more"></a>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TensorFlow 初级 API 之 Graph 篇</title>
+    <link href="http://fitzeng.org/2018/03/22/GPTFLAPIGraph/"/>
+    <id>http://fitzeng.org/2018/03/22/GPTFLAPIGraph/</id>
+    <published>2018-03-22T15:27:00.000Z</published>
+    <updated>2018-03-22T03:36:41.612Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+<a id="more"></a>
+<p>TensorFlow 使用数据流图进行计算，在使用初级 API 进行编程的时候，需要自己手动构建图。 </p>
+<h2 id="1-为什么要使用数据流图？"><a href="#1-为什么要使用数据流图？" class="headerlink" title="1 为什么要使用数据流图？"></a>1 为什么要使用数据流图？</h2><p><img src="/2018/03/22/GPTFLAPIGraph/tensors_flowing.gif" alt=""></p>
+<p>数据流图是常用的并行计算模型，节点代表计算单元，边代表数据流。在 TensorFlow 中使用数据流的优点有并行性好，可以实现分布式，可以使用汇编加速，可移植性好。</p>
+<h2 id="2-什么是-tf-Graph？"><a href="#2-什么是-tf-Graph？" class="headerlink" title="2 什么是 tf.Graph？"></a>2 什么是 tf.Graph？</h2><p>tf.Graph 包含两个重要信息：</p>
+<ul>
+<li>图结构：通过一些操作节点和边组成，构建整个计算流程。</li>
+<li>图集合：TensorFlow 提供的一种图的元数据集合，用于管理图对象，设计思想和 tf.Variable 类似。</li>
+</ul>
+<h2 id="3-构建图"><a href="#3-构建图" class="headerlink" title="3 构建图"></a>3 构建图</h2><p>TensorFlow 提供了一个默认图，所以直接在默认图上通过节点（tf.Operation）和边（tf.Tensor）构建而不显示指定是可行的。另外通过工具提供的 API 创建新图也是可行的，下面给出示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">g1 = tf.Graph()</div><div class="line">with g1.as_default():</div><div class="line">    var = tf.get_variable(&quot;var&quot;, initializer=tf.zeros(shape=[2, 2]))</div><div class="line"></div><div class="line">g2 = tf.Graph()</div><div class="line">with g2.as_default():</div><div class="line">    var = tf.get_variable(&quot;var&quot;, initializer=tf.ones(shape=[1, 2]))</div><div class="line"></div><div class="line">with tf.Session(graph=g1) as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    with tf.variable_scope(&quot;&quot;, reuse=True):</div><div class="line">        print(sess.run(tf.get_variable(&quot;var&quot;)))</div><div class="line"></div><div class="line">with tf.Session(graph=g2) as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    with tf.variable_scope(&quot;&quot;, reuse=True):</div><div class="line">        print(sess.run(tf.get_variable(&quot;var&quot;)))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># [[0. 0.]</div><div class="line">#  [0. 0.]]</div><div class="line"># [[1. 1.]]</div></pre></td></tr></table></figure>
+<h2 id="4-给操作命名"><a href="#4-给操作命名" class="headerlink" title="4 给操作命名"></a>4 给操作命名</h2><p>有前面示例中两个相同变量可以猜测，图可以作为一个命名空间，不同图之间的数据可以不受干扰。TensorFlow 提供了两种命名操作供使用：</p>
+<p>其一是在创建操作节点返回张量时，如果给定可选参数 name 为 my_name 的话，返回张量将命名为 my_name:0，如果在前面已经创建了命名为该 name 的节点，则节点命名将依次为 my_name_1:0，my_name_2:0 ……</p>
+<p>第二种方式是直接使用 tf.name_scope 函数创建命名空间。并且每一级之间使用 “/” 隔开，命名冲突同样通过追加 “_1”，“_2” …… 解决。下面看一个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">c_0 = tf.constant(0, name=&quot;c&quot;)</div><div class="line">c_1 = tf.constant(1, name=&quot;c&quot;)</div><div class="line">with tf.name_scope(&quot;outer&quot;):</div><div class="line">    c_2 = tf.constant(2, name=&quot;c&quot;)</div><div class="line">    with tf.name_scope(&quot;inner&quot;):</div><div class="line">        c_3 = tf.constant(3, name=&quot;c&quot;)</div><div class="line">    c_4 = tf.constant(4, name=&quot;c&quot;)</div><div class="line">    with tf.name_scope(&quot;inner&quot;):</div><div class="line">        c_5 = tf.constant(5, name=&quot;c&quot;)</div><div class="line"></div><div class="line">print(c_0)</div><div class="line">print(c_1)</div><div class="line">print(c_2)</div><div class="line">print(c_3)</div><div class="line">print(c_4)</div><div class="line">print(c_5)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># Tensor(&quot;c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;c_1:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/inner/c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/c_1:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/inner_1/c:0&quot;, shape=(), dtype=int32)</div></pre></td></tr></table></figure>
+<h2 id="5-在不同的设备上进行操作"><a href="#5-在不同的设备上进行操作" class="headerlink" title="5 在不同的设备上进行操作"></a>5 在不同的设备上进行操作</h2><p>TensorFlow 提供了一种描述方式，使得在多设备上运行程序成为可能。可以使用以下命令来指定某个特定设备：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/job:&lt;JOB_NAME&gt;/task:&lt;TASK_INDEX&gt;/device:&lt;DEVICE_TYPE&gt;:&lt;DEVICE_INDEX&gt;</div></pre></td></tr></table></figure>
+<p>注意上面的参数有些是可选的，如果只是在单机上混用 CPU 和 GPU，可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">weights = tf.random_normal(...)</div><div class="line">with tf.device(&quot;/device:CPU:0&quot;):</div><div class="line">    img = tf.decode_jpeg(tf.read_file(&quot;img.jpg&quot;))</div><div class="line">with tf.device(&quot;/device:GPU:0&quot;):</div><div class="line">    result = tf.matmul(weights, img)</div></pre></td></tr></table></figure>
+<p>如果是进行程序部署的话要指定任务名字和 ID：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">with tf.device(&quot;/job:ps/task:0&quot;):</div><div class="line">    weights_1 = tf.Variable(tf.truncated_normal([784, 100]))</div><div class="line">    biases_1 = tf.Variable(tf.zeroes([100]))</div><div class="line">with tf.device(&quot;/job:ps/task:1&quot;):</div><div class="line">    weights_2 = tf.Variable(tf.truncated_normal([100, 10]))</div><div class="line">    biases_2 = tf.Variable(tf.zeroes([10]))</div><div class="line">with tf.device(&quot;/job:worker&quot;):</div><div class="line">    layer_1 = tf.matmul(train_batch, weights_1) + biases_1</div><div class="line">    layer_2 = tf.matmul(train_batch, weights_2) + biases_2</div></pre></td></tr></table></figure>
+<h2 id="6-类张量对象"><a href="#6-类张量对象" class="headerlink" title="6 类张量对象"></a>6 类张量对象</h2><p>许多 TensorFlow 操作都使用一个或者更多张量作为参数。为了方便引入类张量对象来代替张量。常见的有 tf.Tensor，tf.Variable，numpy.ndarray，list，Scalar Python types（bool, float, int, str），另外，也可以通过 tf.register_tensor_conversion_function 自行注册类张量类型。</p>
 ]]></content>
     
     <summary type="html">
@@ -116,59 +169,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with tf.variable_scope(&quot;model&quot;) as scope:</div><div class="line">    output1 = my_image_filter(input1)</div><div class="line">    scope.reuse_variables()</div><div class="line">    output2 = my_image_filter(input2)</div></pre></td></tr></table></figure>
 <p>看起来使用一个确切的字符串命名作用于有点危险，也可以用基于另一个变量作用于的方式处理：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with tf.variable_scope(&quot;model&quot;) as scope:</div><div class="line">    output1 = my_image_filter(input1)</div><div class="line">with tf.variable_scope(scope, reuse=True):</div><div class="line">    output2 = my_image_filter(input2)</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
-    
-      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TensorFlow 初级 API 之 Graph 篇</title>
-    <link href="http://fitzeng.org/2018/03/22/GPTFLAPIGraph/"/>
-    <id>http://fitzeng.org/2018/03/22/GPTFLAPIGraph/</id>
-    <published>2018-03-22T03:27:00.000Z</published>
-    <updated>2018-03-22T03:34:01.189Z</updated>
-    
-    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
-<blockquote>
-<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
-</blockquote>
-<a id="more"></a>
-<p>TensorFlow 使用数据流图进行计算，在使用初级 API 进行编程的时候，需要自己手动构建图。 </p>
-<h2 id="1-为什么要使用数据流图？"><a href="#1-为什么要使用数据流图？" class="headerlink" title="1 为什么要使用数据流图？"></a>1 为什么要使用数据流图？</h2><p><img src="/2018/03/22/GPTFLAPIGraph/tensors_flowing.gif" alt=""></p>
-<p>数据流图是常用的并行计算模型，节点代表计算单元，边代表数据流。在 TensorFlow 中使用数据流的优点有并行性好，可以实现分布式，可以使用汇编加速，可移植性好。</p>
-<h2 id="2-什么是-tf-Graph？"><a href="#2-什么是-tf-Graph？" class="headerlink" title="2 什么是 tf.Graph？"></a>2 什么是 tf.Graph？</h2><p>tf.Graph 包含两个重要信息：</p>
-<ul>
-<li>图结构：通过一些操作节点和边组成，构建整个计算流程。</li>
-<li>图集合：TensorFlow 提供的一种图的元数据集合，用于管理图对象，设计思想和 tf.Variable 类似。</li>
-</ul>
-<h2 id="3-构建图"><a href="#3-构建图" class="headerlink" title="3 构建图"></a>3 构建图</h2><p>TensorFlow 提供了一个默认图，所以直接在默认图上通过节点（tf.Operation）和边（tf.Tensor）构建而不显示指定是可行的。另外通过工具提供的 API 创建新图也是可行的，下面给出示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">g1 = tf.Graph()</div><div class="line">with g1.as_default():</div><div class="line">    var = tf.get_variable(&quot;var&quot;, initializer=tf.zeros(shape=[2, 2]))</div><div class="line"></div><div class="line">g2 = tf.Graph()</div><div class="line">with g2.as_default():</div><div class="line">    var = tf.get_variable(&quot;var&quot;, initializer=tf.ones(shape=[1, 2]))</div><div class="line"></div><div class="line">with tf.Session(graph=g1) as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    with tf.variable_scope(&quot;&quot;, reuse=True):</div><div class="line">        print(sess.run(tf.get_variable(&quot;var&quot;)))</div><div class="line"></div><div class="line">with tf.Session(graph=g2) as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    with tf.variable_scope(&quot;&quot;, reuse=True):</div><div class="line">        print(sess.run(tf.get_variable(&quot;var&quot;)))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># [[0. 0.]</div><div class="line">#  [0. 0.]]</div><div class="line"># [[1. 1.]]</div></pre></td></tr></table></figure>
-<h2 id="4-给操作命名"><a href="#4-给操作命名" class="headerlink" title="4 给操作命名"></a>4 给操作命名</h2><p>有前面示例中两个相同变量可以猜测，图可以作为一个命名空间，不同图之间的数据可以不受干扰。TensorFlow 提供了两种命名操作供使用：</p>
-<p>其一是在创建操作节点返回张量时，如果给定可选参数 name 为 my_name 的话，返回张量将命名为 my_name:0，如果在前面已经创建了命名为该 name 的节点，则节点命名将依次为 my_name_1:0，my_name_2:0 ……</p>
-<p>第二种方式是直接使用 tf.name_scope 函数创建命名空间。并且每一级之间使用 “/” 隔开，命名冲突同样通过追加 “_1”，“_2” …… 解决。下面看一个示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">c_0 = tf.constant(0, name=&quot;c&quot;)</div><div class="line">c_1 = tf.constant(1, name=&quot;c&quot;)</div><div class="line">with tf.name_scope(&quot;outer&quot;):</div><div class="line">    c_2 = tf.constant(2, name=&quot;c&quot;)</div><div class="line">    with tf.name_scope(&quot;inner&quot;):</div><div class="line">        c_3 = tf.constant(3, name=&quot;c&quot;)</div><div class="line">    c_4 = tf.constant(4, name=&quot;c&quot;)</div><div class="line">    with tf.name_scope(&quot;inner&quot;):</div><div class="line">        c_5 = tf.constant(5, name=&quot;c&quot;)</div><div class="line"></div><div class="line">print(c_0)</div><div class="line">print(c_1)</div><div class="line">print(c_2)</div><div class="line">print(c_3)</div><div class="line">print(c_4)</div><div class="line">print(c_5)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># Tensor(&quot;c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;c_1:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/inner/c:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/c_1:0&quot;, shape=(), dtype=int32)</div><div class="line"># Tensor(&quot;outer/inner_1/c:0&quot;, shape=(), dtype=int32)</div></pre></td></tr></table></figure>
-<h2 id="5-在不同的设备上进行操作"><a href="#5-在不同的设备上进行操作" class="headerlink" title="5 在不同的设备上进行操作"></a>5 在不同的设备上进行操作</h2><p>TensorFlow 提供了一种描述方式，使得在多设备上运行程序成为可能。可以使用以下命令来指定某个特定设备：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/job:&lt;JOB_NAME&gt;/task:&lt;TASK_INDEX&gt;/device:&lt;DEVICE_TYPE&gt;:&lt;DEVICE_INDEX&gt;</div></pre></td></tr></table></figure>
-<p>注意上面的参数有些是可选的，如果只是在单机上混用 CPU 和 GPU，可以这样使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">weights = tf.random_normal(...)</div><div class="line">with tf.device(&quot;/device:CPU:0&quot;):</div><div class="line">    img = tf.decode_jpeg(tf.read_file(&quot;img.jpg&quot;))</div><div class="line">with tf.device(&quot;/device:GPU:0&quot;):</div><div class="line">    result = tf.matmul(weights, img)</div></pre></td></tr></table></figure>
-<p>如果是进行程序部署的话要指定任务名字和 ID：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">with tf.device(&quot;/job:ps/task:0&quot;):</div><div class="line">    weights_1 = tf.Variable(tf.truncated_normal([784, 100]))</div><div class="line">    biases_1 = tf.Variable(tf.zeroes([100]))</div><div class="line">with tf.device(&quot;/job:ps/task:1&quot;):</div><div class="line">    weights_2 = tf.Variable(tf.truncated_normal([100, 10]))</div><div class="line">    biases_2 = tf.Variable(tf.zeroes([10]))</div><div class="line">with tf.device(&quot;/job:worker&quot;):</div><div class="line">    layer_1 = tf.matmul(train_batch, weights_1) + biases_1</div><div class="line">    layer_2 = tf.matmul(train_batch, weights_2) + biases_2</div></pre></td></tr></table></figure>
-<h2 id="6-类张量对象"><a href="#6-类张量对象" class="headerlink" title="6 类张量对象"></a>6 类张量对象</h2><p>许多 TensorFlow 操作都使用一个或者更多张量作为参数。为了方便引入类张量对象来代替张量。常见的有 tf.Tensor，tf.Variable，numpy.ndarray，list，Scalar Python types（bool, float, int, str），另外，也可以通过 tf.register_tensor_conversion_function 自行注册类张量类型。</p>
 ]]></content>
     
     <summary type="html">
