@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-22T03:36:42.811Z</updated>
+  <updated>2018-03-22T07:56:54.563Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://fitzeng.org/2018/03/23/GPTFLAPISession/"/>
     <id>http://fitzeng.org/2018/03/23/GPTFLAPISession/</id>
     <published>2018-03-23T03:27:00.000Z</published>
-    <updated>2018-03-22T03:36:42.811Z</updated>
+    <updated>2018-03-22T07:56:54.563Z</updated>
     
     <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -28,7 +28,22 @@
 <p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
 </blockquote>
 <a id="more"></a>
-]]></content>
+<p>创建了一个数据流图之后，必须在会话中执行才能完成图的计算。</p>
+<h2 id="1-创建会话"><a href="#1-创建会话" class="headerlink" title="1 创建会话"></a>1 创建会话</h2><p>如果使用初级 API，便可以通过 tf.Session() 自行创建默认图的会话。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 创建本地会话</div><div class="line">with tf.Session() as sess:</div><div class="line">    # ...</div><div class="line"></div><div class="line"># 创建远程会话</div><div class="line">with tf.Session(&quot;grpc://example.org:2222&quot;):</div><div class="line">    # ...</div></pre></td></tr></table></figure>
+<p>由于会话会持有物理或网络资源，所以会话结束后应该手动关掉，可以调用 close 函数，也可以像上例一样使用 with 语句。</p>
+<h2 id="2-初始化会话"><a href="#2-初始化会话" class="headerlink" title="2 初始化会话"></a>2 初始化会话</h2><p>tf.Session.init 接收三个可选参数：</p>
+<ul>
+<li>target：默认为空表示会话使用本地资源，如果给定 URL 则会使得会话能够访问 URL 所定位的服务上的资源。</li>
+<li>graph：默认为当前创建会话时上下文中的图，如果有多个图，可以显示指定在那个图中创建会话。</li>
+<li>config：主要是提供一些会话行为控制参数。</li>
+</ul>
+<h2 id="3-开启会话"><a href="#3-开启会话" class="headerlink" title="3 开启会话"></a>3 开启会话</h2><p>tf.Session.run 可以执行图，可接收 tf.Operation 和 tf.Tensor 类型的参数。参数可以是一个，也可以是一个列表，其中对于中间结果会复用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">x = tf.constant([[3, -1], [2, 1]], dtype=tf.float32)</div><div class="line">w = tf.Variable(tf.random_uniform([2, 2]))</div><div class="line">y = tf.matmul(x, w)</div><div class="line">output = tf.nn.softmax(y)</div><div class="line">with tf.Session() as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    sess.run(output)</div><div class="line">    sess.run([y, output])</div></pre></td></tr></table></figure>
+<p>对于占位符在训练时可以提供 feed_dict 作为初始值。提供的参数必须能够满足数学运算法则，否则会出错，下面这个示例的最后两行是无法运行的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">x = tf.placeholder(tf.float32, shape=[3])</div><div class="line">y = tf.square(x)</div><div class="line"></div><div class="line">with tf.Session() as sess:</div><div class="line">    print(sess.run(y, feed_dict=&#123;x: [1.0, 2.0, 3.0]&#125;))</div><div class="line">    print(sess.run(y, &#123;x: [0.0, 2.0, 1.0]&#125;))</div><div class="line">    # sess.run(y)</div><div class="line">    # sess.run(y, feed_dict=&#123;x: 37.0&#125;)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># [1. 4. 9.]</div><div class="line"># [0. 4. 1.]</div></pre></td></tr></table></figure>
+<p>tf.Session.run 还可以接收 options 和 run_metadata，通过元数据可以打印出图的详细信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">y = tf.matmul([[2.0, -2.0], [1.0, 3.0]], tf.random_uniform([2, 2]))</div><div class="line"></div><div class="line">with tf.Session() as sess:</div><div class="line">    options = tf.RunOptions()</div><div class="line">    options.output_partition_graphs = True</div><div class="line">    options.trace_level = tf.RunOptions.FULL_TRACE</div><div class="line">    metadata = tf.RunMetadata()</div><div class="line">    sess.run(y, options=options, run_metadata=metadata)</div><div class="line">    print(metadata.partition_graphs)</div><div class="line">    print(metadata.step_stats)</div></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
