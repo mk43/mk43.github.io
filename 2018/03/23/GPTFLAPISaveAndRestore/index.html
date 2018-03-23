@@ -6,21 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://fitzeng.org">
-  <title>实现一个TAB布局 | Fitzeng</title>
+  <title>TensorFlow 初级 API 之 Save And Restore 篇 | Fitzeng</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="GitHub 任务描述 实现常见的标签tab，并且点击tab跳转至对应页面实现页面滑动效果 实现效果 TabLayout + ViewPager（GIF）">
-<meta name="keywords" content="Android">
+  <meta name="description" content="写在前面：此文的行文风格参考此文，主线为主，不会过多介绍细枝末节。">
+<meta name="keywords" content="TensorFlow,MachineLearning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实现一个TAB布局">
-<meta property="og:url" content="http://fitzeng.org/2017/04/07/TabLayout/index.html">
+<meta property="og:title" content="TensorFlow 初级 API 之 Save And Restore 篇">
+<meta property="og:url" content="http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/index.html">
 <meta property="og:site_name" content="Fitzeng">
-<meta property="og:description" content="GitHub 任务描述 实现常见的标签tab，并且点击tab跳转至对应页面实现页面滑动效果 实现效果 TabLayout + ViewPager（GIF）">
-<meta property="og:image" content="http://fitzeng.org/2017/04/07/TabLayout/TabLayoutAndViewPager.gif">
-<meta property="og:updated_time" content="2017-07-01T10:12:15.000Z">
+<meta property="og:description" content="写在前面：此文的行文风格参考此文，主线为主，不会过多介绍细枝末节。">
+<meta property="og:image" content="http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/SavedModel.svg">
+<meta property="og:updated_time" content="2018-03-23T06:45:26.322Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="实现一个TAB布局">
-<meta name="twitter:description" content="GitHub 任务描述 实现常见的标签tab，并且点击tab跳转至对应页面实现页面滑动效果 实现效果 TabLayout + ViewPager（GIF）">
-<meta name="twitter:image" content="http://fitzeng.org/2017/04/07/TabLayout/TabLayoutAndViewPager.gif">
+<meta name="twitter:title" content="TensorFlow 初级 API 之 Save And Restore 篇">
+<meta name="twitter:description" content="写在前面：此文的行文风格参考此文，主线为主，不会过多介绍细枝末节。">
+<meta name="twitter:image" content="http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/SavedModel.svg">
   
   
     <link rel="icon" href="/img/favicon.png">
@@ -144,61 +144,57 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-TabLayout" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-GPTFLAPISaveAndRestore" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      实现一个TAB布局
+      TensorFlow 初级 API 之 Save And Restore 篇
     </h1>
   
 
         
-        <a href="/2017/04/07/TabLayout/" class="archive-article-date">
-  	<time datetime="2017-04-07T02:30:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-07</time>
+        <a href="/2018/03/23/GPTFLAPISaveAndRestore/" class="archive-article-date">
+  	<time datetime="2018-03-23T15:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-23</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/mk43/BaiduAcademy" target="_blank" rel="external">GitHub</a></p>
-<h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><hr>
-<p>实现常见的标签tab，并且点击tab跳转至对应页面<br>实现页面滑动效果</p>
-<h3 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h3><hr>
-<p>TabLayout + ViewPager（GIF）</p>
-<p><img src="/2017/04/07/TabLayout/TabLayoutAndViewPager.gif" alt=""></p>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
 <a id="more"></a>
-<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><hr>
-<ul>
-<li>绘制页面</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.view.ViewPager</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/viewPager"</span></div><div class="line">    <span class="attr">android:scrollbars</span>=<span class="string">"none"</span></div><div class="line">    <span class="attr">android:layout_weight</span>=<span class="string">"8"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"0dp"</span>&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.view.ViewPager</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.TabLayout</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/tabLayout"</span></div><div class="line">    <span class="attr">android:layout_weight</span>=<span class="string">"1"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"0dp"</span></div><div class="line">    <span class="attr">app:tabGravity</span>=<span class="string">"fill"</span></div><div class="line">    <span class="attr">app:tabIndicatorHeight</span>=<span class="string">"0dp"</span></div><div class="line">    <span class="attr">app:tabMode</span>=<span class="string">"fixed"</span></div><div class="line">    <span class="attr">app:tabSelectedTextColor</span>=<span class="string">"#FF4081"</span></div><div class="line">    <span class="attr">app:tabTextColor</span>=<span class="string">"#000"</span>&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.design.widget.TabLayout</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>需要在配置文件中添加 compile ‘com.android.support:design:23.2.0’</p>
-<ul>
-<li>准备Adapter</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewPagerAdapter</span> <span class="keyword">extends</span> <span class="title">FragmentPagerAdapter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> List&lt;Fragment&gt; fragmentList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="keyword">private</span> List&lt;String&gt; fragmentTitleList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line"></div><div class="line">    ViewPagerAdapter(FragmentManager fm) &#123;</div><div class="line">        <span class="keyword">super</span>(fm);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addPage</span><span class="params">(Fragment fragment, String title)</span> </span>&#123;</div><div class="line">        fragmentList.add(fragment);</div><div class="line">        fragmentTitleList.add(title);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Fragment <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> fragmentList.get(position);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> fragmentTitleList.size();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> CharSequence <span class="title">getPageTitle</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> fragmentTitleList.get(position);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>准备Fragment布局</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewPagerFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String content;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ViewPagerFragment</span><span class="params">(String content)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.content = content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        View rootView = inflater.inflate(R.layout.fragment_view_pager, container, <span class="keyword">false</span>);</div><div class="line">        TextView tvContent = (TextView) rootView.findViewById(R.id.tvContent);</div><div class="line">        tvContent.setText(content);</div><div class="line">        <span class="keyword">return</span> rootView;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(@Nullable Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/tvContent"</span></div><div class="line">    <span class="attr">android:textSize</span>=<span class="string">"30sp"</span></div><div class="line">    <span class="attr">android:hint</span>=<span class="string">"@string/default_text"</span></div><div class="line">    <span class="attr">android:layout_gravity</span>=<span class="string">"center"</span></div><div class="line">    <span class="attr">android:textAlignment</span>=<span class="string">"center"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</div></pre></td></tr></table></figure>
-<p>为了方便，此处所有Fragment共用一个</p>
-<ul>
-<li>初始化布局</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Init Layout, Load Fragments and draw Layouts.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initLayout</span><span class="params">()</span> </span>&#123;</div><div class="line">    viewPager = (ViewPager) findViewById(R.id.viewPager);</div><div class="line">    tabLayout = (TabLayout) findViewById(R.id.tabLayout);</div><div class="line"></div><div class="line">    ViewPagerAdapter adapter = <span class="keyword">new</span> ViewPagerAdapter(getSupportFragmentManager());</div><div class="line">    <span class="comment">// Add Fragments</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</div><div class="line">        adapter.addPage(<span class="keyword">new</span> ViewPagerFragment(<span class="string">"PAGE"</span> + i), <span class="string">"PAGE"</span> + i);</div><div class="line">    &#125;</div><div class="line">    viewPager.setAdapter(adapter);</div><div class="line">    <span class="comment">// Connect TabLayout and ViewPage</span></div><div class="line">    tabLayout.setupWithViewPager(viewPager);</div><div class="line"></div><div class="line">    <span class="comment">// Draw Tab View</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</div><div class="line">        tabListView.add(tabLayout.getTabAt(i));</div><div class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</div><div class="line">            tabListView.get(i).setIcon(R.mipmap.selected_icon);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            tabListView.get(i).setIcon(R.mipmap.ic_launcher);</div><div class="line">        &#125;</div><div class="line">        tabListView.get(i).setText(<span class="string">"PAGE"</span> + i);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>设置监听</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Setting Tab Click Listener</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initEvents</span><span class="params">()</span> </span>&#123;</div><div class="line">    tabLayout.setOnTabSelectedListener(<span class="keyword">new</span> TabLayout.OnTabSelectedListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTabSelected</span><span class="params">(TabLayout.Tab tab)</span> </span>&#123;</div><div class="line">            <span class="comment">// Called when the tab was selected</span></div><div class="line">            tabListView.get(tab.getPosition()).setIcon(R.mipmap.selected_icon);</div><div class="line">            viewPager.setCurrentItem(tab.getPosition());</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTabUnselected</span><span class="params">(TabLayout.Tab tab)</span> </span>&#123;</div><div class="line">            <span class="comment">// Called when a tab from selected switch to unselected</span></div><div class="line">            tabListView.get(tab.getPosition()).setIcon(R.mipmap.ic_launcher);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTabReselected</span><span class="params">(TabLayout.Tab tab)</span> </span>&#123;</div><div class="line">            <span class="comment">// Called when a tab selected more than twice consecutively</span></div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h3><hr>
-<p>利用控件已有的性质，基本的Tab切换已经实现。但是没有自己手动实现滑动等控件的效果。实现方式有很多种，以后来补充。</p>
-<p>Tips: 作为一个Android小白，自然有很多不知道不理解的地方。如果文中有错或者有哪些值得改进的地方，欢迎大家提意见，我很开心能和大家一起交流学习，共同进步。</p>
-<p>多谢阅读</p>
+<p>在一些数据规模庞大的训练模型中，一次性训练往往不太现实，所以存储中间过程就十分有必要，并且在需要的时候能过恢复继续训练。TensorFlow 提供了一组存储和恢复的 API 供使用。</p>
+<h2 id="1-存储和恢复变量"><a href="#1-存储和恢复变量" class="headerlink" title="1 存储和恢复变量"></a>1 存储和恢复变量</h2><p>变量时最好的共享方式，因为它的状态可以某程序任意操控。在高级 API 中，往往是自动化处理，但是初级 API 提供了 tf.train.Saver 类进行操作。TensorFlow 以二进制形式把变量存储在检查点文件中，粗略解释就是将名字和张量值做一个映射存储。</p>
+<h3 id="1-1-存储变量"><a href="#1-1-存储变量" class="headerlink" title="1.1 存储变量"></a>1.1 存储变量</h3><p>使用 tf.train.Saver() 创建一个 Saver 对象去管理模型中的所有变量。接下来给一个示例展现如何使用 tf.train.Saver.save 将变量存储到检查点文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">v1 = tf.get_variable(&quot;v1&quot;, shape=[2], initializer=tf.zeros_initializer)</div><div class="line">v2 = tf.get_variable(&quot;v2&quot;, shape=[3], initializer=tf.zeros_initializer)</div><div class="line">inc_v1 = v1.assign(v1 + 1)</div><div class="line">dec_v2 = v2.assign(v2 - 1)</div><div class="line">saver = tf.train.Saver()</div><div class="line">with tf.Session() as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    inc_v1.op.run()</div><div class="line">    dec_v2.op.run()</div><div class="line">    save_path = saver.save(sess, &quot;./logs/model.ckpt&quot;)</div><div class="line">    print(&quot;Model saved in path: %s&quot; % save_path)</div><div class="line">    print(sess.run([v1, v2]))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># Model saved in path: ./logs/model.ckpt</div><div class="line"># [array([1., 1.], dtype=float32), array([-1., -1., -1.], dtype=float32)]</div></pre></td></tr></table></figure>
+<h3 id="1-2-恢复变量"><a href="#1-2-恢复变量" class="headerlink" title="1.2 恢复变量"></a>1.2 恢复变量</h3><p>tf.train.Saver 对象还可以从检查点文件中恢复变量，在恢复变量时不需要再次初始化了。下面给出使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">v1 = tf.get_variable(&quot;v1&quot;, shape=[2])</div><div class="line">v2 = tf.get_variable(&quot;v2&quot;, shape=[3])</div><div class="line">saver = tf.train.Saver()</div><div class="line">with tf.Session() as sess:</div><div class="line">    saver.restore(sess, &quot;./logs/model.ckpt&quot;)</div><div class="line">    print(&quot;Model restored.&quot;)</div><div class="line">    print(&quot;v1 : %s&quot; % v1.eval())</div><div class="line">    print(&quot;v2 : %s&quot; % v2.eval())</div><div class="line"></div><div class="line"># Output:</div><div class="line"># INFO:tensorflow:Restoring parameters from ./logs/model.ckpt</div><div class="line"># Model restored.</div><div class="line"># v1 : [1. 1.]</div><div class="line"># v2 : [-1. -1. -1.]</div></pre></td></tr></table></figure>
+<p>在整个过程中，需要注意的是并没有创建文件名为 model.ckpt 的文件，而是一个检查点的配置文件和一些以 model.ckpt 为前缀的文件。在使用过程中，只需要指明前缀 model.ckpt 即可。</p>
+<h3 id="1-3-选择性存储和恢复"><a href="#1-3-选择性存储和恢复" class="headerlink" title="1.3 选择性存储和恢复"></a>1.3 选择性存储和恢复</h3><p>如果存储不显示指定参数，则代表存储图中所有的变量，每个变量都是以名字作为参数传递的。如果存储和恢复的名字并不想保持一致，这时候就需要显示的指定名字。存储模型的一个子集也是一个常见的引用场景，比如一个神经网络开始有 10 层，后面模型优化，添加到了 12 层，为了节省计算资源，可以把之前训练的 10 层参数通过文件持久化存储，然后在新模型中恢复即可。在指定存储变量是可以有两种方式：第一种是通过变量列表，第二种是通过 Python 字典。继续看示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">tf.reset_default_graph()</div><div class="line">v1 = tf.get_variable(&quot;v1&quot;, [2], initializer=tf.zeros_initializer)</div><div class="line">v2 = tf.get_variable(&quot;v2&quot;, [3], initializer=tf.zeros_initializer)</div><div class="line">saver = tf.train.Saver(&#123;&quot;v2&quot;: v2&#125;)</div><div class="line">with tf.Session() as sess:</div><div class="line">    v1.initializer.run()</div><div class="line">    saver.restore(sess, &quot;./logs/model.ckpt&quot;)</div><div class="line">    print(&quot;v1 : %s&quot; % v1.eval())</div><div class="line">    print(&quot;v2 : %s&quot; % v2.eval())</div><div class="line"></div><div class="line"># Output:</div><div class="line"># INFO:tensorflow:Restoring parameters from ./logs/model.ckpt</div><div class="line"># v1 : [0. 0.]</div><div class="line"># v2 : [-1. -1. -1.]</div></pre></td></tr></table></figure>
+<p>这里还有几个注意点：第一，可以利用多个 Saver 对象存储多个子图；第二，如果只是在会话开始时恢复一个变量子集，则要对其它变量进行初始化；第三，可以使用 inspect_checkpoint 库检测变量是否被存储；最后，Saver 对象默认使用 tf.Variable.name 属性，当然也可以显示指定检查点文件中的值。</p>
+<h3 id="1-4-检查检查点文件中的变量"><a href="#1-4-检查检查点文件中的变量" class="headerlink" title="1.4 检查检查点文件中的变量"></a>1.4 检查检查点文件中的变量</h3><p>前面提到可以使用 inspect_checkpoint 库，下面给出具体实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">chkp.print_tensors_in_checkpoint_file(&quot;./logs/model.ckpt&quot;, tensor_name=&apos;&apos;, all_tensors=True, all_tensor_names=True)</div><div class="line">chkp.print_tensors_in_checkpoint_file(&quot;./logs/model.ckpt&quot;, tensor_name=&apos;v1&apos;, all_tensors=False, all_tensor_names=True)</div><div class="line">chkp.print_tensors_in_checkpoint_file(&quot;./logs/model.ckpt&quot;, tensor_name=&apos;v2&apos;, all_tensors=False, all_tensor_names=False)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># tensor_name:  v1</div><div class="line"># [1. 1.]</div><div class="line"># tensor_name:  v2</div><div class="line"># [-1. -1. -1.]</div><div class="line"># tensor_name:  v1</div><div class="line"># tensor_name:  v2</div><div class="line"># tensor_name:  v2</div><div class="line"># [-1. -1. -1.]</div></pre></td></tr></table></figure>
+<h2 id="2-存储恢复模型概述"><a href="#2-存储恢复模型概述" class="headerlink" title="2 存储恢复模型概述"></a>2 存储恢复模型概述</h2><p>如果有这样一个应用场景：保存一个运行环境现场并且随时可以恢复。如果只是单纯的存储变量是做不到的，所以 TensorFlow 提供了一个存储模型的方法：SavedModel。</p>
+<h2 id="3-构建和加载-SavedModel-的-APIs"><a href="#3-构建和加载-SavedModel-的-APIs" class="headerlink" title="3 构建和加载 SavedModel 的 APIs"></a>3 构建和加载 SavedModel 的 APIs</h2><p>这里主要介绍如何使用初级 API 去构建和加载模型。</p>
+<h3 id="3-1-构建一个-SavedModel"><a href="#3-1-构建一个-SavedModel" class="headerlink" title="3.1 构建一个 SavedModel"></a>3.1 构建一个 SavedModel</h3><p>SavedModelBuilder 是一个实现类，可以用来存储 MetaGraphDef，MetaGraphDef 存储了元图的协议缓冲区，里面包括了数据流图相关的变量、资源和签名。其中签名代表在图中从输入到输出的集合。值得注意的一点是：资源在写入磁盘的时候只会保留第一个 MetaGraphDef 存储的数据。在写入数据是要提供一个可供识别的标签用于模型还原，一种可行的方式是和硬件相结合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">export_dir = ...</div><div class="line">...</div><div class="line">builder = tf.saved_model.builder.SavedModelBuilder(export_dir)</div><div class="line">with tf.Session(graph=tf.Graph()) as sess:</div><div class="line">    ...</div><div class="line">    builder.add_meta_graph_and_variables(sess,</div><div class="line">                                         [tag_constants.TRAINING],</div><div class="line">                                         signature_def_map=foo_signatures,</div><div class="line">                                         assets_collection=foo_assets)</div><div class="line">...</div><div class="line">with tf.Session(graph=tf.Graph()) as sess:</div><div class="line">    ...</div><div class="line">    builder.add_meta_graph([tag_constants.SERVING])</div><div class="line">...</div><div class="line">builder.save()</div></pre></td></tr></table></figure>
+<h3 id="3-2-加载-SavedModel-模型"><a href="#3-2-加载-SavedModel-模型" class="headerlink" title="3.2 加载 SavedModel 模型"></a>3.2 加载 SavedModel 模型</h3><p>在 Python 中加载模型需要提供一下三点信息：第一，提供恢复环境中的会话；第二，提供身份辨认的标签；第三，提供存储路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">export_dir = ...</div><div class="line">...</div><div class="line">with tf.Session(graph=tf.Graph()) as sess:</div><div class="line">    tf.saved_model.loader.load(sess, [tag_constants.TRAINING], export_dir)</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h2 id="4-使用-CLI-检测和执行-SavedModel"><a href="#4-使用-CLI-检测和执行-SavedModel" class="headerlink" title="4 使用 CLI 检测和执行 SavedModel"></a>4 使用 CLI 检测和执行 SavedModel</h2><p>==&gt; TODO</p>
+<h2 id="5-SavedModel-的文件目录结构"><a href="#5-SavedModel-的文件目录结构" class="headerlink" title="5 SavedModel 的文件目录结构"></a>5 SavedModel 的文件目录结构</h2><p>通常来说，SavedModel 的文件目录如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">assets/</div><div class="line">assets.extra/</div><div class="line">variables/</div><div class="line">    variables.data-?????-of-?????</div><div class="line">    variables.index</div><div class="line">saved_model.pb|saved_model.pbtxt</div></pre></td></tr></table></figure>
+<p>下面介绍每个目录和文件的具体用途。</p>
+<p>assets：包含辅助文件的一个子文件夹，能够拷贝到 SavedModel。<br>assets.extra：一个高级库和用户可以添加自己的资源，但是不会被图加载，而且不由 SavedModel 管理。<br>variables：一个包含 tf.train.Saver 输出的子文件夹。<br>saved_model.pb | saved_model.pbtxt：SavedModel 的协议缓冲区，包含了图定义的 MetaGraphDef 协议缓冲区。</p>
+<p>一个 SavedModel 可以包含多个图，因此，在 SavedModel 中所有的图都共享一个 checkpoints 和 assets。下面的图展示了包含三个 MetaGraphDef 共享 checkpoints 和 assets 的情况：</p>
+<p><img src="/2018/03/23/GPTFLAPISaveAndRestore/SavedModel.svg" alt=""></p>
 
       
 
@@ -212,7 +208,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">TensorFlow</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
         		</li>
       		
 		</ul>
@@ -268,7 +268,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2017/04/07/TabLayout/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -282,18 +282,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/04/07/SlideDeleteList/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          自定义滑动删除列表
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/04/07/RecurrentANR/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">复现ANR</div>
+    <a href="/2018/03/23/GPTFLAPISession/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TensorFlow 初级 API 之 Session 篇</div>
       <i class="icon-circle-right"></i>
     </a>
   

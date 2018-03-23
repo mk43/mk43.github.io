@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fitzeng.org/"/>
-  <updated>2018-03-22T07:56:54.563Z</updated>
+  <updated>2018-03-23T06:45:26.322Z</updated>
   <id>http://fitzeng.org/</id>
   
   <author>
@@ -14,6 +14,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TensorFlow 初级 API 之 Save And Restore 篇</title>
+    <link href="http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/"/>
+    <id>http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/</id>
+    <published>2018-03-23T15:27:00.000Z</published>
+    <updated>2018-03-23T06:45:26.322Z</updated>
+    
+    <content type="html"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：此文的行文风格参考<a href="http://fitzeng.org/2018/03/13/GPTFInstallation/">此文</a>，主线为主，不会过多介绍细枝末节。</p>
+</blockquote>
+<a id="more"></a>
+<p>在一些数据规模庞大的训练模型中，一次性训练往往不太现实，所以存储中间过程就十分有必要，并且在需要的时候能过恢复继续训练。TensorFlow 提供了一组存储和恢复的 API 供使用。</p>
+<h2 id="1-存储和恢复变量"><a href="#1-存储和恢复变量" class="headerlink" title="1 存储和恢复变量"></a>1 存储和恢复变量</h2><p>变量时最好的共享方式，因为它的状态可以某程序任意操控。在高级 API 中，往往是自动化处理，但是初级 API 提供了 tf.train.Saver 类进行操作。TensorFlow 以二进制形式把变量存储在检查点文件中，粗略解释就是将名字和张量值做一个映射存储。</p>
+<h3 id="1-1-存储变量"><a href="#1-1-存储变量" class="headerlink" title="1.1 存储变量"></a>1.1 存储变量</h3><p>使用 tf.train.Saver() 创建一个 Saver 对象去管理模型中的所有变量。接下来给一个示例展现如何使用 tf.train.Saver.save 将变量存储到检查点文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">v1 = tf.get_variable(&quot;v1&quot;, shape=[2], initializer=tf.zeros_initializer)</div><div class="line">v2 = tf.get_variable(&quot;v2&quot;, shape=[3], initializer=tf.zeros_initializer)</div><div class="line">inc_v1 = v1.assign(v1 + 1)</div><div class="line">dec_v2 = v2.assign(v2 - 1)</div><div class="line">saver = tf.train.Saver()</div><div class="line">with tf.Session() as sess:</div><div class="line">    sess.run(tf.global_variables_initializer())</div><div class="line">    inc_v1.op.run()</div><div class="line">    dec_v2.op.run()</div><div class="line">    save_path = saver.save(sess, &quot;./logs/model.ckpt&quot;)</div><div class="line">    print(&quot;Model saved in path: %s&quot; % save_path)</div><div class="line">    print(sess.run([v1, v2]))</div><div class="line"></div><div class="line"># Output:</div><div class="line"># Model saved in path: ./logs/model.ckpt</div><div class="line"># [array([1., 1.], dtype=float32), array([-1., -1., -1.], dtype=float32)]</div></pre></td></tr></table></figure>
+<h3 id="1-2-恢复变量"><a href="#1-2-恢复变量" class="headerlink" title="1.2 恢复变量"></a>1.2 恢复变量</h3><p>tf.train.Saver 对象还可以从检查点文件中恢复变量，在恢复变量时不需要再次初始化了。下面给出使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">v1 = tf.get_variable(&quot;v1&quot;, shape=[2])</div><div class="line">v2 = tf.get_variable(&quot;v2&quot;, shape=[3])</div><div class="line">saver = tf.train.Saver()</div><div class="line">with tf.Session() as sess:</div><div class="line">    saver.restore(sess, &quot;./logs/model.ckpt&quot;)</div><div class="line">    print(&quot;Model restored.&quot;)</div><div class="line">    print(&quot;v1 : %s&quot; % v1.eval())</div><div class="line">    print(&quot;v2 : %s&quot; % v2.eval())</div><div class="line"></div><div class="line"># Output:</div><div class="line"># INFO:tensorflow:Restoring parameters from ./logs/model.ckpt</div><div class="line"># Model restored.</div><div class="line"># v1 : [1. 1.]</div><div class="line"># v2 : [-1. -1. -1.]</div></pre></td></tr></table></figure>
+<p>在整个过程中，需要注意的是并没有创建文件名为 model.ckpt 的文件，而是一个检查点的配置文件和一些以 model.ckpt 为前缀的文件。在使用过程中，只需要指明前缀 model.ckpt 即可。</p>
+<h3 id="1-3-选择性存储和恢复"><a href="#1-3-选择性存储和恢复" class="headerlink" title="1.3 选择性存储和恢复"></a>1.3 选择性存储和恢复</h3><p>如果存储不显示指定参数，则代表存储图中所有的变量，每个变量都是以名字作为参数传递的。如果存储和恢复的名字并不想保持一致，这时候就需要显示的指定名字。存储模型的一个子集也是一个常见的引用场景，比如一个神经网络开始有 10 层，后面模型优化，添加到了 12 层，为了节省计算资源，可以把之前训练的 10 层参数通过文件持久化存储，然后在新模型中恢复即可。在指定存储变量是可以有两种方式：第一种是通过变量列表，第二种是通过 Python 字典。继续看示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">tf.reset_default_graph()</div><div class="line">v1 = tf.get_variable(&quot;v1&quot;, [2], initializer=tf.zeros_initializer)</div><div class="line">v2 = tf.get_variable(&quot;v2&quot;, [3], initializer=tf.zeros_initializer)</div><div class="line">saver = tf.train.Saver(&#123;&quot;v2&quot;: v2&#125;)</div><div class="line">with tf.Session() as sess:</div><div class="line">    v1.initializer.run()</div><div class="line">    saver.restore(sess, &quot;./logs/model.ckpt&quot;)</div><div class="line">    print(&quot;v1 : %s&quot; % v1.eval())</div><div class="line">    print(&quot;v2 : %s&quot; % v2.eval())</div><div class="line"></div><div class="line"># Output:</div><div class="line"># INFO:tensorflow:Restoring parameters from ./logs/model.ckpt</div><div class="line"># v1 : [0. 0.]</div><div class="line"># v2 : [-1. -1. -1.]</div></pre></td></tr></table></figure>
+<p>这里还有几个注意点：第一，可以利用多个 Saver 对象存储多个子图；第二，如果只是在会话开始时恢复一个变量子集，则要对其它变量进行初始化；第三，可以使用 inspect_checkpoint 库检测变量是否被存储；最后，Saver 对象默认使用 tf.Variable.name 属性，当然也可以显示指定检查点文件中的值。</p>
+<h3 id="1-4-检查检查点文件中的变量"><a href="#1-4-检查检查点文件中的变量" class="headerlink" title="1.4 检查检查点文件中的变量"></a>1.4 检查检查点文件中的变量</h3><p>前面提到可以使用 inspect_checkpoint 库，下面给出具体实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">chkp.print_tensors_in_checkpoint_file(&quot;./logs/model.ckpt&quot;, tensor_name=&apos;&apos;, all_tensors=True, all_tensor_names=True)</div><div class="line">chkp.print_tensors_in_checkpoint_file(&quot;./logs/model.ckpt&quot;, tensor_name=&apos;v1&apos;, all_tensors=False, all_tensor_names=True)</div><div class="line">chkp.print_tensors_in_checkpoint_file(&quot;./logs/model.ckpt&quot;, tensor_name=&apos;v2&apos;, all_tensors=False, all_tensor_names=False)</div><div class="line"></div><div class="line"># Output:</div><div class="line"># tensor_name:  v1</div><div class="line"># [1. 1.]</div><div class="line"># tensor_name:  v2</div><div class="line"># [-1. -1. -1.]</div><div class="line"># tensor_name:  v1</div><div class="line"># tensor_name:  v2</div><div class="line"># tensor_name:  v2</div><div class="line"># [-1. -1. -1.]</div></pre></td></tr></table></figure>
+<h2 id="2-存储恢复模型概述"><a href="#2-存储恢复模型概述" class="headerlink" title="2 存储恢复模型概述"></a>2 存储恢复模型概述</h2><p>如果有这样一个应用场景：保存一个运行环境现场并且随时可以恢复。如果只是单纯的存储变量是做不到的，所以 TensorFlow 提供了一个存储模型的方法：SavedModel。</p>
+<h2 id="3-构建和加载-SavedModel-的-APIs"><a href="#3-构建和加载-SavedModel-的-APIs" class="headerlink" title="3 构建和加载 SavedModel 的 APIs"></a>3 构建和加载 SavedModel 的 APIs</h2><p>这里主要介绍如何使用初级 API 去构建和加载模型。</p>
+<h3 id="3-1-构建一个-SavedModel"><a href="#3-1-构建一个-SavedModel" class="headerlink" title="3.1 构建一个 SavedModel"></a>3.1 构建一个 SavedModel</h3><p>SavedModelBuilder 是一个实现类，可以用来存储 MetaGraphDef，MetaGraphDef 存储了元图的协议缓冲区，里面包括了数据流图相关的变量、资源和签名。其中签名代表在图中从输入到输出的集合。值得注意的一点是：资源在写入磁盘的时候只会保留第一个 MetaGraphDef 存储的数据。在写入数据是要提供一个可供识别的标签用于模型还原，一种可行的方式是和硬件相结合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">export_dir = ...</div><div class="line">...</div><div class="line">builder = tf.saved_model.builder.SavedModelBuilder(export_dir)</div><div class="line">with tf.Session(graph=tf.Graph()) as sess:</div><div class="line">    ...</div><div class="line">    builder.add_meta_graph_and_variables(sess,</div><div class="line">                                         [tag_constants.TRAINING],</div><div class="line">                                         signature_def_map=foo_signatures,</div><div class="line">                                         assets_collection=foo_assets)</div><div class="line">...</div><div class="line">with tf.Session(graph=tf.Graph()) as sess:</div><div class="line">    ...</div><div class="line">    builder.add_meta_graph([tag_constants.SERVING])</div><div class="line">...</div><div class="line">builder.save()</div></pre></td></tr></table></figure>
+<h3 id="3-2-加载-SavedModel-模型"><a href="#3-2-加载-SavedModel-模型" class="headerlink" title="3.2 加载 SavedModel 模型"></a>3.2 加载 SavedModel 模型</h3><p>在 Python 中加载模型需要提供一下三点信息：第一，提供恢复环境中的会话；第二，提供身份辨认的标签；第三，提供存储路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">export_dir = ...</div><div class="line">...</div><div class="line">with tf.Session(graph=tf.Graph()) as sess:</div><div class="line">    tf.saved_model.loader.load(sess, [tag_constants.TRAINING], export_dir)</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h2 id="4-使用-CLI-检测和执行-SavedModel"><a href="#4-使用-CLI-检测和执行-SavedModel" class="headerlink" title="4 使用 CLI 检测和执行 SavedModel"></a>4 使用 CLI 检测和执行 SavedModel</h2><p>==&gt; TODO</p>
+<h2 id="5-SavedModel-的文件目录结构"><a href="#5-SavedModel-的文件目录结构" class="headerlink" title="5 SavedModel 的文件目录结构"></a>5 SavedModel 的文件目录结构</h2><p>通常来说，SavedModel 的文件目录如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">assets/</div><div class="line">assets.extra/</div><div class="line">variables/</div><div class="line">    variables.data-?????-of-?????</div><div class="line">    variables.index</div><div class="line">saved_model.pb|saved_model.pbtxt</div></pre></td></tr></table></figure>
+<p>下面介绍每个目录和文件的具体用途。</p>
+<p>assets：包含辅助文件的一个子文件夹，能够拷贝到 SavedModel。<br>assets.extra：一个高级库和用户可以添加自己的资源，但是不会被图加载，而且不由 SavedModel 管理。<br>variables：一个包含 tf.train.Saver 输出的子文件夹。<br>saved_model.pb | saved_model.pbtxt：SavedModel 的协议缓冲区，包含了图定义的 MetaGraphDef 协议缓冲区。</p>
+<p>一个 SavedModel 可以包含多个图，因此，在 SavedModel 中所有的图都共享一个 checkpoints 和 assets。下面的图展示了包含三个 MetaGraphDef 共享 checkpoints 和 assets 的情况：</p>
+<p><img src="/2018/03/23/GPTFLAPISaveAndRestore/SavedModel.svg" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;写在前面：此文的行文风格参考&lt;a href=&quot;http://fitzeng.org/2018/03/13/GPTFInstallation/&quot;&gt;此文&lt;/a&gt;，主线为主，不会过多介绍细枝末节。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="TensorFlow" scheme="http://fitzeng.org/tags/TensorFlow/"/>
+    
+      <category term="MachineLearning" scheme="http://fitzeng.org/tags/MachineLearning/"/>
+    
+  </entry>
   
   <entry>
     <title>TensorFlow 初级 API 之 Session 篇</title>
@@ -2278,129 +2335,6 @@
       <category term="Formula" scheme="http://fitzeng.org/tags/Formula/"/>
     
       <category term="LaTeX" scheme="http://fitzeng.org/tags/LaTeX/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GitNote</title>
-    <link href="http://fitzeng.org/2017/12/16/GitNote/"/>
-    <id>http://fitzeng.org/2017/12/16/GitNote/</id>
-    <published>2017-12-16T03:27:00.000Z</published>
-    <updated>2017-12-17T06:36:06.885Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><blockquote>
-<p>在使用 Git 时有一种感觉就是只会 <code>add | commit | push</code> 三个命令。因为这三个命令似乎足以把代码提交到 GitHub 上，即使是碰到某个问题，也可以直接 Google。但是对于其中的逻辑和版本管理的精髓没有体会到，而只是作为一个在线代码仓库在使用，这样做也没有什么不可以，但是如果能系统的了解为什么要有版本管理工具，以及版本管理工具能够给我们提供怎么样的管理服务，对于使用工具的我们来说有很大帮助。不用记住命令，只是以后遇到问题时知道这个工具有实现的方式就足够了。</p>
-<p>现在我系统的看了一下官方的 Git 入门教程 <a href="https://www.nowcoder.com/courses/2#chapter-14" target="_blank" rel="external">Git 官方教程（中字）</a> 里面通过描述对命令的使用情景进而选择命令进行操作的方式，使得命令很容易理解也容易加深记忆。比起单一的命令用文字解释这种方式，对于不熟悉 Git 的人来说是十分友好的。但是，看完容易忘，所以写了这篇整理笔记用作辅助查询。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-基本命令"><a href="#1-基本命令" class="headerlink" title="1. 基本命令"></a>1. 基本命令</h2><h3 id="1-1-了解帮助命令"><a href="#1-1-了解帮助命令" class="headerlink" title="1.1 了解帮助命令"></a>1.1 了解帮助命令</h3><ul>
-<li><code>git help</code> : 查看命令</li>
-<li><code>git help add</code> : 查看 <code>git add</code> 命令的具体解释</li>
-</ul>
-<h3 id="1-2-仓库初始化"><a href="#1-2-仓库初始化" class="headerlink" title="1.2 仓库初始化"></a>1.2 仓库初始化</h3><ul>
-<li><code>git init</code> : 创建 <code>.git</code>, 适合在已存在项目追加版本控制</li>
-<li><code>git init projectname</code> : 创建 <code>projectname/.git</code>, 适合项目开始时加入版本控制</li>
-</ul>
-<h3 id="1-3-文件基本操作"><a href="#1-3-文件基本操作" class="headerlink" title="1.3 文件基本操作"></a>1.3 文件基本操作</h3><ul>
-<li><code>git add filename/*</code> : 添加文件[产生暂存文件]</li>
-<li><code>git commmit -m &quot;message&quot;</code> : 将添加的文件提交到本地仓库[产生提交文件]</li>
-<li><code>git rm filename</code> : 移除文件，使用 <code>rm filename</code> 的有暂存</li>
-<li><code>git add -u .</code> : 如果之前使用非 git 命令删除文件，可以使用这个命令把当前目录的文件重新遍历清除</li>
-<li><code>git rm --cache filename</code> : 暂存但是不参与跟踪</li>
-<li><code>git mv filepath newfilepath</code> : 移动文件</li>
-<li><code>git rm filepath &amp;&amp; git add newfilepath</code> : 移动文件，之前使用非 git 命令移动文件</li>
-<li><code>git add -A .</code> : 如果之前使用非 git 命令移动文件，可以使用这个命令把当前目录的文件重新遍历移动，和 <code>rm</code> 命令类似</li>
-<li><code>git reset etc...</code> : 历史提交管理(回退，合并…)，checkout 更关注文件</li>
-</ul>
-<h3 id="1-4-查看文件修改"><a href="#1-4-查看文件修改" class="headerlink" title="1.4 查看文件修改"></a>1.4 查看文件修改</h3><ul>
-<li><code>git status</code> : 查看文件信息</li>
-<li><code>git diff</code> : 查看修改[工作树和暂存文件]</li>
-<li><code>git diff --staged</code> : 查看修改[暂存文件和最近提交文件]</li>
-<li><code>git diff HEAD</code> : 查看修改[工作树和最近提交文件]</li>
-<li><code>git diff --word-diff</code> : 查看修改的单词用颜色标出</li>
-<li><code>git diff --stat</code> : 查看修改的文件名</li>
-</ul>
-<blockquote>
-<p>参考资料 <a href="http://www.cnblogs.com/feeland/p/4500721.html" target="_blank" rel="external">0. Git 学习（三）本地仓库操作——git add &amp; commit</a> 了解 git 版本库实现</p>
-</blockquote>
-<h3 id="1-5-查看提交-Log"><a href="#1-5-查看提交-Log" class="headerlink" title="1.5 查看提交 Log"></a>1.5 查看提交 Log</h3><ul>
-<li><code>git log</code> : 显示提交信息</li>
-<li><code>git log --oneline</code> : 显示提交 Message</li>
-<li><code>git log --stat</code> : 显示提交文件名级详细修改信息</li>
-<li><code>git log --patch</code> : 显示提交文件内容级详细修改信息 </li>
-<li><code>git log --graph</code> : 用图显示提交记录</li>
-<li><code>git log --graph --all --decorate --oneline</code> : 去除冗余信息，更加直观显示每条分支每次提交</li>
-<li><code>git log --stat -- filename</code> : 文件提交记录（不记录路径移动）</li>
-<li><code>git log --stat -M --follow -- filename</code> : 看到完整的文件操作过程</li>
-</ul>
-<h3 id="1-6-忽略文件"><a href="#1-6-忽略文件" class="headerlink" title="1.6 忽略文件"></a>1.6 忽略文件</h3><ul>
-<li><code>touch .gitignore</code> : 创建文件(次级目录也可以创建)</li>
-<li><code>vim .gitignore</code> : 编辑文件添加 ignore 文件。<code>*.log | tmp/ | .sass-cache etc...</code></li>
-<li><code>git ls-files --others --ignored --exclude-standard</code> : 查看被 ignore 的文件</li>
-<li><code>git reflog</code> : 详细修改日志</li>
-</ul>
-<h3 id="1-7-分支操作"><a href="#1-7-分支操作" class="headerlink" title="1.7 分支操作"></a>1.7 分支操作</h3><ul>
-<li><code>git branch branchname</code> : 创建分支</li>
-<li><code>git branch</code> : 显示分支</li>
-<li><code>git branch -d branchname</code> : 删除分支</li>
-<li><code>git branch -D branchname</code> : 删除未合并分支</li>
-<li><code>git checkout branchname</code> : 切换分支</li>
-<li><code>git checkout commitID</code> : 工作树切换到 commitID 时</li>
-<li><code>git checkout -- filename</code> : 清理掉最后一次提交内容</li>
-<li><code>git checkout -b branchname</code> : 创建新分支并且进入该分支</li>
-<li><code>git merge branchname</code> : 和并 branchname 分支到目前所在分支(合并时文件冲突要手动解决)</li>
-<li><code>git merge --abort</code> : 清除工作目录和暂存区</li>
-<li><code>git merge squash branchname</code> : 将合并的分支改变变成一个 commit</li>
-<li><code>git rebase branchname</code> : 将当前分支历史提交合并到 branchname 分支</li>
-</ul>
-<blockquote>
-<p>参考资料 <a href="https://github.com/geeeeeeeeek/git-recipes/wiki/5.1-%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%EF%BC%9AMerge%E3%80%81Rebase-%E7%9A%84%E9%80%89%E6%8B%A9" target="_blank" rel="external">2. 代码合并：Merge、Rebase 的选择</a></p>
-</blockquote>
-<h3 id="1-8-远程操作"><a href="#1-8-远程操作" class="headerlink" title="1.8 远程操作"></a>1.8 远程操作</h3><ul>
-<li><code>git remote add origin  https://github.com/accountname/projectname</code></li>
-<li><code>git remote set-url origin newUrl</code> : 改变 URL</li>
-<li><code>git remote rm origin</code> : 删除</li>
-<li><code>git remote -v</code> : 查看 URL</li>
-<li><code>git fetch origin</code> : 抓取远程分支，本地会有一个 <code>remotehostname/branchname</code> 的分支，一般用于查看伙伴代码</li>
-<li><code>git pull origin</code> : 和 fetch 类似，但是是取回远程更新和本地合并。相当于先 fetch 再 merge。</li>
-<li><code>git push origin</code> : push 到远程仓库</li>
-</ul>
-<blockquote>
-<p>参考资料 <a href="http://www.ruanyifeng.com/blog/2014/06/git_remote.html" target="_blank" rel="external">1. Git远程操作详解</a></p>
-</blockquote>
-<h2 id="2-总结"><a href="#2-总结" class="headerlink" title="2. 总结"></a>2. 总结</h2><blockquote>
-<p>其实在开始把 Git 整个命令流程学习下来之前，对 Git 理解十分浅显，使用命令也是抱着试试看的心态，错了搜索解决方法重试，对了就不追究原因了。这种方式感觉更加浪费时间，而且很可能多次遇到重复问题。觉得以后学习某个东西还是得大概了解整个系统才好，想快速入门未尝不可，但是闲下来的时候要去多问问为什么，这样有了宏观的概念，出了问题说不定能自己摸索着解决。还有一点，实践确实是比单一的阅读或看视频更加记忆深刻，对命令的理解也是同理，所以最好都敲一遍。</p>
-</blockquote>
-<ul>
-<li><a href="https://github.com/mk43" target="_blank" rel="external">GitHub</a></li>
-<li><a href="http://fitzeng.org">Blog</a></li>
-<li><a href="https://juejin.im/user/5791a7a30a2b580061a0e352" target="_blank" rel="external">掘金</a></li>
-</ul>
-<p>多谢阅读 ^_^</p>
-<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h2><ul>
-<li><a href="https://www.nowcoder.com/courses/2#chapter-14" target="_blank" rel="external">-1. GitHub&amp;Git入门基础</a></li>
-<li><a href="http://www.cnblogs.com/feeland/p/4500721.html" target="_blank" rel="external">0. Git 学习（三）本地仓库操作——git add &amp; commit</a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2014/06/git_remote.html" target="_blank" rel="external">1. Git远程操作详解</a></li>
-<li><a href="https://github.com/geeeeeeeeek/git-recipes/wiki/5.1-%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%EF%BC%9AMerge%E3%80%81Rebase-%E7%9A%84%E9%80%89%E6%8B%A9" target="_blank" rel="external">2. 代码合并：Merge、Rebase 的选择</a></li>
-<li><a href="https://github.com/geeeeeeeeek/git-recipes" target="_blank" rel="external">3. GitHub 高质量的Git中文教程</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0. 前言&quot;&gt;&lt;/a&gt;0. 前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;在使用 Git 时有一种感觉就是只会 &lt;code&gt;add | commit | push&lt;/code&gt; 三个命令。因为这三个命令似乎足以把代码提交到 GitHub 上，即使是碰到某个问题，也可以直接 Google。但是对于其中的逻辑和版本管理的精髓没有体会到，而只是作为一个在线代码仓库在使用，这样做也没有什么不可以，但是如果能系统的了解为什么要有版本管理工具，以及版本管理工具能够给我们提供怎么样的管理服务，对于使用工具的我们来说有很大帮助。不用记住命令，只是以后遇到问题时知道这个工具有实现的方式就足够了。&lt;/p&gt;
-&lt;p&gt;现在我系统的看了一下官方的 Git 入门教程 &lt;a href=&quot;https://www.nowcoder.com/courses/2#chapter-14&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Git 官方教程（中字）&lt;/a&gt; 里面通过描述对命令的使用情景进而选择命令进行操作的方式，使得命令很容易理解也容易加深记忆。比起单一的命令用文字解释这种方式，对于不熟悉 Git 的人来说是十分友好的。但是，看完容易忘，所以写了这篇整理笔记用作辅助查询。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="Git" scheme="http://fitzeng.org/tags/Git/"/>
-    
-      <category term="GitHub" scheme="http://fitzeng.org/tags/GitHub/"/>
-    
-      <category term="Tool" scheme="http://fitzeng.org/tags/Tool/"/>
     
   </entry>
   

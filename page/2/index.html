@@ -142,6 +142,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MLDecisionTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/18/MLDecisionTree/">机器学习基本算法之决策树</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/18/MLDecisionTree/" class="archive-article-date">
+  	<time datetime="2018-02-18T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>写在前面：我将从一个入门者的视角（水平）将机器学习中的常用算法娓娓道来。自身水平确实有限，如果其中有什么错误的话希望大家指出，避免误导大家。</p>
+<p>这个系列已经有两篇前作了，欢迎感兴趣的读者去阅读：</p>
+<ul>
+<li><a href="http://fitzeng.org/2018/02/11/MLLinearRegression/">机器学习基本算法之线性回归</a></li>
+<li><a href="http://fitzeng.org/2018/02/16/MLLogisticRegression/">机器学习基本算法之逻辑回归</a></li>
+</ul>
+<p><a href="https://github.com/mk43/machine-learning/tree/master/algorithm/logistic-regression" target="_blank" rel="external">实验代码</a>-<a href="https://github.com/mk43/machine-learning/tree/master/reference" target="_blank" rel="external">参考书籍</a>-[参考博客详见最后]</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/18/MLDecisionTree/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Math</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MachineLearning</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NumPy</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Matplotlib</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DecisionTree</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/18/MLDecisionTree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-MLLogisticRegression" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -881,81 +975,6 @@
 
 
   
-    <article id="post-GitNote" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/16/GitNote/">GitNote</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/16/GitNote/" class="archive-article-date">
-  	<time datetime="2017-12-16T03:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><blockquote>
-<p>在使用 Git 时有一种感觉就是只会 <code>add | commit | push</code> 三个命令。因为这三个命令似乎足以把代码提交到 GitHub 上，即使是碰到某个问题，也可以直接 Google。但是对于其中的逻辑和版本管理的精髓没有体会到，而只是作为一个在线代码仓库在使用，这样做也没有什么不可以，但是如果能系统的了解为什么要有版本管理工具，以及版本管理工具能够给我们提供怎么样的管理服务，对于使用工具的我们来说有很大帮助。不用记住命令，只是以后遇到问题时知道这个工具有实现的方式就足够了。</p>
-<p>现在我系统的看了一下官方的 Git 入门教程 <a href="https://www.nowcoder.com/courses/2#chapter-14" target="_blank" rel="external">Git 官方教程（中字）</a> 里面通过描述对命令的使用情景进而选择命令进行操作的方式，使得命令很容易理解也容易加深记忆。比起单一的命令用文字解释这种方式，对于不熟悉 Git 的人来说是十分友好的。但是，看完容易忘，所以写了这篇整理笔记用作辅助查询。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2017/12/16/GitNote/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">GitHub</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tool</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/16/GitNote/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1090,11 +1109,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android Unit Test</a>
+                <a href="javascript:void(0)" class="js-tag color1">Collection</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1126,18 +1145,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">NumPy</a>
               </li>
              
@@ -1147,6 +1154,18 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DecisionTree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MarkDown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Formula</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">LaTeX</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1194,11 +1213,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+                <a href="javascript:void(0)" class="js-tag color1">DataStruct</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DataStruct</a>
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
               </li>
              
               <li class="article-tag-list-item">
