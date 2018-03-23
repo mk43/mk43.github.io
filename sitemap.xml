@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fitzeng.org/2018/03/24/GPTFLAPIGPU/</loc>
+    
+    <lastmod>2018-03-23T08:41:52.454Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fitzeng.org/2018/03/23/GPTFLAPISaveAndRestore/</loc>
     
     <lastmod>2018-03-23T06:45:26.322Z</lastmod>
